@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farrel Fayzul Haqqi | Electrical Engineering & AI</title>
+<meta name="description" content="Electrical Engineering student at ITS Surabaya. I build embedded hardware and AI agents. Portfolio of projects, awards, and certifications.">
+<meta name="theme-color" content="#0a0e27">
+<meta property="og:title" content="Farrel Fayzul Haqqi | Electrical Engineering & AI">
+<meta property="og:description" content="I build embedded hardware and AI agents. Electrical Engineering at ITS Surabaya.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ BOOT OVERLAY ============ -->
+<div id="boot" class="boot" aria-hidden="true">
+  <div class="boot__inner">
+    <pre class="boot__log" id="bootLog"></pre>
+    <div class="boot__start" id="bootStart">
+      <span class="boot__prompt">&gt;</span>
+      <button class="boot__btn" id="bootBtn">PRESS START</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STARFIELD BACKDROP ============ -->
+<canvas id="sky" class="sky" aria-hidden="true"></canvas>
+<div class="sky__scene" aria-hidden="true">
+  <div class="sky__moon"></div>
+  <div class="sky__hills"></div>
+</div>
+
+<!-- ============ TASKBAR NAV ============ -->
+<header class="bar">
+  <div class="bar__brand">
+    <span class="bar__logo" aria-hidden="true"></span>
+    <span class="bar__name">FARREL.OS</span>
+  </div>
+  <nav class="bar__nav" aria-label="Main">
+    <a href="#about" class="bar__link"><span class="lbl-full">PROFILE</span><span class="lbl-short">ABOUT</span></a>
+    <a href="#projects" class="bar__link"><span class="lbl-full">PROJECTS</span><span class="lbl-short">WORK</span></a>
+    <a href="#skills" class="bar__link"><span class="lbl-full">SKILLS</span><span class="lbl-short">SKILLS</span></a>
+    <a href="#awards" class="bar__link"><span class="lbl-full">AWARDS</span><span class="lbl-short">WINS</span></a>
+    <a href="#contact" class="bar__link"><span class="lbl-full">CONTACT</span><span class="lbl-short">MAIL</span></a>
+  </nav>
+  <div class="bar__clock" id="clock">--:--</div>
+</header>
+
+<main>
+
+<!-- ============ HERO / START SCREEN ============ -->
+<section class="hero" id="top">
+  <div class="hero__grid">
+    <div class="hero__copy">
+      <p class="hero__kicker">INSTITUT TEKNOLOGI SEPULUH NOPEMBER</p>
+      <h1 class="hero__title">
+        <span class="hero__line1">FARREL</span>
+        <span class="hero__line2">FAYZUL HAQQI</span>
+      </h1>
+      <p class="hero__sub">I build embedded hardware and AI agents. First year Electrical Engineering, Surabaya.</p>
+      <div class="hero__cta">
+        <a href="#projects" class="btn btn--primary">SEE PROJECTS</a>
+        <a href="#contact" class="btn btn--ghost">GET IN TOUCH</a>
+      </div>
+    </div>
+    <div class="hero__stage" aria-hidden="true">
+      <div class="cart" id="cart">
+        <div class="cart__body">
+          <div class="cart__screen">
+            <div class="cart__screenInner" id="cartScreen">
+              <span class="cart__glyph">&#9835;</span>
+              <span class="cart__label">NOW PLAYING</span>
+              <span class="cart__track">ESP32-S3</span>
+            </div>
+          </div>
+          <div class="cart__pad"></div>
+          <div class="cart__pad cart__pad--b"></div>
+          <div class="cart__slot"></div>
+        </div>
+        <div class="cart__glow"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT / PLAYER PROFILE ============ -->
+<section class="sect" id="about">
+  <div class="win">
+    <div class="win__bar">
+      <span class="win__title">PLAYER_PROFILE.EXE</span>
+      <span class="win__ctrls" aria-hidden="true"><i></i><i></i><i></i></span>
+    </div>
+    <div class="win__body">
+      <div class="about">
+        <div class="about__portrait">
+          <div class="portrait">
+            <div class="portrait__face" aria-hidden="true">
+              <span class="portrait__eye"></span>
+              <span class="portrait__eye"></span>
+              <span class="portrait__mouth"></span>
+            </div>
+          </div>
+          <p class="portrait__cap">SURABAYA, ID</p>
+        </div>
+        <div class="about__text">
+          <p class="about__lead">I build things. Most of them start with a problem I can't stop thinking about.</p>
+          <p>First year Electrical Engineering student in the International Undergraduate Program at ITS. My curiosity sits between hardware and AI, and those two keep running into each other.</p>
+          <p>Before university I spent high school doing research. I worked on EcoMeth, a home biogas system that turns organic household waste into cooking fuel, and FLOBRIC Solar Still, a low cost water distiller for communities without reliable clean water. Neither won. Both taught me how to take a messy real world problem, research it properly, and defend my reasoning in front of judges.</p>
+          <p>At ITS I reached the semifinals of the National Olympiad ELECTRA twice, in 2024 and 2025, both hosted by my own department. That is where I knew electrical engineering was the right place for me.</p>
+          <p>Then I started building for real. An offline MP3 player with a custom PCB I designed and had fabricated. An agentic AI assistant running on Google's Gemini API. I hold AI certifications from OpenAI Academy and a digital marketing certification from Google Skillshop.</p>
+          <p>Sharing this is the part I enjoy most. I regularly pull friends into study and skill building sessions, because learning alone gets boring fast.</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat__k">CLASS</span>
+          <span class="stat__v">ELECTRICAL ENGINEERING</span>
+        </div>
+        <div class="stat">
+          <span class="stat__k">PROGRAM</span>
+          <span class="stat__v">INTERNATIONAL (IUP)</span>
+        </div>
+        <div class="stat">
+          <span class="stat__k">LEVEL</span>
+          <span class="stat__v">SEMESTER 1</span>
+        </div>
+        <div class="stat">
+          <span class="stat__k">BASE</span>
+          <span class="stat__v">SURABAYA, INDONESIA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS / QUEST LOG ============ -->
+<section class="sect" id="projects">
+  <div class="sect__head">
+    <h2 class="sect__title">QUEST LOG</h2>
+    <p class="sect__note">Things I have built or am building. Hardware first, AI close behind.</p>
+  </div>
+
+  <div class="quests">
+
+    <article class="quest quest--wide">
+      <div class="quest__art quest__art--player" aria-hidden="true">
+        <div class="px-device">
+          <div class="px-device__screen"><span>&#9835;</span></div>
+          <div class="px-device__led"></div>
+          <div class="px-device__btn"></div>
+          <div class="px-device__jack"></div>
+        </div>
+      </div>
+      <div class="quest__body">
+        <div class="quest__tag">HARDWARE</div>
+        <h3 class="quest__name">Offline MP3 Player</h3>
+        <p class="quest__desc">Built a portable music player from scratch. ESP32-S3 microcontroller, PCM5102 DAC, custom NE5532 amplifier circuit, 1.3 inch OLED display, and microSD storage for fully offline playback.</p>
+        <p class="quest__desc">Designed the PCB in KiCad and had it fabricated. Wrote the firmware in Arduino IDE. Used Gemini to debug driver and signal issues I would have lost days to.</p>
+        <ul class="chips">
+          <li>ESP32-S3</li><li>KiCad</li><li>PCM5102</li><li>NE5532</li><li>OLED</li><li>Arduino</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="quest">
+      <div class="quest__art quest__art--agent" aria-hidden="true">
+        <div class="px-core">
+          <span class="px-core__ring"></span>
+          <span class="px-core__dot"></span>
+          <span class="px-core__dot"></span>
+          <span class="px-core__dot"></span>
+        </div>
+      </div>
+      <div class="quest__body">
+        <div class="quest__tag">AI</div>
+        <h3 class="quest__name">Agentic AI Assistant</h3>
+        <p class="quest__desc">Developing a personal agentic assistant powered by the Google Gemini API, built through Google AI Studio. Designing the agent workflow, tool integration, and task automation.</p>
+        <ul class="chips">
+          <li>Gemini API</li><li>AI Studio</li><li>Agents</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="quest">
+      <div class="quest__art quest__art--chip" aria-hidden="true">
+        <div class="px-chip">
+          <span class="px-chip__pin"></span><span class="px-chip__pin"></span>
+          <span class="px-chip__pin"></span><span class="px-chip__pin"></span>
+          <span class="px-chip__core">AI</span>
+          <span class="px-chip__pin"></span><span class="px-chip__pin"></span>
+          <span class="px-chip__pin"></span><span class="px-chip__pin"></span>
+        </div>
+      </div>
+      <div class="quest__body">
+        <div class="quest__tag">MOBILE</div>
+        <h3 class="quest__name">Lossless Music App</h3>
+        <p class="quest__desc">Building a mobile music player that handles lossless audio files, developed with help from Google Antigravity.</p>
+        <ul class="chips">
+          <li>Antigravity</li><li>Lossless Audio</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="quest quest--research">
+      <div class="quest__art quest__art--leaf" aria-hidden="true">
+        <div class="px-leaf">
+          <span class="px-leaf__drop"></span>
+          <span class="px-leaf__vein"></span>
+        </div>
+      </div>
+      <div class="quest__body">
+        <div class="quest__tag">RESEARCH</div>
+        <h3 class="quest__name">EcoMeth &amp; FLOBRIC Solar Still</h3>
+        <p class="quest__desc">Two high school research projects. EcoMeth converted organic household waste into home biogas to cut methane emissions, surveyed at TPS 3R Gunung Anyar. FLOBRIC Solar Still designed a low cost water distillation method for the national scientific writing competition run by the Ministry of Public Works and Housing.</p>
+        <p class="quest__desc">Neither won. Both taught me how to research a real problem properly.</p>
+        <ul class="chips">
+          <li>Biogas</li><li>Water Treatment</li><li>Field Research</li>
+        </ul>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ SKILLS / INVENTORY ============ -->
+<section class="sect" id="skills">
+  <div class="sect__head">
+    <h2 class="sect__title">INVENTORY</h2>
+    <p class="sect__note">Tools and skills I actually use, not a list I copied.</p>
+  </div>
+
+  <div class="inv">
+    <div class="inv__group">
+      <h3 class="inv__label">HARDWARE</h3>
+      <ul class="inv__items">
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Embedded Systems</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>ESP32 / Microcontrollers</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>PCB Design (KiCad)</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Circuit Design</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Arduino IDE</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Internet of Things</li>
+      </ul>
+    </div>
+    <div class="inv__group">
+      <h3 class="inv__label">AI &amp; SOFTWARE</h3>
+      <ul class="inv__items">
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Google Gemini API</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Agentic Workflows</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Prompt Engineering</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Google AI Studio</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>NotebookLM</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Canva</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AWARDS / ACHIEVEMENTS ============ -->
+<section class="sect" id="awards">
+  <div class="sect__head">
+    <h2 class="sect__title">ACHIEVEMENTS</h2>
+    <p class="sect__note">Unlocked so far.</p>
+  </div>
+
+  <div class="wins">
+    <div class="win win--award">
+      <div class="win__bar win__bar--gold">
+        <span class="win__title">&#9733; SEMIFINALIST</span>
+      </div>
+      <div class="win__body win__body--tight">
+        <p class="award__name">Olimpiade Nasional ELECTRA 14</p>
+        <p class="award__meta">Department of Electrical Engineering, ITS &middot; 2025</p>
+      </div>
+    </div>
+
+    <div class="win win--award">
+      <div class="win__bar win__bar--gold">
+        <span class="win__title">&#9733; SEMIFINALIST</span>
+      </div>
+      <div class="win__body win__body--tight">
+        <p class="award__name">Olimpiade Nasional ELECTRA 13</p>
+        <p class="award__meta">Department of Electrical Engineering, ITS &middot; 2024</p>
+      </div>
+    </div>
+
+    <div class="win win--award">
+      <div class="win__bar">
+        <span class="win__title">&#9679; PARTICIPANT</span>
+      </div>
+      <div class="win__body win__body--tight">
+        <p class="award__name">Schematics National Programming Contest</p>
+        <p class="award__meta">Competitive Programming Junior, HMTC ITS &middot; 2025</p>
+      </div>
+    </div>
+
+    <div class="win win--award">
+      <div class="win__bar">
+        <span class="win__title">&#9679; PARTICIPANT</span>
+      </div>
+      <div class="win__body win__body--tight">
+        <p class="award__name">National Logic Competition</p>
+        <p class="award__meta">SCHEMATICS 2024, HMTC ITS &middot; 2024</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sect__head sect__head--sub">
+    <h3 class="sect__subtitle">CERTIFICATIONS</h3>
+  </div>
+
+  <div class="certs">
+    <div class="cert">
+      <span class="cert__badge">AI</span>
+      <div>
+        <p class="cert__name">AI Foundations</p>
+        <p class="cert__meta">OpenAI Academy &middot; 2026</p>
+      </div>
+    </div>
+    <div class="cert">
+      <span class="cert__badge">AI</span>
+      <div>
+        <p class="cert__name">Applied AI Foundations</p>
+        <p class="cert__meta">OpenAI Academy &middot; 2026</p>
+      </div>
+    </div>
+    <div class="cert">
+      <span class="cert__badge">AI</span>
+      <div>
+        <p class="cert__name">Agents and Workflows</p>
+        <p class="cert__meta">OpenAI Academy &middot; 2026</p>
+      </div>
+    </div>
+    <div class="cert">
+      <span class="cert__badge cert__badge--g">G</span>
+      <div>
+        <p class="cert__name">Fundamentals of Digital Marketing</p>
+        <p class="cert__meta">Google Skillshop &middot; 2026</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT / TERMINAL ============ -->
+<section class="sect" id="contact">
+  <div class="win win--term">
+    <div class="win__bar win__bar--term">
+      <span class="win__title">C:\&gt; contact --open</span>
+      <span class="win__ctrls" aria-hidden="true"><i></i><i></i><i></i></span>
+    </div>
+    <div class="win__body win__body--term">
+      <p class="term__line"><span class="term__p">C:\&gt;</span> whoami</p>
+      <p class="term__out">Farrel Fayzul Haqqi. Electrical Engineering, ITS Surabaya.</p>
+      <p class="term__line"><span class="term__p">C:\&gt;</span> status</p>
+      <p class="term__out">Open to collaborations, competitions, and conversations about embedded systems and AI.</p>
+      <p class="term__line"><span class="term__p">C:\&gt;</span> connect</p>
+      <div class="term__links">
+        <a href="https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b" target="_blank" rel="noopener" class="btn btn--primary">LINKEDIN</a>
+      </div>
+      <p class="term__cursor"><span class="term__p">C:\&gt;</span> <span class="blink">_</span></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p>Farrel Fayzul Haqqi &middot; Surabaya, Indonesia</p>
+  <p class="foot__small">Built from scratch. No template.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

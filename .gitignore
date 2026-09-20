@@ -1,0 +1,4 @@
+.agent/
+.agents/
+.gemini/
+skills-lock.json
