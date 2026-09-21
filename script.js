@@ -1,5 +1,5 @@
 /* ============================================================
-   FARREL.OS — interactions
+   FARREL.OS - interactions
    1. Boot sequence (typewriter, skippable)
    2. Starfield canvas (GPU friendly, reduced-motion aware)
    3. Taskbar clock
@@ -70,11 +70,31 @@
     boot.classList.add('boot--out');
     window.setTimeout(function () {
       boot.setAttribute('hidden', '');
+      boot.setAttribute('aria-hidden', 'true');
     }, 520);
     try {
       window.sessionStorage.setItem('farrel-booted', '1');
     } catch (e) { /* storage blocked, no problem */ }
     startStarfield();
+    // hand focus back to the page so keyboard users are not stranded
+    var firstNav = document.querySelector('.bar__link');
+    if (firstNav) firstNav.focus();
+  }
+
+  // Keep keyboard focus inside the boot dialog while it is on screen
+  function trapBootFocus(e) {
+    if (e.key !== 'Tab' || !boot || boot.hasAttribute('hidden')) return;
+    var focusables = boot.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (!focusables.length) return;
+    var first = focusables[0];
+    var last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
 
   // Skip boot if already seen this session, or if motion is reduced
@@ -85,6 +105,7 @@
     startStarfield();
   } else if (reduced || alreadyBooted) {
     boot.setAttribute('hidden', '');
+    boot.setAttribute('aria-hidden', 'true');
     startStarfield();
   } else {
     typingTimer = window.setTimeout(typeStep, 260);
@@ -98,7 +119,11 @@
       }
     });
     document.addEventListener('keydown', function onKey(e) {
+      trapBootFocus(e);
       if (e.key === 'Enter' || e.key === ' ') {
+        if (boot.hasAttribute('hidden')) return;
+        if (e.target === bootBtn) return;
+        e.preventDefault();
         if (!finished) {
           window.clearTimeout(typingTimer);
           finishBootLog();
@@ -106,7 +131,10 @@
           dismissBoot();
         }
       }
-      if (e.key === 'Escape') dismissBoot();
+      if (e.key === 'Escape') {
+        if (boot.hasAttribute('hidden')) return;
+        dismissBoot();
+      }
     });
   }
 
@@ -260,7 +288,7 @@
      4. SCROLL REVEAL
      ========================================================== */
   var revealTargets = document.querySelectorAll(
-    '.quest, .inv__group, .win--award, .cert, .win, .sect__head'
+    '.quest, .now__item, .inv__group, .win--award, .cert, .win, .sect__head'
   );
 
   if (reduced || !('IntersectionObserver' in window)) {

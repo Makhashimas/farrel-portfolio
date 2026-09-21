@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://makhashimas.github.io/farrel-portfolio/sitemap.xml

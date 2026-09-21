@@ -1,0 +1,24 @@
+{
+  "name": "Farrel Fayzul Haqqi - Portfolio",
+  "short_name": "FARREL.OS",
+  "description": "Portfolio of Farrel Fayzul Haqqi, Electrical Engineering student at ITS Surabaya building embedded hardware and AI agents.",
+  "start_url": "/farrel-portfolio/",
+  "scope": "/farrel-portfolio/",
+  "display": "standalone",
+  "background_color": "#0a0e27",
+  "theme_color": "#0a0e27",
+  "icons": [
+    {
+      "src": "/farrel-portfolio/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/farrel-portfolio/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

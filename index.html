@@ -6,20 +6,120 @@
 <title>Farrel Fayzul Haqqi | Electrical Engineering & AI</title>
 <meta name="description" content="Electrical Engineering student at ITS Surabaya. I build embedded hardware and AI agents. Portfolio of projects, awards, and certifications.">
 <meta name="theme-color" content="#0a0e27">
+<meta name="author" content="Farrel Fayzul Haqqi">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://makhashimas.github.io/farrel-portfolio/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Farrel Fayzul Haqqi">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://makhashimas.github.io/farrel-portfolio/">
 <meta property="og:title" content="Farrel Fayzul Haqqi | Electrical Engineering & AI">
 <meta property="og:description" content="I build embedded hardware and AI agents. Electrical Engineering at ITS Surabaya.">
-<meta property="og:type" content="website">
+<meta property="og:image" content="https://makhashimas.github.io/farrel-portfolio/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Farrel Fayzul Haqqi, Electrical Engineering at ITS Surabaya, with a pixel art MP3 player showing ESP32-S3">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Farrel Fayzul Haqqi | Electrical Engineering & AI">
+<meta name="twitter:description" content="I build embedded hardware and AI agents. Electrical Engineering at ITS Surabaya.">
+<meta name="twitter:image" content="https://makhashimas.github.io/farrel-portfolio/assets/og-image.png">
+
+<!-- Icons -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Farrel Fayzul Haqqi",
+  "url": "https://makhashimas.github.io/farrel-portfolio/",
+  "image": "https://makhashimas.github.io/farrel-portfolio/assets/og-image.png",
+  "jobTitle": "Electrical Engineering Student",
+  "description": "First year Electrical Engineering student in the International Undergraduate Program at Institut Teknologi Sepuluh Nopember, building embedded hardware and AI agents.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Surabaya",
+    "addressCountry": "ID"
+  },
+  "affiliation": {
+    "@type": "CollegeOrUniversity",
+    "name": "Institut Teknologi Sepuluh Nopember"
+  },
+  "alumniOf": {
+    "@type": "HighSchool",
+    "name": "SMA Negeri 20 Surabaya"
+  },
+  "knowsAbout": [
+    "Embedded Systems",
+    "ESP32",
+    "PCB Design",
+    "Circuit Design",
+    "Internet of Things",
+    "Agentic AI",
+    "Prompt Engineering"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b"
+  ],
+  "award": [
+    "Semifinalist, Olimpiade Nasional ELECTRA 14, Department of Electrical Engineering ITS, 2025",
+    "Semifinalist, Olimpiade Nasional ELECTRA 13, Department of Electrical Engineering ITS, 2024"
+  ],
+  "hasCredential": [
+    {
+      "@type": "EducationalOccupationalCredential",
+      "name": "AI Foundations",
+      "credentialCategory": "certificate",
+      "recognizedBy": { "@type": "Organization", "name": "OpenAI Academy" }
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "name": "Applied AI Foundations",
+      "credentialCategory": "certificate",
+      "recognizedBy": { "@type": "Organization", "name": "OpenAI Academy" }
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "name": "Agents and Workflows",
+      "credentialCategory": "certificate",
+      "recognizedBy": { "@type": "Organization", "name": "OpenAI Academy" }
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "name": "Fundamentals of Digital Marketing",
+      "credentialCategory": "certificate",
+      "recognizedBy": { "@type": "Organization", "name": "Google Skillshop" }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
+<a class="skip" href="#top">Skip to content</a>
+
+<noscript>
+  <style>
+    #boot { display: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  </style>
+</noscript>
+
 <!-- ============ BOOT OVERLAY ============ -->
-<div id="boot" class="boot" aria-hidden="true">
+<div id="boot" class="boot" role="dialog" aria-modal="true" aria-label="FARREL.OS boot screen">
   <div class="boot__inner">
+    <p class="vh">System boot log. Press Start to enter the site.</p>
     <pre class="boot__log" id="bootLog"></pre>
     <div class="boot__start" id="bootStart">
       <span class="boot__prompt">&gt;</span>
@@ -44,6 +144,7 @@
   <nav class="bar__nav" aria-label="Main">
     <a href="#about" class="bar__link"><span class="lbl-full">PROFILE</span><span class="lbl-short">ABOUT</span></a>
     <a href="#projects" class="bar__link"><span class="lbl-full">PROJECTS</span><span class="lbl-short">WORK</span></a>
+    <a href="#now" class="bar__link"><span class="lbl-full">NOW</span><span class="lbl-short">NOW</span></a>
     <a href="#skills" class="bar__link"><span class="lbl-full">SKILLS</span><span class="lbl-short">SKILLS</span></a>
     <a href="#awards" class="bar__link"><span class="lbl-full">AWARDS</span><span class="lbl-short">WINS</span></a>
     <a href="#contact" class="bar__link"><span class="lbl-full">CONTACT</span><span class="lbl-short">MAIL</span></a>
@@ -89,7 +190,8 @@
 </section>
 
 <!-- ============ ABOUT / PLAYER PROFILE ============ -->
-<section class="sect" id="about">
+<section class="sect" id="about" aria-labelledby="about-title">
+  <h2 class="vh" id="about-title">About Farrel Fayzul Haqqi</h2>
   <div class="win">
     <div class="win__bar">
       <span class="win__title">PLAYER_PROFILE.EXE</span>
@@ -224,6 +326,34 @@
       </div>
     </article>
 
+  </div>
+</section>
+
+<!-- ============ NOW BUILDING ============ -->
+<section class="sect" id="now" aria-labelledby="now-title">
+  <div class="sect__head">
+    <h2 class="sect__title" id="now-title">NOW BUILDING</h2>
+    <p class="sect__note">What is on the bench right now. This section changes as I do.</p>
+  </div>
+
+  <div class="now">
+    <article class="now__item">
+      <p class="now__status"><span class="now__dot" aria-hidden="true"></span>IN PROGRESS</p>
+      <h3 class="now__name">Agentic AI Assistant</h3>
+      <p class="now__desc">Extending the assistant with more tools and a longer memory. Most of the work lately is failure handling, which is the part nobody shows in demos.</p>
+    </article>
+
+    <article class="now__item">
+      <p class="now__status"><span class="now__dot now__dot--gold" aria-hidden="true"></span>ON THE BENCH</p>
+      <h3 class="now__name">Lossless Music App</h3>
+      <p class="now__desc">Getting playback to stop stuttering on large files. Currently comparing buffer strategies.</p>
+    </article>
+
+    <article class="now__item">
+      <p class="now__status"><span class="now__dot now__dot--rose" aria-hidden="true"></span>LEARNING</p>
+      <h3 class="now__name">Signals and Systems</h3>
+      <p class="now__desc">Coursework alongside the projects. Trying to connect the theory back to the audio chain in my own player.</p>
+    </article>
   </div>
 </section>
 
@@ -371,6 +501,7 @@
 <footer class="foot">
   <p>Farrel Fayzul Haqqi &middot; Surabaya, Indonesia</p>
   <p class="foot__small">Built from scratch. No template.</p>
+  <p class="foot__small">Last updated <time datetime="2026-09-22">September 2026</time></p>
 </footer>
 
 <script src="script.js"></script>

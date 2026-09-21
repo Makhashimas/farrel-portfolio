@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<title>FARREL.OS social card generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body { background: #0a0e27; color: #e8ecf7; font-family: 'VT323', monospace; position: relative; }
+  #sky { position: absolute; inset: 0; }
+  .scan {
+    position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(255,255,255,.03) 0 2px, rgba(0,0,0,0) 2px 4px);
+  }
+  .wrap {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 58px 68px; gap: 30px;
+  }
+  .copy { width: 690px; }
+  .kick {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px; color: #3de8c4; letter-spacing: .05em; line-height: 1.8;
+  }
+  .name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 52px; line-height: 1.32; margin-top: 26px;
+    text-shadow: 4px 4px 0 #0b0f24;
+  }
+  .name span { display: block; }
+  .name .b { color: #ffd34d; }
+  .rule { width: 168px; height: 5px; background: #ffd34d; margin: 28px 0; }
+  .tag { font-size: 34px; line-height: 1.25; }
+  .sub { font-size: 27px; color: #a8b3d4; margin-top: 10px; }
+  .url {
+    display: inline-block; margin-top: 26px;
+    border: 3px solid #3de8c4; padding: 8px 14px;
+    font-size: 24px; color: #3de8c4;
+  }
+  .art { width: 300px; display: flex; justify-content: center; }
+  .dev {
+    width: 268px; background: #131a3a;
+    border: 6px solid #2d3d7a; box-shadow: 9px 9px 0 #0b0f24;
+    padding: 16px 16px 22px;
+  }
+  .dev__screen { background: #0a0e27; border: 4px solid #1e2a5a; padding: 14px 10px; text-align: center; }
+  .dev__note { display: block; font-size: 40px; color: #3de8c4; line-height: 1; }
+  .dev__lbl {
+    display: block; font-family: 'Press Start 2P', monospace;
+    font-size: 9px; color: #a8b3d4; margin-top: 10px; letter-spacing: .05em;
+  }
+  .dev__trk { display: block; font-size: 24px; color: #ffd34d; margin-top: 4px; }
+  .dev__row { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
+  .dev__btn { width: 34px; height: 34px; background: #ff5c8a; box-shadow: 3px 3px 0 #0b0f24; }
+  .dev__btn--c { background: #3de8c4; width: 20px; height: 20px; }
+  .dev__slot { height: 12px; background: #1e2a5a; margin-top: 16px; }
+</style>
+</head>
+<body>
+<canvas id="sky" width="1200" height="630"></canvas>
+<div class="scan"></div>
+<div class="wrap">
+  <div class="copy">
+    <p class="kick">INSTITUT TEKNOLOGI SEPULUH NOPEMBER</p>
+    <h1 class="name"><span>FARREL</span><span class="b">FAYZUL HAQQI</span></h1>
+    <div class="rule"></div>
+    <p class="tag">I build embedded hardware and AI agents.</p>
+    <p class="sub">Electrical Engineering (IUP), ITS Surabaya</p>
+    <span class="url">makhashimas.github.io/farrel-portfolio</span>
+  </div>
+  <div class="art">
+    <div class="dev">
+      <div class="dev__screen">
+        <span class="dev__note">&#9835;</span>
+        <span class="dev__lbl">NOW PLAYING</span>
+        <span class="dev__trk">ESP32-S3</span>
+      </div>
+      <div class="dev__row"><span class="dev__btn"></span><span class="dev__btn dev__btn--c"></span></div>
+      <div class="dev__slot"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var c = document.getElementById('sky');
+  var x = c.getContext('2d');
+  var W = 1200, H = 630;
+  var seed = 20260922;
+  function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+
+  var cols = ['#e8ecf7', '#3de8c4', '#ffd34d', '#4fc3e8'];
+  x.clearRect(0, 0, W, H);
+
+  for (var i = 0; i < 110; i++) {
+    var px = Math.round(rnd() * W);
+    var py = Math.round(rnd() * H * 0.86);
+    var s = rnd() < 0.8 ? 2 : 3;
+    x.globalAlpha = 0.25 + rnd() * 0.6;
+    x.fillStyle = cols[i % cols.length];
+    x.fillRect(px, py, s, s);
+  }
+  x.globalAlpha = 1;
+
+  // pixel moon, top right, above the device
+  var mx = 998, my = 18, cell = 9, R = 7.3;
+  for (var gx = 0; gx < 16; gx++) {
+    for (var gy = 0; gy < 16; gy++) {
+      var dx = gx - 7.5, dy = gy - 7.5;
+      var d = Math.sqrt(dx * dx + dy * dy);
+      if (d > R) continue;
+      var shade = d > R - 1.7 ? '#cfd6ea' : '#e8ecf7';
+      if ((gx === 4 && gy === 5) || (gx === 6 && gy === 9) || (gx === 9 && gy === 4)) shade = '#bfc7e2';
+      x.fillStyle = shade;
+      x.fillRect(mx + gx * cell, my + gy * cell, cell, cell);
+    }
+  }
+
+  // city silhouette
+  var base = H - 4;
+  var skyline = [
+    [0, 70, 90], [90, 52, 54], [144, 96, 74], [218, 40, 60], [258, 84, 66],
+    [324, 60, 88], [384, 104, 58], [442, 46, 72], [488, 78, 92], [566, 58, 64],
+    [624, 92, 80], [704, 50, 58], [754, 86, 68], [822, 62, 96], [884, 44, 56],
+    [940, 90, 74], [1014, 56, 62], [1070, 84, 88], [1154, 46, 46]
+  ];
+  x.fillStyle = '#1e2a5a';
+  for (var k = 0; k < skyline.length; k++) {
+    x.fillRect(skyline[k][0], base - skyline[k][1], skyline[k][2], skyline[k][1]);
+  }
+
+  for (var w = 0; w < 70; w++) {
+    var wx = Math.round(rnd() * W);
+    var wy = base - Math.round(rnd() * 84) - 10;
+    x.globalAlpha = 0.5 + rnd() * 0.45;
+    x.fillStyle = rnd() < 0.6 ? '#ffd34d' : '#3de8c4';
+    x.fillRect(wx, wy, 4, 4);
+  }
+  x.globalAlpha = 1;
+})();
+</script>
+</body>
+</html>
