@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermes — Personal Automation Assistant | Farrel Fayzul Haqqi</title>
+<meta name="description" content="Hermes is a private, single-user automation assistant that reads the operator's own bank notification emails and records transactions in their own Google Sheet.">
+<meta name="theme-color" content="#0a0e27">
+<meta name="author" content="Farrel Fayzul Haqqi">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://makhashimas.github.io/farrel-portfolio/hermes.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Farrel Fayzul Haqqi">
+<meta property="og:url" content="https://makhashimas.github.io/farrel-portfolio/hermes.html">
+<meta property="og:title" content="Hermes — Personal Automation Assistant">
+<meta property="og:description" content="A private, single-user assistant that keeps the operator's own transaction ledger up to date.">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  .doc { max-width: 900px; margin: 0 auto; padding: 48px 20px 96px; }
+  .doc h2 {
+    font-family: var(--f-pixel);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--cyan);
+    margin: 40px 0 14px;
+    letter-spacing: .5px;
+  }
+  .doc p { margin: 0 0 14px; color: var(--paper); }
+  .doc li { margin: 0 0 10px; }
+  .doc ul { margin: 0 0 16px; }
+  .doc ul li::before { content: "\25B8 "; color: var(--cyan); }
+  .doc a { color: var(--teal); text-decoration: underline; }
+  .doc a:hover { color: var(--gold); }
+  .doc__meta { color: var(--paper-dim); font-size: 17px; }
+  .doc .win__body { padding: 32px 30px; }
+  .doc__lead { font-size: 21px; }
+  .doc__callout {
+    border-left: 4px solid var(--cyan);
+    background: var(--night-2);
+    padding: 16px 20px;
+    margin: 22px 0;
+  }
+  .doc__callout p { margin: 0; }
+  .doc__cta { display: flex; gap: 12px; flex-wrap: wrap; margin: 22px 0 6px; }
+  .doc__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 8px 0 18px; }
+  .doc__card { border: 2px solid var(--navy-lite); background: var(--night-2); padding: 16px 18px; }
+  .doc__card h3 { font-family: var(--f-pixel); font-size: 10px; color: var(--gold); margin: 0 0 8px; line-height: 1.6; }
+  .doc__card p { margin: 0; font-size: 18px; }
+  @media (max-width: 700px) { .doc__grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#doc">Skip to content</a>
+
+<header class="bar">
+  <div class="bar__brand">
+    <span class="bar__logo" aria-hidden="true"></span>
+    <a class="bar__name" href="index.html">FARREL.OS</a>
+  </div>
+  <nav class="bar__nav" aria-label="Main">
+    <a href="index.html" class="bar__link"><span class="lbl-full">HOME</span><span class="lbl-short">HOME</span></a>
+    <a href="hermes.html" class="bar__link" aria-current="page"><span class="lbl-full">HERMES</span><span class="lbl-short">APP</span></a>
+    <a href="privacy.html" class="bar__link"><span class="lbl-full">PRIVACY</span><span class="lbl-short">PRIV</span></a>
+  </nav>
+</header>
+
+<main class="doc" id="doc">
+
+  <div style="margin-bottom:28px;">
+    <a class="btn btn--ghost" href="index.html">&larr; BACK TO PORTFOLIO</a>
+  </div>
+
+  <div class="win">
+    <div class="win__bar">
+      <span class="win__title">&#9679; HERMES.EXE</span>
+      <span class="win__ctrls" aria-hidden="true"><i></i><i></i><i></i></span>
+    </div>
+    <div class="win__body">
+
+      <h1 class="sect__title" style="margin-bottom:14px;">HERMES</h1>
+      <p class="doc__meta">Personal automation assistant &middot; Built and operated by Farrel Fayzul Haqqi &middot; Surabaya, Indonesia</p>
+
+      <p class="doc__lead">Hermes is a private, single-user automation assistant that runs on the operator&rsquo;s own computer. It keeps the operator&rsquo;s personal finance ledger up to date by reading their own bank transaction notification emails and recording each transaction in their own Google Sheet.</p>
+
+      <div class="doc__callout">
+        <p><strong>Who it is for:</strong> Hermes is used by one person only &mdash; its operator. It is not a commercial product, it is not offered to the public, and it has no other users. It is built as a personal tool to automate a repetitive bookkeeping task.</p>
+      </div>
+
+      <h2>WHAT HERMES DOES</h2>
+      <div class="doc__grid">
+        <div class="doc__card">
+          <h3>READS TRANSACTION EMAILS</h3>
+          <p>Checks the operator&rsquo;s own Gmail for automated bank notifications (for example, BNI) and extracts the amount, time, and merchant.</p>
+        </div>
+        <div class="doc__card">
+          <h3>UPDATES THE LEDGER</h3>
+          <p>Appends each new transaction as a row in the operator&rsquo;s personal Google Sheet, without creating duplicates.</p>
+        </div>
+        <div class="doc__card">
+          <h3>SENDS A SUMMARY</h3>
+          <p>Emails the operator a periodic summary of their own spending, and posts an update to their private Discord channel.</p>
+        </div>
+        <div class="doc__card">
+          <h3>BUILDS REMINDERS</h3>
+          <p>Optionally creates Google Calendar reminders and short Google Docs notes for the operator.</p>
+        </div>
+      </div>
+
+      <h2>HOW IT WORKS</h2>
+      <ul>
+        <li>The operator signs in with Google once and grants Hermes access to their own account.</li>
+        <li>Hermes runs on a schedule on the operator&rsquo;s own machine and calls Google APIs on the operator&rsquo;s behalf.</li>
+        <li>All data stays in the operator&rsquo;s own Google account &mdash; Hermes does not run any server that stores user data.</li>
+      </ul>
+
+      <h2>GOOGLE SERVICES USED</h2>
+      <ul>
+        <li><strong>Gmail</strong> (read, modify, send) &mdash; to read bank notifications and send the operator their own summaries.</li>
+        <li><strong>Google Sheets</strong> &mdash; to maintain the operator&rsquo;s personal transaction ledger.</li>
+        <li><strong>Google Drive &amp; Docs</strong> &mdash; to create and manage the ledger file and optional summaries.</li>
+        <li><strong>Google Calendar</strong> &mdash; to add personal reminders.</li>
+        <li><strong>Google Contacts</strong> (read-only) &mdash; to label the operator&rsquo;s own messages.</li>
+      </ul>
+
+      <h2>PRIVACY</h2>
+      <p>Hermes uses Google user data only to provide the features described above. It does not sell or share data, does not use it for advertising, and does not use it to train AI models. Full details are in the privacy policy:</p>
+
+      <div class="doc__cta">
+        <a class="btn btn--primary" href="privacy.html">READ THE PRIVACY POLICY</a>
+        <a class="btn btn--ghost" href="index.html">ABOUT THE DEVELOPER</a>
+      </div>
+
+      <h2>CONTACT</h2>
+      <p><strong>Farrel Fayzul Haqqi</strong><br>
+      Email: <a href="mailto:bicebear5@gmail.com">bicebear5@gmail.com</a><br>
+      Surabaya, Indonesia</p>
+
+    </div>
+  </div>
+
+  <p class="doc__meta" style="margin-top:32px;text-align:center;">
+    <a href="index.html">Portfolio</a> &middot; <a href="hermes.html">Hermes</a> &middot; <a href="privacy.html">Privacy Policy</a>
+  </p>
+
+</main>
+
+<footer class="foot">
+  <p>Farrel Fayzul Haqqi &middot; Surabaya, Indonesia</p>
+  <p class="foot__small">Hermes &mdash; personal automation assistant. Not a commercial service.</p>
+  <p class="foot__small"><a href="hermes.html">About Hermes</a> &middot; <a href="privacy.html">Privacy Policy</a></p>
+  <p class="foot__small">Last updated <time datetime="2026-09-23">September 2026</time></p>
+</footer>
+
+</body>
+</html>
