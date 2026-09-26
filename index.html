@@ -214,7 +214,7 @@
           <p>First year Electrical Engineering student in the International Undergraduate Program at ITS. My curiosity sits between hardware and AI, and those two keep running into each other.</p>
           <p>Before university I spent high school doing research. I worked on EcoMeth, a home biogas system that turns organic household waste into cooking fuel, and FLOBRIC Solar Still, a low cost water distiller for communities without reliable clean water. Neither won. Both taught me how to take a messy real world problem, research it properly, and defend my reasoning in front of judges.</p>
           <p>At ITS I reached the semifinals of the National Olympiad ELECTRA twice, in 2024 and 2025, both hosted by my own department. That is where I knew electrical engineering was the right place for me.</p>
-          <p>Then I started building for real. An offline MP3 player with a custom PCB I designed and had fabricated. An agentic AI assistant running on Google's Gemini API. I hold AI certifications from OpenAI Academy and a digital marketing certification from Google Skillshop.</p>
+          <p>Then I started building for real. An offline MP3 player with a custom PCB I designed and had fabricated. An agentic AI assistant whose automation layer I designed and wrote myself, running on my own multi-provider LLM routing setup. I hold AI certifications from OpenAI Academy and a digital marketing certification from Google Skillshop.</p>
           <p>Sharing this is the part I enjoy most. I regularly pull friends into study and skill building sessions, because learning alone gets boring fast.</p>
         </div>
       </div>
@@ -282,10 +282,10 @@
         <div class="quest__tag">AI</div>
         <h3 class="quest__name">Agentic AI Assistant</h3>
         <p class="quest__desc">Built and run a personal agentic assistant that handles real work: long-term memory, tool use, scheduled automations, and multi-step task execution across terminal, browser, Google Workspace and GitHub.</p>
-        <p class="quest__desc">It routes every model call through 9Router, an OpenAI-compatible gateway I run locally that unifies 41 models across 6 provider nodes (Kiro AI, Google Gemini, CodeBuddy, Token Harbour, MiMo Code Free, OpenCode Free) behind a single endpoint, so it picks the best model per task and fails over between providers. Started on the Google Gemini API, then grew into a full multi-provider agent.</p>
-        <p class="quest__desc">In production it has handled 1,594 LLM requests and ~43.8M tokens across 18 distinct models. Developed 22 custom skills with it along the way: second-brain notes, portfolio and LinkedIn management, KiCad PCB workflows, classroom monitoring and recurring briefings.</p>
+        <p class="quest__desc">Designed the automation layer myself: 6 scheduled jobs backed by 23 Python scripts I wrote (~2,200 lines) that pull from Google Calendar, Gmail, the campus Moodle, Instagram and competition sites, then filter, deduplicate and deliver to the right Discord channel. The LLM is one component in that pipeline, not the author of it.</p>
+        <p class="quest__desc">It routes every model call through 9Router, an OpenAI-compatible gateway I run locally that unifies 41 models across 6 provider nodes (Kiro AI, Google Gemini, CodeBuddy, Token Harbour, MiMo Code Free, OpenCode Free) behind a single endpoint, so it picks the best model per task and fails over between providers. In production it has handled 1,594 LLM requests and ~43.8M tokens across 18 distinct models, plus 22 custom skills developed along the way.</p>
         <ul class="chips">
-          <li>9Router</li><li>Multi-Provider</li><li>Agents</li><li>Tool Use</li><li>Custom Skills</li>
+          <li>9Router</li><li>Multi-Provider</li><li>Agents</li><li>Automation</li><li>Python</li><li>Tool Use</li><li>Custom Skills</li>
         </ul>
       </div>
     </article>
@@ -384,6 +384,8 @@
         <li class="inv__item"><span class="inv__ico">&#9632;</span>LLM Routing (9Router)</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Multi-Provider Models</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Agentic Workflows</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Systems Automation</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Data Pipelines &amp; Scraping</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Tool &amp; API Integration</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Prompt Engineering</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Google Gemini API</li>
