@@ -66,6 +66,8 @@
     "PCB Design",
     "Circuit Design",
     "Internet of Things",
+    "Android App Development",
+    "Mobile Audio",
     "Agentic AI",
     "Prompt Engineering"
   ],
@@ -214,7 +216,7 @@
           <p>First year Electrical Engineering student in the International Undergraduate Program at ITS. My curiosity sits between hardware and AI, and those two keep running into each other.</p>
           <p>Before university I spent high school doing research. I worked on EcoMeth, a home biogas system that turns organic household waste into cooking fuel, and FLOBRIC Solar Still, a low cost water distiller for communities without reliable clean water. Neither won. Both taught me how to take a messy real world problem, research it properly, and defend my reasoning in front of judges.</p>
           <p>At ITS I reached the semifinals of the National Olympiad ELECTRA twice, in 2024 and 2025, both hosted by my own department. That is where I knew electrical engineering was the right place for me.</p>
-          <p>Then I started building for real. An offline MP3 player with a custom PCB I designed and had fabricated. An agentic AI assistant whose automation layer I designed and wrote myself, running on my own multi-provider LLM routing setup. I hold AI certifications from OpenAI Academy and a digital marketing certification from Google Skillshop.</p>
+          <p>Then I started building for real. An offline MP3 player with a custom PCB I designed and had fabricated. An agentic AI assistant whose automation layer I designed and wrote myself, running on my own multi-provider LLM routing setup. An Android player for lossless and hi-res audio with USB DAC support and a custom equalizer. I hold AI certifications from OpenAI Academy and a digital marketing certification from Google Skillshop.</p>
           <p>Sharing this is the part I enjoy most. I regularly pull friends into study and skill building sessions, because learning alone gets boring fast.</p>
         </div>
       </div>
@@ -302,10 +304,12 @@
       </div>
       <div class="quest__body">
         <div class="quest__tag">MOBILE</div>
-        <h3 class="quest__name">Lossless Music App</h3>
-        <p class="quest__desc">Building a mobile music player that handles lossless audio files, developed with help from Google Antigravity.</p>
+        <h3 class="quest__name">MKH Player &mdash; Lossless Music App</h3>
+        <p class="quest__desc">Built an Android player for lossless and hi-res audio, aimed at headphones and external DACs rather than casual listening. Kotlin with Jetpack Compose and Jetpack Media3 (ExoPlayer), background playback through a MediaSessionService, and a Room + DataStore layer for library and preferences.</p>
+        <p class="quest__desc">The audiophile side is the point: FLAC, ALAC, WAV and DSD support, a bit-perfect / hi-res status readout, live USB DAC detection and routing, a multi-band equalizer with tuning presets (bass boost, treble, DSP envelope shaping), and a custom visualizer I drew on a Compose canvas and bound to the audio session.</p>
+        <p class="quest__desc">I designed it with Google Stitch for the UI and leaned on Google AI Studio to move fast &mdash; the same way I would use a framework or a smart autocomplete. The feature set, the architecture, the choice of Media3, the state model and the iteration until it actually played were mine.</p>
         <ul class="chips">
-          <li>Antigravity</li><li>Lossless Audio</li>
+          <li>Kotlin</li><li>Jetpack Compose</li><li>Media3 / ExoPlayer</li><li>Android Audio</li><li>USB DAC</li>
         </ul>
       </div>
     </article>
@@ -349,8 +353,8 @@
 
     <article class="now__item">
       <p class="now__status"><span class="now__dot now__dot--gold" aria-hidden="true"></span>ON THE BENCH</p>
-      <h3 class="now__name">Lossless Music App</h3>
-      <p class="now__desc">Getting playback to stop stuttering on large files. Currently comparing buffer strategies.</p>
+      <h3 class="now__name">MKH Player</h3>
+      <p class="now__desc">v1.0 plays and is stable. Next up: a signed release build, gapless playback, and comparing buffer strategies on very large hi-res files.</p>
     </article>
 
     <article class="now__item">
@@ -404,6 +408,9 @@
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Prompt Engineering</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Google Gemini API</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Python Automation</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Kotlin &amp; Jetpack Compose</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Android App Development</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Mobile Audio (Media3 / ExoPlayer)</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Git &amp; GitHub</li>
       </ul>
     </div>
