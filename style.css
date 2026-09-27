@@ -5,6 +5,24 @@
    Dials: VARIANCE 8 / MOTION 7 / DENSITY 4
    ============================================================ */
 
+/* ---------- self-hosted fonts (no third-party requests) ---------- */
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/press-start-2p-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'VT323';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/vt323-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* ---------- tokens ---------- */
 :root {
   --night:      #0a0e27;
@@ -29,6 +47,51 @@
   --f-term:  'VT323', 'Courier New', monospace;
 
   --r: 0px; /* shape lock: all sharp */
+
+  --sky-a: #0a0e27;
+  --sky-b: #131a3a;
+  --moon-face: #ffd34d;
+  --moon-shade: #b8912a;
+  --moon-glow: rgba(255, 211, 77, .35);
+  --moon-ring: rgba(255, 211, 77, .12);
+  --star-alpha: 1;
+  --hill-fill: #131a3a;
+  --hill-line: rgba(45, 61, 122, .45);
+}
+
+/* ---------- sunset theme ---------- */
+html[data-theme="sunset"] {
+  --night:      #1c0b2e;
+  --night-2:    #2e1445;
+  --navy:       #401c5e;
+  --navy-lite:  #63318a;
+  --ink:        #150722;
+  --paper:      #fff1e4;
+  --paper-dim:  #cfa6c0;
+  --cyan:       #ff9a5c;
+  --cyan-dim:   #b8663a;
+  --gold:       #ffd93d;
+  --gold-dim:   #b8912a;
+  --rose:       #ff4d6d;
+  --rose-dim:   #b83a52;
+  --teal:       #ffb347;
+
+  --shadow-soft: 6px 6px 0 rgba(21, 7, 34, .6);
+
+  --sky-a: #2a0f45;
+  --sky-b: #5c2350;
+  --moon-face: #ffb347;
+  --moon-shade: #ff7a45;
+  --moon-glow: rgba(255, 140, 70, .5);
+  --moon-ring: rgba(255, 154, 92, .18);
+  --star-alpha: .28;
+  --hill-fill: #2e1445;
+  --hill-line: rgba(99, 49, 138, .5);
+}
+
+html {
+  background: var(--night);
+  transition: background-color .5s steps(8);
 }
 
 /* ---------- reset ---------- */
@@ -145,6 +208,15 @@ ul { padding: 0; list-style: none; }
 /* ============================================================
    STARFIELD BACKDROP
    ============================================================ */
+.sky__grad {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--sky-a) 0%, var(--sky-b) 100%);
+  transition: background .5s steps(8);
+}
+
 .sky {
   position: fixed;
   inset: 0;
@@ -160,45 +232,124 @@ ul { padding: 0; list-style: none; }
   overflow: hidden;
 }
 
+/* the moon is the theme switch, so it must accept clicks.
+   the wrapper stays fixed in the top right corner; only the disc itself
+   is clickable, so the sunrays never eat clicks meant for the page. */
+.sky__moonwrap {
+  position: fixed;
+  top: 78px;
+  right: 26px;
+  width: 72px;
+  height: 72px;
+  z-index: 3;
+  pointer-events: none;
+}
+
 .sky__moon {
   position: absolute;
-  top: 10vh;
-  right: 8vw;
-  width: 84px;
-  height: 84px;
-  background: var(--gold);
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: var(--moon-face);
   border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
   box-shadow:
-    inset -14px -10px 0 var(--gold-dim),
-    0 0 0 6px rgba(255, 211, 77, .12),
-    0 0 40px rgba(255, 211, 77, .35);
+    inset -12px -9px 0 var(--moon-shade),
+    0 0 0 6px var(--moon-ring),
+    0 0 40px var(--moon-glow);
+  transition: transform .18s steps(3), box-shadow .3s;
 }
+.sky__moon:hover,
+.sky__moon:focus-visible {
+  transform: scale(1.09);
+  box-shadow:
+    inset -12px -9px 0 var(--moon-shade),
+    0 0 0 6px var(--moon-ring),
+    0 0 62px var(--moon-glow);
+}
+.sky__moon:active { transform: scale(.93); }
+.sky__moon:focus-visible { outline: 3px solid var(--gold); outline-offset: 8px; }
+
 .sky__moon::before,
 .sky__moon::after {
   content: "";
   position: absolute;
-  background: var(--gold-dim);
+  background: var(--moon-shade);
   border-radius: 50%;
 }
-.sky__moon::before { width: 14px; height: 14px; top: 22px; left: 18px; }
-.sky__moon::after  { width: 9px;  height: 9px;  top: 48px; left: 40px; }
+.sky__moon::before { width: 12px; height: 12px; top: 19px; left: 15px; }
+.sky__moon::after  { width: 8px;  height: 8px;  top: 41px; left: 34px; }
+
+/* the sun disc that shows through in sunset mode */
+.sky__sunrays {
+  position: absolute;
+  inset: -22px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 200, 90, .5) 0deg 6deg,
+    transparent 6deg 22deg
+  );
+  -webkit-mask: radial-gradient(circle, transparent 44%, #000 46% 100%);
+  mask: radial-gradient(circle, transparent 44%, #000 46% 100%);
+  transition: opacity .5s steps(6);
+}
+html[data-theme="sunset"] .sky__sunrays {
+  opacity: 1;
+  animation: spin 26s linear infinite;
+}
 
 .sky__hills {
   position: absolute;
   left: 0; right: 0; bottom: 0;
   height: 34vh;
   background:
-    linear-gradient(to top, var(--night-2) 0 42%, transparent 42%),
+    linear-gradient(to top, var(--hill-fill) 0 42%, transparent 42%),
     repeating-linear-gradient(
       90deg,
       transparent 0 26px,
-      rgba(45, 61, 122, .45) 26px 52px
+      var(--hill-line) 26px 52px
     );
   mask-image: linear-gradient(to top, #000 0 60%, transparent 100%);
   -webkit-mask-image: linear-gradient(to top, #000 0 60%, transparent 100%);
 }
 
+/* theme cross-fade: only the surfaces, so pixel art stays crisp */
+body,
+.bar, .foot, .win, .win__bar, .win__body, .quest, .now__item,
+.stat, .inv__item, .cert, .btn, .bar__clock, .bar__link,
+.chips li, .portrait, .term, .px-device, .px-chip, .px-core,
+.cart__body, .cart__screen {
+  transition: background-color .45s steps(8), color .45s steps(8), border-color .45s steps(8);
+}
+
+/* the moon swallows the click and flips the theme */
+html.theme-fading * { transition-duration: .45s !important; }
+
 main, .bar, .foot { position: relative; z-index: 2; }
+
+/* CRT scanlines and vignette over the whole page, purely decorative */
+.crt {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+  opacity: .55;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(6, 9, 24, .2) 0 2px,
+    rgba(6, 9, 24, 0) 2px 4px
+  );
+}
+.crt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 56%, rgba(4, 6, 18, .4) 100%);
+}
 
 /* ============================================================
    TASKBAR NAV
@@ -364,6 +515,29 @@ main, .bar, .foot { position: relative; z-index: 2; }
 
 .hero__cta { display: flex; flex-wrap: wrap; gap: 16px; }
 
+.hero__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+  padding: 12px 16px;
+  font-family: var(--f-pixel);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: .02em;
+  color: var(--gold);
+  background: rgba(255, 211, 77, .08);
+  border: 3px solid var(--gold-dim);
+}
+
+.hero__dot {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  background: var(--gold);
+  animation: blink 1.4s steps(2) infinite;
+}
+
 /* ---------- cartridge / device ---------- */
 .hero__stage { display: flex; justify-content: center; }
 
@@ -448,6 +622,9 @@ main, .bar, .foot { position: relative; z-index: 2; }
   margin: 0 auto;
   padding: 72px 24px;
 }
+
+/* anchor targets must clear the fixed taskbar when jumped to */
+section[id] { scroll-margin-top: 84px; }
 
 .sect__head { margin-bottom: 40px; }
 
@@ -699,6 +876,9 @@ main, .bar, .foot { position: relative; z-index: 2; }
 .quest__art--agent  { background: linear-gradient(160deg, #1d2a52, #2a1d52); }
 .quest__art--chip   { background: linear-gradient(160deg, #16324a, #1d2a52); }
 .quest__art--leaf   { background: linear-gradient(160deg, #1b3a2c, #16324a); }
+.quest__art--buck   { background: linear-gradient(160deg, #2a1d52, #1d2a52); }
+.quest__art--fan    { background: linear-gradient(160deg, #16324a, #2a1d52); }
+.quest__art--chain  { background: linear-gradient(160deg, #1b3a2c, #16324a); }
 
 .quest__body { padding: 26px; flex: 1; display: flex; flex-direction: column; }
 
@@ -858,6 +1038,131 @@ main, .bar, .foot { position: relative; z-index: 2; }
   width: 4px; height: 74px;
   background: var(--ink);
   opacity: .45;
+}
+
+/* buck converter: a tall 12V rail steps down through the IC to a 5V rail */
+.px-buck {
+  position: relative;
+  width: 172px;
+  height: 112px;
+}
+.px-buck__in {
+  position: absolute;
+  left: 0; bottom: 22px;
+  width: 16px; height: 62px;
+  background: var(--cyan);
+  border: 3px solid var(--ink);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, .35);
+}
+.px-buck__out {
+  position: absolute;
+  right: 0; bottom: 22px;
+  width: 16px; height: 34px;
+  background: var(--gold);
+  border: 3px solid var(--ink);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, .35);
+}
+.px-buck__chip {
+  position: absolute;
+  left: 50%; top: 6px;
+  transform: translateX(-50%);
+  width: 66px; height: 48px;
+  background: var(--ink);
+  border: 4px solid var(--rose);
+  display: grid;
+  place-items: center;
+  font-family: var(--f-pixel);
+  font-size: 9px;
+  color: var(--rose);
+  letter-spacing: .04em;
+}
+.px-buck__wire {
+  position: absolute;
+  bottom: 34px;
+  height: 5px;
+  background: var(--paper);
+  opacity: .5;
+}
+.px-buck__wire--l { left: 16px; width: calc(50% - 49px); }
+.px-buck__wire--r { right: 16px; width: calc(50% - 49px); }
+.px-buck__lbl {
+  position: absolute;
+  bottom: 0;
+  font-family: var(--f-pixel);
+  font-size: 10px;
+  letter-spacing: .02em;
+}
+.px-buck__lbl--in { left: 0; color: var(--cyan); }
+.px-buck__lbl--out { right: 0; color: var(--gold); }
+
+/* server fan, blades spinning */
+.px-fan {
+  position: relative;
+  width: 124px;
+  height: 124px;
+  background: var(--ink);
+  border: 6px solid var(--cyan);
+  display: grid;
+  place-items: center;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, .45);
+}
+.px-fan__blades {
+  width: 76px;
+  height: 76px;
+  border: 10px dashed var(--paper);
+  border-radius: 50%;
+  animation: spin 1.8s steps(8) infinite;
+}
+.px-fan__hub {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: var(--rose);
+  border: 4px solid var(--ink);
+}
+
+/* chain drive: two gears on a rail */
+.px-chain {
+  position: relative;
+  width: 156px;
+  height: 100px;
+}
+.px-chain__frame {
+  position: absolute;
+  left: 0; right: 0; top: 44px;
+  height: 12px;
+  background: repeating-linear-gradient(90deg, var(--navy-lite) 0 9px, var(--ink) 9px 14px);
+  border: 3px solid var(--ink);
+}
+.px-chain__gear {
+  position: absolute;
+  left: 6px; top: 12px;
+  width: 66px; height: 66px;
+  border: 9px solid var(--gold);
+  border-radius: 50%;
+  background: var(--ink);
+  animation: spin 7s steps(12) infinite;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, .4);
+}
+.px-chain__gear::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 6px; height: 26px;
+  margin: -13px 0 0 -3px;
+  background: var(--gold);
+}
+.px-chain__gear--b {
+  left: auto; right: 6px; top: 24px;
+  width: 44px; height: 44px;
+  border-color: var(--cyan);
+  animation-duration: 5s;
+  animation-direction: reverse;
+}
+.px-chain__gear--b::before {
+  background: var(--cyan);
+  height: 18px;
+  margin: -9px 0 0 -3px;
 }
 
 /* ============================================================
@@ -1103,6 +1408,16 @@ main, .bar, .foot { position: relative; z-index: 2; }
   .win__body { padding: 22px; }
   .quest__body { padding: 22px; }
   .hero { padding: 40px 18px 32px; }
+  .sky__moonwrap { top: 68px; right: 18px; width: 52px; height: 52px; }
+  .sky__sunrays { inset: -16px; }
+  .sky__moon {
+    box-shadow:
+      inset -9px -7px 0 var(--moon-shade),
+      0 0 0 5px var(--moon-ring),
+      0 0 26px var(--moon-glow);
+  }
+  .sky__moon::before { width: 9px; height: 9px; top: 13px; left: 10px; }
+  .sky__moon::after  { width: 6px; height: 6px; top: 30px; left: 24px; }
 }
 
 @media (max-width: 520px) {

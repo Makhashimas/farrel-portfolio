@@ -4,10 +4,23 @@
 <meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow">
 <title>FARREL.OS social card generator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="preload" href="../assets/fonts/press-start-2p-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/vt323-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  @font-face {
+    font-family: 'Press Start 2P';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../assets/fonts/press-start-2p-latin.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../assets/fonts/vt323-latin.woff2') format('woff2');
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 1200px; height: 630px; overflow: hidden; }
   body { background: #0a0e27; color: #e8ecf7; font-family: 'VT323', monospace; position: relative; }
@@ -68,7 +81,7 @@
     <p class="kick">INSTITUT TEKNOLOGI SEPULUH NOPEMBER</p>
     <h1 class="name"><span>FARREL</span><span class="b">FAYZUL HAQQI</span></h1>
     <div class="rule"></div>
-    <p class="tag">I build embedded hardware and AI agents.</p>
+    <p class="tag">I design PCBs, firmware, and analog circuits.</p>
     <p class="sub">Electrical Engineering (IUP), ITS Surabaya</p>
     <span class="url">makhashimas.github.io/farrel-portfolio</span>
   </div>

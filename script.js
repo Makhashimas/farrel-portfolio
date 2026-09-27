@@ -20,18 +20,20 @@
   var bootWrap = document.getElementById('bootStart');
 
   var BOOT_LINES = [
-    'FARREL.OS v1.0  (c) 2026',
+    'FARREL.OS v1.1  (c) 2026',
     '',
     'Detecting hardware .......... ESP32-S3 OK',
     'Checking display ............ 1.3" OLED OK',
-    'Loading audio stack ......... PCM5102 / NE5532 OK',
+    'Loading audio stack ......... PCM5102A / NE5532 OK',
+    'Verifying grounding ......... Star Ground OK',
     'Mounting storage ............ microSD OK',
     '',
-    'Starting AI runtime ......... Gemini API OK',
+    'Starting AI runtime ......... Multi-Node LLM Router OK',
     'Loading agent modules ....... OK',
     '',
     'Profile loaded: Farrel Fayzul Haqqi',
     'Electrical Engineering, ITS Surabaya',
+    'Status: Applying to Anargya EV Team',
     '',
     'Ready.'
   ];
@@ -178,7 +180,8 @@
     }
   }
 
-  var COLORS = ['#e8ecf7', '#3de8c4', '#ffd34d', '#4fc3e8'];
+  var NIGHT_COLORS  = ['#e8ecf7', '#3de8c4', '#ffd34d', '#4fc3e8'];
+  var SUNSET_COLORS = ['#fff1e4', '#ff9a5c', '#ffd93d', '#ff4d6d'];
 
   function drawStars(t) {
     if (!ctx) return;
@@ -186,11 +189,15 @@
     var h = window.innerHeight;
     ctx.clearRect(0, 0, w, h);
 
+    var isSunset = document.documentElement.getAttribute('data-theme') === 'sunset';
+    var cols = isSunset ? SUNSET_COLORS : NIGHT_COLORS;
+    var alphaMult = isSunset ? 0.4 : 1;
+
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
       var flicker = 0.55 + 0.45 * Math.sin(t * 0.0011 * s.speed + s.phase);
-      ctx.globalAlpha = Math.max(0.08, Math.min(1, s.base * flicker));
-      ctx.fillStyle = COLORS[i % COLORS.length];
+      ctx.globalAlpha = Math.max(0.08, Math.min(1, s.base * flicker * alphaMult));
+      ctx.fillStyle = cols[i % cols.length];
       ctx.fillRect(Math.round(s.x), Math.round(s.y), s.size, s.size);
     }
 
@@ -200,7 +207,7 @@
       m.x += m.vx;
       m.y += m.vy;
       m.life -= 1;
-      ctx.globalAlpha = Math.max(0, m.life / m.maxLife);
+      ctx.globalAlpha = Math.max(0, (m.life / m.maxLife) * alphaMult);
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(Math.round(m.x), Math.round(m.y), 3, 3);
       ctx.fillRect(Math.round(m.x - m.vx * 2), Math.round(m.y - m.vy * 2), 2, 2);
@@ -309,6 +316,48 @@
       revealTargets[k].classList.add('reveal');
       io.observe(revealTargets[k]);
     }
+  }
+
+  /* ==========================================================
+     5. SUNSET / NIGHT THEME TOGGLE (click the moon)
+     ========================================================== */
+  var moonBtn = document.getElementById('moonBtn');
+  var themeMeta = document.getElementById('themeColor');
+
+  function updateThemeMeta(isSunset) {
+    if (themeMeta) themeMeta.setAttribute('content', isSunset ? '#1c0b2e' : '#0a0e27');
+    if (moonBtn) {
+      moonBtn.setAttribute('aria-pressed', isSunset ? 'true' : 'false');
+      moonBtn.setAttribute('aria-label', isSunset ? 'Switch to night theme' : 'Switch to sunset theme');
+      moonBtn.setAttribute('title', isSunset ? 'Night mode' : 'Sunset mode');
+    }
+  }
+
+  updateThemeMeta(document.documentElement.getAttribute('data-theme') === 'sunset');
+
+  if (moonBtn) {
+    moonBtn.addEventListener('click', function () {
+      var doc = document.documentElement;
+      var nextSunset = doc.getAttribute('data-theme') !== 'sunset';
+
+      doc.classList.add('theme-fading');
+
+      if (nextSunset) {
+        doc.setAttribute('data-theme', 'sunset');
+        try { localStorage.setItem('farrel-theme', 'sunset'); } catch (e) {}
+      } else {
+        doc.removeAttribute('data-theme');
+        try { localStorage.setItem('farrel-theme', 'night'); } catch (e) {}
+      }
+
+      updateThemeMeta(nextSunset);
+
+      if (reduced || !ctx) {
+        doc.classList.remove('theme-fading');
+      } else {
+        window.setTimeout(function () { doc.classList.remove('theme-fading'); }, 460);
+      }
+    });
   }
 
 })();

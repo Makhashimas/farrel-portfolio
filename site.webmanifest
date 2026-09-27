@@ -1,7 +1,7 @@
 {
   "name": "Farrel Fayzul Haqqi - Portfolio",
   "short_name": "FARREL.OS",
-  "description": "Portfolio of Farrel Fayzul Haqqi, Electrical Engineering student at ITS Surabaya building embedded hardware and AI agents.",
+  "description": "Portfolio of Farrel Fayzul Haqqi, Electrical Engineering student at ITS Surabaya working on PCB design, embedded systems, and low-voltage electronics.",
   "start_url": "/farrel-portfolio/",
   "scope": "/farrel-portfolio/",
   "display": "standalone",

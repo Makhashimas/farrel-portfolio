@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Farrel Fayzul Haqqi | Electrical Engineering & AI</title>
-<meta name="description" content="Electrical Engineering student at ITS Surabaya. I build embedded hardware and AI agents. Portfolio of projects, awards, and certifications.">
-<meta name="theme-color" content="#0a0e27">
+<title>Farrel Fayzul Haqqi | Electrical Engineering & PCB Design</title>
+<meta name="description" content="Electrical Engineering student at ITS Surabaya. PCB design, embedded systems, and low-voltage electronics. Portfolio of hardware projects, awards, and certifications.">
+<meta name="theme-color" content="#0a0e27" id="themeColor">
+<script>
+  try { if (localStorage.getItem('farrel-theme') === 'sunset') document.documentElement.setAttribute('data-theme', 'sunset'); } catch (e) {}
+</script>
 <meta name="author" content="Farrel Fayzul Haqqi">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://makhashimas.github.io/farrel-portfolio/">
@@ -15,17 +18,17 @@
 <meta property="og:site_name" content="Farrel Fayzul Haqqi">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://makhashimas.github.io/farrel-portfolio/">
-<meta property="og:title" content="Farrel Fayzul Haqqi | Electrical Engineering & AI">
-<meta property="og:description" content="I build embedded hardware and AI agents. Electrical Engineering at ITS Surabaya.">
+<meta property="og:title" content="Farrel Fayzul Haqqi | Electrical Engineering & PCB Design">
+<meta property="og:description" content="PCB design, embedded systems, and low-voltage electronics. Electrical Engineering at ITS Surabaya.">
 <meta property="og:image" content="https://makhashimas.github.io/farrel-portfolio/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Farrel Fayzul Haqqi, Electrical Engineering at ITS Surabaya, with a pixel art MP3 player showing ESP32-S3">
+<meta property="og:image:alt" content="Farrel Fayzul Haqqi, Electrical Engineering at ITS Surabaya, with a pixel art audio player showing ESP32-S3">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Farrel Fayzul Haqqi | Electrical Engineering & AI">
-<meta name="twitter:description" content="I build embedded hardware and AI agents. Electrical Engineering at ITS Surabaya.">
+<meta name="twitter:title" content="Farrel Fayzul Haqqi | Electrical Engineering & PCB Design">
+<meta name="twitter:description" content="PCB design, embedded systems, and low-voltage electronics. Electrical Engineering at ITS Surabaya.">
 <meta name="twitter:image" content="https://makhashimas.github.io/farrel-portfolio/assets/og-image.png">
 
 <!-- Icons -->
@@ -33,9 +36,8 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/press-start-2p-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/vt323-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 
 <script type="application/ld+json">
@@ -46,7 +48,7 @@
   "url": "https://makhashimas.github.io/farrel-portfolio/",
   "image": "https://makhashimas.github.io/farrel-portfolio/assets/og-image.png",
   "jobTitle": "Electrical Engineering Student",
-  "description": "First year Electrical Engineering student in the International Undergraduate Program at Institut Teknologi Sepuluh Nopember, building embedded hardware and AI agents.",
+  "description": "First year Electrical Engineering student in the International Undergraduate Program at Institut Teknologi Sepuluh Nopember, working on PCB design, embedded systems, and low-voltage electronics.",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Surabaya",
@@ -61,18 +63,20 @@
     "name": "SMA Negeri 20 Surabaya"
   },
   "knowsAbout": [
+    "PCB Design",
+    "KiCad",
     "Embedded Systems",
     "ESP32",
-    "PCB Design",
+    "Analog Electronics",
+    "Power Electronics",
+    "Low-Voltage Systems",
+    "Wiring Harness",
     "Circuit Design",
-    "Internet of Things",
-    "Android App Development",
-    "Mobile Audio",
-    "Agentic AI",
-    "Prompt Engineering"
+    "Instrumentation"
   ],
   "sameAs": [
-    "https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b"
+    "https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b",
+    "https://github.com/makhashimas"
   ],
   "award": [
     "Semifinalist, Olimpiade Nasional ELECTRA 14, Department of Electrical Engineering ITS, 2025",
@@ -99,9 +103,9 @@
     },
     {
       "@type": "EducationalOccupationalCredential",
-      "name": "Fundamentals of Digital Marketing",
-      "credentialCategory": "certificate",
-      "recognizedBy": { "@type": "Organization", "name": "Google Skillshop" }
+      "name": "ITS English Proficiency Test (TEFL ITP), Score 593",
+      "credentialCategory": "test score",
+      "recognizedBy": { "@type": "Organization", "name": "Global Language Center, ITS" }
     }
   ]
 }
@@ -131,11 +135,16 @@
 </div>
 
 <!-- ============ STARFIELD BACKDROP ============ -->
+<div class="sky__grad" aria-hidden="true"></div>
 <canvas id="sky" class="sky" aria-hidden="true"></canvas>
 <div class="sky__scene" aria-hidden="true">
-  <div class="sky__moon"></div>
   <div class="sky__hills"></div>
 </div>
+<div class="sky__moonwrap">
+  <div class="sky__sunrays" aria-hidden="true"></div>
+  <button class="sky__moon" id="moonBtn" type="button" aria-label="Switch to sunset theme" aria-pressed="false" title="Sunset mode"></button>
+</div>
+<div class="crt" aria-hidden="true"></div>
 
 <!-- ============ TASKBAR NAV ============ -->
 <header class="bar">
@@ -165,11 +174,12 @@
         <span class="hero__line1">FARREL</span>
         <span class="hero__line2">FAYZUL HAQQI</span>
       </h1>
-      <p class="hero__sub">I build embedded hardware and AI agents. First year Electrical Engineering, Surabaya.</p>
+      <p class="hero__sub">I design PCBs, write embedded firmware, and build analog circuits. First-year Electrical Engineering at ITS Surabaya.</p>
       <div class="hero__cta">
         <a href="#projects" class="btn btn--primary">SEE PROJECTS</a>
         <a href="#contact" class="btn btn--ghost">GET IN TOUCH</a>
       </div>
+      <p class="hero__status"><span class="hero__dot" aria-hidden="true"></span>Currently applying to Anargya, the ITS Formula Student EV team</p>
     </div>
     <div class="hero__stage" aria-hidden="true">
       <div class="cart" id="cart">
@@ -215,8 +225,9 @@
           <p class="about__lead">I build things. Most of them start with a problem I can't stop thinking about.</p>
           <p>First year Electrical Engineering student in the International Undergraduate Program at ITS. My curiosity sits between hardware and AI, and those two keep running into each other.</p>
           <p>Before university I spent high school doing research. I worked on EcoMeth, a home biogas system that turns organic household waste into cooking fuel, and FLOBRIC Solar Still, a low cost water distiller for communities without reliable clean water. Neither won. Both taught me how to take a messy real world problem, research it properly, and defend my reasoning in front of judges.</p>
-          <p>At ITS I reached the semifinals of the National Olympiad ELECTRA twice, in 2024 and 2025, both hosted by my own department. That is where I knew electrical engineering was the right place for me.</p>
-          <p>Then I started building for real. An offline MP3 player with a custom PCB I designed and had fabricated. An agentic AI assistant whose automation layer I designed and wrote myself, running on my own multi-provider LLM routing setup. An Android player for lossless and hi-res audio with USB DAC support and a custom equalizer. I hold AI certifications from OpenAI Academy and a digital marketing certification from Google Skillshop.</p>
+          <p>Two years running I reached the semifinals of the National Olympiad ELECTRA, hosted by the Electrical Engineering department I now study in. That is where I knew this was the right place for me.</p>
+          <p>Then I started building for real. An offline MP3 player where I designed the analog output stage myself, from the DAC to a custom amplifier for in-ear monitors, and fixed its ground noise with a star-ground rebuild. An agentic AI assistant whose automation layer I designed and wrote myself. An Android player for lossless and hi-res audio with USB DAC support and a custom equalizer. I hold three AI certifications from OpenAI Academy, and I scored 593 on the ITS English proficiency test.</p>
+          <p>Right now I am applying to Anargya, the ITS Formula Student EV team, for the low-voltage and safety division: wiring harness, shutdown circuits, and telemetry. It is the kind of engineering where a mistake means the car does not race, which is exactly why I want it.</p>
           <p>Sharing this is the part I enjoy most. I regularly pull friends into study and skill building sessions, because learning alone gets boring fast.</p>
         </div>
       </div>
@@ -263,10 +274,67 @@
       <div class="quest__body">
         <div class="quest__tag">HARDWARE</div>
         <h3 class="quest__name">Offline MP3 Player</h3>
-        <p class="quest__desc">Built a portable music player from scratch. ESP32-S3 microcontroller, PCM5102 DAC, custom NE5532 amplifier circuit, 1.3 inch OLED display, and microSD storage for fully offline playback.</p>
-        <p class="quest__desc">Designed the PCB in KiCad and had it fabricated. Wrote the firmware in Arduino IDE. Used Gemini to debug driver and signal issues I would have lost days to.</p>
+        <p class="quest__desc">Built a portable music player from scratch. ESP32-S3 microcontroller, PCM5102A DAC, a custom NE5532 amplifier stage sized for 8.5-ohm in-ear monitors, 1.3 inch OLED display, and microSD storage for fully offline playback.</p>
+        <p class="quest__desc">Working fully on a breadboard, with the firmware in C++: MP3 decoding from microSD, I2S streaming, a spectrum visualizer, and a Wi-Fi file manager. I diagnosed a persistent ground noise problem and fixed it by rebuilding the grounding into a star ground, with analog, digital and power returns joined at one point. AI tools were my rubber duck for the driver and timing bugs that would have cost me days; the fixes were mine. The pocket PCB layout in KiCad comes next.</p>
         <ul class="chips">
-          <li>ESP32-S3</li><li>KiCad</li><li>PCM5102</li><li>NE5532</li><li>OLED</li><li>Arduino</li>
+          <li>ESP32-S3</li><li>KiCad</li><li>PCM5102A</li><li>NE5532</li><li>Star Ground</li><li>I2S</li><li>Arduino</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="quest">
+      <div class="quest__art quest__art--buck" aria-hidden="true">
+        <div class="px-buck">
+          <span class="px-buck__in"></span>
+          <span class="px-buck__out"></span>
+          <span class="px-buck__chip">IC</span>
+          <span class="px-buck__wire px-buck__wire--l"></span>
+          <span class="px-buck__wire px-buck__wire--r"></span>
+          <span class="px-buck__lbl px-buck__lbl--in">12V</span>
+          <span class="px-buck__lbl px-buck__lbl--out">5V</span>
+        </div>
+      </div>
+      <div class="quest__body">
+        <div class="quest__tag">PCB</div>
+        <h3 class="quest__name">Step-Down Converter Board</h3>
+        <p class="quest__desc">Designed and routed a fully through-hole step-down converter in KiCad around the LM2575, with an adjustable output from 1.23 to 9.43 V, a switchable ON/OFF pin, 0.8 mm minimum traces, and a two-layer ground pour joined by via stitching. Verified with ERC and DRC, with the fabrication outputs exported.</p>
+        <ul class="chips">
+          <li>KiCad</li><li>LM2575</li><li>PCB Layout</li><li>Power Electronics</li><li>ERC / DRC</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="quest">
+      <div class="quest__art quest__art--fan" aria-hidden="true">
+        <div class="px-fan">
+          <span class="px-fan__blades"></span>
+          <span class="px-fan__hub"></span>
+        </div>
+      </div>
+      <div class="quest__body">
+        <div class="quest__tag">POWER</div>
+        <h3 class="quest__name">Laptop Cooling Pad</h3>
+        <p class="quest__desc">A high-airflow cooler built from discrete parts: a 12 V 3 A supply, two 80 mm server fans that spin up to 9100 RPM, and an XL4015 buck module repurposed as the speed controller after swapping its trimpot for an external 10-kilohm pot. Wired and soldered by hand.</p>
+        <ul class="chips">
+          <li>XL4015</li><li>Server Fans</li><li>Soldering</li><li>Wiring</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="quest">
+      <div class="quest__art quest__art--chain" aria-hidden="true">
+        <div class="px-chain">
+          <span class="px-chain__frame"></span>
+          <span class="px-chain__gear"></span>
+          <span class="px-chain__gear px-chain__gear--b"></span>
+        </div>
+      </div>
+      <div class="quest__body">
+        <div class="quest__tag">MECHATRONICS</div>
+        <h3 class="quest__name">Wall of Dream</h3>
+        <p class="quest__desc">A rotating photo board for a kids' class I help teach. Photos ride a bicycle-chain rail driven by a 300:1 geared motor, powered by three 18650 cells with a TP4056 charger and an MT3608 step-up module used as the speed control. Finished and running.</p>
+        <ul class="chips">
+          <li>18650 Cells</li><li>TP4056</li><li>MT3608</li><li>Motor Drive</li><li>Chain Drive</li>
         </ul>
       </div>
     </article>
@@ -283,16 +351,16 @@
       <div class="quest__body">
         <div class="quest__tag">AI</div>
         <h3 class="quest__name">Agentic AI Assistant</h3>
-        <p class="quest__desc">Built and run a personal agentic assistant that handles real work: long-term memory, tool use, scheduled automations, and multi-step task execution across terminal, browser, Google Workspace and GitHub.</p>
-        <p class="quest__desc">Designed the automation layer myself: 6 scheduled jobs backed by 23 Python scripts I wrote (~2,200 lines) that pull from Google Calendar, Gmail, the campus Moodle, Instagram and competition sites, then filter, deduplicate and deliver to the right Discord channel. The LLM is one component in that pipeline, not the author of it.</p>
-        <p class="quest__desc">It routes every model call through 9Router, an OpenAI-compatible gateway I run locally that unifies 41 models across 6 provider nodes (Kiro AI, Google Gemini, CodeBuddy, Token Harbour, MiMo Code Free, OpenCode Free) behind a single endpoint, so it picks the best model per task and fails over between providers. In production it has handled 1,594 LLM requests and ~43.8M tokens across 18 distinct models, plus 22 custom skills developed along the way.</p>
+        <p class="quest__desc">Built and run a personal agentic assistant that handles real work: long-term memory, tool use, scheduled automations, and multi-step task execution across terminal, browser, email, calendar and GitHub.</p>
+        <p class="quest__desc">Designed the automation layer myself: 6 scheduled jobs backed by 23 Python scripts I wrote (~2,200 lines) that pull from my inbox and calendar, the campus Moodle, Instagram and competition sites, then filter, deduplicate and deliver to the right Discord channel. The LLM is one component in that pipeline, not the author of it.</p>
+        <p class="quest__desc">It routes every model call through 9Router, an OpenAI-compatible gateway I run locally that unifies 41 models across 6 provider nodes behind a single endpoint, so it picks the best model per task and fails over between providers. In production it has handled 1,594 LLM requests and ~43.8M tokens across 18 distinct models, plus 22 custom skills developed along the way.</p>
         <ul class="chips">
           <li>9Router</li><li>Multi-Provider</li><li>Agents</li><li>Automation</li><li>Python</li><li>Tool Use</li><li>Custom Skills</li>
         </ul>
       </div>
     </article>
 
-    <article class="quest">
+    <article class="quest quest--wide">
       <div class="quest__art quest__art--chip" aria-hidden="true">
         <div class="px-chip">
           <span class="px-chip__pin"></span><span class="px-chip__pin"></span>
@@ -304,17 +372,17 @@
       </div>
       <div class="quest__body">
         <div class="quest__tag">MOBILE</div>
-        <h3 class="quest__name">MKH Player &mdash; Lossless Music App</h3>
+        <h3 class="quest__name">MKH Player: Lossless Music App</h3>
         <p class="quest__desc">Built an Android player for lossless and hi-res audio, aimed at headphones and external DACs rather than casual listening. Kotlin with Jetpack Compose and Jetpack Media3 (ExoPlayer), background playback through a MediaSessionService, and a Room + DataStore layer for library and preferences.</p>
         <p class="quest__desc">The audiophile side is the point: FLAC, ALAC, WAV and DSD support, a bit-perfect / hi-res status readout, live USB DAC detection and routing, a multi-band equalizer with tuning presets (bass boost, treble, DSP envelope shaping), and a custom visualizer I drew on a Compose canvas and bound to the audio session.</p>
-        <p class="quest__desc">I designed it with Google Stitch for the UI and leaned on Google AI Studio to move fast &mdash; the same way I would use a framework or a smart autocomplete. The feature set, the architecture, the choice of Media3, the state model and the iteration until it actually played were mine.</p>
+        <p class="quest__desc">I used AI design and coding assistants to move fast, the same way I would use a framework or a smart autocomplete. The feature set, the architecture, the choice of Media3, the state model, and the long iteration until it actually played were mine.</p>
         <ul class="chips">
           <li>Kotlin</li><li>Jetpack Compose</li><li>Media3 / ExoPlayer</li><li>Android Audio</li><li>USB DAC</li>
         </ul>
       </div>
     </article>
 
-    <article class="quest quest--research">
+    <article class="quest quest--wide quest--research">
       <div class="quest__art quest__art--leaf" aria-hidden="true">
         <div class="px-leaf">
           <span class="px-leaf__drop"></span>
@@ -346,21 +414,21 @@
 
   <div class="now">
     <article class="now__item">
-      <p class="now__status"><span class="now__dot" aria-hidden="true"></span>IN PROGRESS</p>
-      <h3 class="now__name">Agentic AI Assistant</h3>
-      <p class="now__desc">Extending the assistant with more tools and a longer memory. Most of the work lately is failure handling, which is the part nobody shows in demos.</p>
+      <p class="now__status"><span class="now__dot" aria-hidden="true"></span>APPLYING</p>
+      <h3 class="now__name">Anargya Formula Student EV</h3>
+      <p class="now__desc">Applying to the low-voltage and safety division: shutdown circuit, BSPD, wiring harness, telemetry. Reading the rulebook, tracing signal paths, and writing up design decisions the way the team does.</p>
     </article>
 
     <article class="now__item">
       <p class="now__status"><span class="now__dot now__dot--gold" aria-hidden="true"></span>ON THE BENCH</p>
-      <h3 class="now__name">MKH Player</h3>
-      <p class="now__desc">v1.0 plays and is stable. Next up: a signed release build, gapless playback, and comparing buffer strategies on very large hi-res files.</p>
+      <h3 class="now__name">MP3 Player PCB</h3>
+      <p class="now__desc">The breadboard build plays clean. Now the pocket PCB in KiCad: SMD and THT mix, the star-ground fix carried into copper, and a FLAC decoder for the firmware.</p>
     </article>
 
     <article class="now__item">
       <p class="now__status"><span class="now__dot now__dot--rose" aria-hidden="true"></span>LEARNING</p>
-      <h3 class="now__name">Signals and Systems</h3>
-      <p class="now__desc">Coursework alongside the projects. Trying to connect the theory back to the audio chain in my own player.</p>
+      <h3 class="now__name">Electric Circuits 1</h3>
+      <p class="now__desc">First-semester coursework. I keep testing what I learn against the analog stage of my own player, which teaches me more than the problem sets do.</p>
     </article>
   </div>
 </section>
@@ -380,8 +448,11 @@
         <li class="inv__item"><span class="inv__ico">&#9632;</span>ESP32 / Microcontrollers</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>PCB Design (KiCad)</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Circuit Design</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Analog Electronics</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Power Electronics</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>SMD / THT Soldering</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>Wiring Harness Assembly</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Arduino IDE</li>
-        <li class="inv__item"><span class="inv__ico">&#9632;</span>Internet of Things</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Instrumentation &amp; Measurement</li>
       </ul>
     </div>
@@ -406,8 +477,8 @@
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Data Pipelines &amp; Scraping</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Tool &amp; API Integration</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Prompt Engineering</li>
-        <li class="inv__item"><span class="inv__ico">&#9632;</span>Google Gemini API</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Python Automation</li>
+        <li class="inv__item"><span class="inv__ico">&#9632;</span>C / C++ (Embedded)</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Kotlin &amp; Jetpack Compose</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Android App Development</li>
         <li class="inv__item"><span class="inv__ico">&#9632;</span>Mobile Audio (Media3 / ExoPlayer)</li>
@@ -493,10 +564,10 @@
       </div>
     </div>
     <div class="cert">
-      <span class="cert__badge cert__badge--g">G</span>
+      <span class="cert__badge cert__badge--g">EN</span>
       <div>
-        <p class="cert__name">Fundamentals of Digital Marketing</p>
-        <p class="cert__meta">Google Skillshop &middot; 2026</p>
+        <p class="cert__name">English Proficiency (TEFL ITP)</p>
+        <p class="cert__meta">Global Language Center, ITS &middot; Score 593 &middot; 2026</p>
       </div>
     </div>
   </div>
@@ -513,10 +584,13 @@
       <p class="term__line"><span class="term__p">C:\&gt;</span> whoami</p>
       <p class="term__out">Farrel Fayzul Haqqi. Electrical Engineering, ITS Surabaya.</p>
       <p class="term__line"><span class="term__p">C:\&gt;</span> status</p>
-      <p class="term__out">Open to collaborations, competitions, and conversations about embedded systems and AI.</p>
+      <p class="term__out">Open to collaborations, competitions, and conversations about embedded systems, analog circuits, and AI.</p>
+      <p class="term__line"><span class="term__p">C:\&gt;</span> availability</p>
+      <p class="term__out">Open for internships and team commitments from 21 October 2026, including the full Formula Student competition cycle.</p>
       <p class="term__line"><span class="term__p">C:\&gt;</span> connect</p>
       <div class="term__links">
         <a href="https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b" target="_blank" rel="noopener" class="btn btn--primary">LINKEDIN</a>
+        <a href="https://github.com/makhashimas" target="_blank" rel="noopener" class="btn btn--ghost">GITHUB</a>
       </div>
       <p class="term__cursor"><span class="term__p">C:\&gt;</span> <span class="blink">_</span></p>
     </div>
@@ -528,8 +602,7 @@
 <footer class="foot">
   <p>Farrel Fayzul Haqqi &middot; Surabaya, Indonesia</p>
   <p class="foot__small">Built from scratch. No template.</p>
-  <p class="foot__small"><a href="hermes.html">About Hermes</a> &middot; <a href="privacy.html">Privacy Policy</a></p>
-  <p class="foot__small">Last updated <time datetime="2026-09-26">September 2026</time></p>
+  <p class="foot__small">Last updated <time datetime="2026-09-27">September 2026</time></p>
 </footer>
 
 <script src="script.js"></script>
