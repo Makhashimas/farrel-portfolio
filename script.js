@@ -1208,9 +1208,42 @@
     // paint at ~30fps, the CSS var does the rest
     if (t - lastBeatPaint > 33) {
       document.documentElement.style.setProperty('--beat', level.toFixed(3));
+      drawViz();
       lastBeatPaint = t;
     }
     beatRaf = window.requestAnimationFrame(beatLoop);
+  }
+
+  /* ---------- spectrum visualizer: chunky pixel bars, bottom of screen ---------- */
+  var viz = document.getElementById('viz');
+  var vizCtx = viz ? viz.getContext('2d') : null;
+
+  function drawViz() {
+    if (!vizCtx || !analyserData || !gnrActive) return;
+    var W = viz.width;
+    var H = viz.height;
+    vizCtx.clearRect(0, 0, W, H);
+    var bars = 32;
+    var bw = Math.floor(W / bars);       // 10px column
+    var step = Math.max(1, Math.floor(analyserData.length / bars));
+    var blockH = 6;
+    for (var i = 0; i < bars; i++) {
+      var v = analyserData[i * step] / 255;
+      var h = Math.pow(v, 0.85) * H;      // gentle curve, bass-heavy mix
+      var blocks = Math.max(1, Math.round(h / blockH));
+      for (var b = 0; b < blocks; b++) {
+        var y = H - (b + 1) * blockH;
+        if (y < 0) break;
+        // gold at the base, orange mid, red at the peak
+        var col = b < blocks * 0.5 ? '#ffd34d' : (b < blocks * 0.8 ? '#ff8a3d' : '#d32f2f');
+        vizCtx.fillStyle = col;
+        vizCtx.fillRect(i * bw + 1, y + 1, bw - 2, blockH - 2);
+      }
+    }
+  }
+
+  function clearViz() {
+    if (vizCtx) vizCtx.clearRect(0, 0, viz.width, viz.height);
   }
 
   function startBeat() {
@@ -1224,6 +1257,7 @@
     if (beatRaf) window.cancelAnimationFrame(beatRaf);
     beatRaf = null;
     document.documentElement.style.setProperty('--beat', '0');
+    clearViz();
   }
 
   /* ---------- theme swap ---------- */

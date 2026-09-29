@@ -153,6 +153,11 @@
   <img class="gnr-sprite gnr-sprite--skull" src="assets/art/px-skull.svg" alt="">
   <img class="gnr-sprite gnr-sprite--rose" src="assets/art/px-rose.svg" alt="">
   <img class="gnr-sprite gnr-sprite--guitar" src="assets/art/px-guitar.svg" alt="">
+  <img class="gnr-sprite gnr-sprite--emblem" src="assets/art/px-emblem.svg" alt="">
+  <img class="gnr-sprite gnr-sprite--hat" src="assets/art/px-hat.svg" alt="">
+  <img class="gnr-sprite gnr-sprite--vinyl" src="assets/art/px-vinyl.svg" alt="">
+  <img class="gnr-sprite gnr-sprite--amp" src="assets/art/px-amp.svg" alt="">
+  <img class="gnr-sprite gnr-sprite--drums" src="assets/art/px-drums.svg" alt="">
 </div>
 <div class="fx fx--sky" aria-hidden="true">
   <div class="bolts" id="bolts">
@@ -163,9 +168,19 @@
   <div class="flies" aria-hidden="true">
     <span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span>
   </div>
+  <div class="stage" aria-hidden="true">
+    <span class="beam beam--1"></span>
+    <span class="beam beam--2"></span>
+    <span class="beam beam--3"></span>
+    <span class="beam beam--4"></span>
+  </div>
 </div>
 <div class="fx fx--front" aria-hidden="true">
   <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+  <div class="bulbs" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <canvas class="viz" id="viz" width="320" height="48" aria-hidden="true"></canvas>
 </div>
 <div class="storm" id="storm" aria-hidden="true"></div>
 <div class="flash" id="flash" aria-hidden="true"></div>
@@ -232,13 +247,26 @@
     <div class="hero__stage">
       <div class="cart" id="cart">
         <div class="cart__body">
-          <div class="cart__screen">
-            <div class="cart__screenInner" id="cartScreen">
-              <img class="cart__cover" id="cartCover" src="assets/art/gnr-cover-96.png" alt="" width="40" height="40" hidden>
-              <span class="cart__glyph" id="cartGlyph">&#9835;</span>
-              <span class="cart__label" id="cartLabel">NOW PLAYING</span>
-              <span class="cart__track" id="cartTrack">ESP32-S3</span>
-              <span class="cart__eq" id="cartEq" hidden aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <div class="cart__top">
+            <span class="cart__brand" aria-hidden="true">FARREL&#8209;TONE</span>
+            <span class="cart__led" id="cartLed" aria-hidden="true"></span>
+            <span class="cart__model" aria-hidden="true">FT&#8209;1987</span>
+          </div>
+          <div class="cart__deck">
+            <div class="cart__window" aria-hidden="true">
+              <span class="cart__tape"></span>
+              <span class="cart__reel cart__reel--l"><img src="assets/art/px-reel.svg" alt=""></span>
+              <span class="cart__reel cart__reel--r"><img src="assets/art/px-reel.svg" alt=""></span>
+              <span class="cart__spindle"></span>
+            </div>
+            <div class="cart__screen">
+              <div class="cart__screenInner" id="cartScreen">
+                <img class="cart__cover" id="cartCover" src="assets/art/gnr-cover-96.png" alt="" width="40" height="40" hidden>
+                <span class="cart__glyph" id="cartGlyph">&#9835;</span>
+                <span class="cart__label" id="cartLabel">NOW PLAYING</span>
+                <span class="cart__track" id="cartTrack">ESP32-S3</span>
+                <span class="cart__eq" id="cartEq" hidden aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              </div>
             </div>
           </div>
           <div class="cart__prog" id="cartProg" hidden>
@@ -247,12 +275,24 @@
             </span>
             <span class="cart__time" id="cartTime">0:00</span>
           </div>
-          <button class="cart__play" id="cartPlay" type="button" aria-label="Play Sweet Child O' Mine by Guns N' Roses" title="Play Sweet Child O' Mine">
-            <span class="cart__playIco" aria-hidden="true"><i class="ico-play"></i><i class="ico-pause"></i></span>
-          </button>
-          <div class="cart__pad" aria-hidden="true"></div>
-          <div class="cart__slot" aria-hidden="true"></div>
+          <div class="cart__grille" aria-hidden="true"></div>
+          <div class="cart__controls">
+            <div class="cart__keys">
+              <span class="cart__key cart__key--prev"><img src="assets/art/px-prev.svg" alt=""></span>
+              <button class="cart__play" id="cartPlay" type="button" aria-label="Play Sweet Child O' Mine by Guns N' Roses" title="Play Sweet Child O' Mine">
+                <span class="cart__playIco" aria-hidden="true"><i class="ico-play"></i><i class="ico-pause"></i></span>
+              </button>
+              <span class="cart__key cart__key--next"><img src="assets/art/px-next.svg" alt=""></span>
+              <span class="cart__key cart__key--stop"><img src="assets/art/px-stop.svg" alt=""></span>
+            </div>
+            <span class="cart__jack" aria-hidden="true"><img src="assets/art/px-jack.svg" alt=""></span>
+          </div>
+          <span class="cart__screw cart__screw--tl" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
+          <span class="cart__screw cart__screw--tr" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
+          <span class="cart__screw cart__screw--bl" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
+          <span class="cart__screw cart__screw--br" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
         </div>
+        <span class="cart__tag" aria-hidden="true">SIDE A &middot; SWEET CHILD O' MINE</span>
         <div class="cart__glow"></div>
       </div>
     </div>
