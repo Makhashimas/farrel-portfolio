@@ -144,7 +144,11 @@
   <div class="sky__sunrays" aria-hidden="true"></div>
   <button class="sky__moon" id="moonBtn" type="button" aria-label="Switch to sunset theme" aria-pressed="false" title="Sunset mode"></button>
 </div>
+<div class="glow" id="glow" aria-hidden="true"></div>
 <div class="crt" aria-hidden="true"></div>
+
+<!-- ============ SCROLL PROGRESS ============ -->
+<div class="progress" aria-hidden="true"><span class="progress__fill" id="scrollBar"></span></div>
 
 <!-- ============ TASKBAR NAV ============ -->
 <header class="bar">
@@ -160,6 +164,8 @@
     <a href="#awards" class="bar__link"><span class="lbl-full">AWARDS</span><span class="lbl-short">WINS</span></a>
     <a href="#contact" class="bar__link"><span class="lbl-full">CONTACT</span><span class="lbl-short">MAIL</span></a>
   </nav>
+  <button class="bar__run" id="runBtn" type="button" aria-keyshortcuts="Control+K Meta+K" title="Run a command (Ctrl+K)">RUN</button>
+  <button class="bar__tray" id="achvBtn" type="button" title="View achievements">ACHV <span id="achvCount">0/9</span></button>
   <div class="bar__clock" id="clock">--:--</div>
 </header>
 
@@ -178,6 +184,24 @@
       <div class="hero__cta">
         <a href="#projects" class="btn btn--primary">SEE PROJECTS</a>
         <a href="#contact" class="btn btn--ghost">GET IN TOUCH</a>
+      </div>
+      <div class="qstats" aria-label="Quick facts">
+        <div class="qstat">
+          <span class="qstat__v" data-count="7" data-pad="2">00</span>
+          <span class="qstat__k">PROJECTS</span>
+        </div>
+        <div class="qstat">
+          <span class="qstat__v" data-count="4" data-pad="2">00</span>
+          <span class="qstat__k">CERTIFICATIONS</span>
+        </div>
+        <div class="qstat">
+          <span class="qstat__v" data-count="2" data-pad="2">00</span>
+          <span class="qstat__k">ELECTRA SEMIFINALS</span>
+        </div>
+        <div class="qstat">
+          <span class="qstat__v" data-count="593">000</span>
+          <span class="qstat__k">TEFL ITP SCORE</span>
+        </div>
       </div>
       <p class="hero__status"><span class="hero__dot" aria-hidden="true"></span>Currently applying to Anargya, the ITS Formula Student EV team</p>
     </div>
@@ -200,6 +224,36 @@
     </div>
   </div>
 </section>
+
+<!-- ============ TICKER ============ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <div class="ticker__group">
+      <span class="ticker__item"><b>NOW:</b> applying to Anargya, Formula Student EV</span>
+      <span class="ticker__star">&#9733;</span>
+      <span class="ticker__item"><b>BUILDING:</b> MP3 player PCB in KiCad</span>
+      <span class="ticker__star">&#9733;</span>
+      <span class="ticker__item"><b>OPEN FOR:</b> internships from 21 Oct 2026</span>
+      <span class="ticker__star">&#9733;</span>
+      <span class="ticker__item">PCB DESIGN &middot; EMBEDDED SYSTEMS &middot; ANALOG AUDIO</span>
+      <span class="ticker__star">&#9733;</span>
+      <span class="ticker__item">SURABAYA, INDONESIA</span>
+      <span class="ticker__star">&#9733;</span>
+    </div>
+    <div class="ticker__group">
+      <span class="ticker__item"><b>NOW:</b> applying to Anargya, Formula Student EV</span>
+      <span class="ticker__star">&#9733;</span>
+      <span class="ticker__item"><b>BUILDING:</b> MP3 player PCB in KiCad</span>
+      <span class="ticker__star">&#9733;</span>
+      <span class="ticker__item"><b>OPEN FOR:</b> internships from 21 Oct 2026</span>
+      <span class="ticker__star">&#9733;</span>
+      <span class="ticker__item">PCB DESIGN &middot; EMBEDDED SYSTEMS &middot; ANALOG AUDIO</span>
+      <span class="ticker__star">&#9733;</span>
+      <span class="ticker__item">SURABAYA, INDONESIA</span>
+      <span class="ticker__star">&#9733;</span>
+    </div>
+  </div>
+</div>
 
 <!-- ============ ABOUT / PLAYER PROFILE ============ -->
 <section class="sect" id="about" aria-labelledby="about-title">
@@ -256,8 +310,10 @@
 <!-- ============ PROJECTS / QUEST LOG ============ -->
 <section class="sect" id="projects">
   <div class="sect__head">
-    <h2 class="sect__title">QUEST LOG</h2>
+    <p class="sect__cmd" aria-hidden="true">C:\&gt; open quest_log --all</p>
+    <h2 class="sect__title" data-scramble>QUEST LOG</h2>
     <p class="sect__note">Things I have built or am building. Hardware first, AI close behind.</p>
+    <div class="sect__rule" aria-hidden="true"></div>
   </div>
 
   <div class="quests">
@@ -408,8 +464,10 @@
 <!-- ============ NOW BUILDING ============ -->
 <section class="sect" id="now" aria-labelledby="now-title">
   <div class="sect__head">
-    <h2 class="sect__title" id="now-title">NOW BUILDING</h2>
+    <p class="sect__cmd" aria-hidden="true">C:\&gt; tail -f now_building.log</p>
+    <h2 class="sect__title" id="now-title" data-scramble>NOW BUILDING</h2>
     <p class="sect__note">What is on the bench right now. This section changes as I do.</p>
+    <div class="sect__rule" aria-hidden="true"></div>
   </div>
 
   <div class="now">
@@ -436,8 +494,10 @@
 <!-- ============ SKILLS / INVENTORY ============ -->
 <section class="sect" id="skills">
   <div class="sect__head">
-    <h2 class="sect__title">INVENTORY</h2>
+    <p class="sect__cmd" aria-hidden="true">C:\&gt; inventory --equipped</p>
+    <h2 class="sect__title" data-scramble>INVENTORY</h2>
     <p class="sect__note">Tools and skills I actually use, not a list I copied.</p>
+    <div class="sect__rule" aria-hidden="true"></div>
   </div>
 
   <div class="inv">
@@ -491,8 +551,10 @@
 <!-- ============ AWARDS / ACHIEVEMENTS ============ -->
 <section class="sect" id="awards">
   <div class="sect__head">
-    <h2 class="sect__title">ACHIEVEMENTS</h2>
+    <p class="sect__cmd" aria-hidden="true">C:\&gt; achievements --unlocked</p>
+    <h2 class="sect__title" data-scramble>ACHIEVEMENTS</h2>
     <p class="sect__note">Unlocked so far.</p>
+    <div class="sect__rule" aria-hidden="true"></div>
   </div>
 
   <div class="wins">
@@ -592,7 +654,11 @@
         <a href="https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b" target="_blank" rel="noopener" class="btn btn--primary">LINKEDIN</a>
         <a href="https://github.com/makhashimas" target="_blank" rel="noopener" class="btn btn--ghost">GITHUB</a>
       </div>
-      <p class="term__cursor"><span class="term__p">C:\&gt;</span> <span class="blink">_</span></p>
+      <div class="term__hist" id="termHist"></div>
+      <p class="term__line term__line--input">
+        <span class="term__p">C:\&gt;</span>
+        <input class="term__input" id="termInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input. Type help and press Enter." placeholder="type help and press Enter">
+      </p>
     </div>
   </div>
 </section>
@@ -600,9 +666,54 @@
 </main>
 
 <footer class="foot">
-  <p>Farrel Fayzul Haqqi &middot; Surabaya, Indonesia</p>
-  <p class="foot__small">Last updated <time datetime="2026-09-27">September 2026</time></p>
+  <div class="foot__grid">
+    <div class="foot__col">
+      <p class="foot__h">FARREL.OS</p>
+      <p class="foot__p">Farrel Fayzul Haqqi<br>Surabaya, Indonesia</p>
+    </div>
+    <div class="foot__col">
+      <p class="foot__h">NAVIGATE</p>
+      <ul class="foot__links">
+        <li><a href="#about">Profile</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="foot__col">
+      <p class="foot__h">CONNECT</p>
+      <ul class="foot__links">
+        <li><a href="https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://github.com/makhashimas" target="_blank" rel="noopener">GitHub</a></li>
+        <li><button class="foot__copy" id="copyBtn" type="button">Copy site link</button></li>
+      </ul>
+    </div>
+  </div>
+  <p class="foot__base">&copy; 2026 Farrel Fayzul Haqqi &middot; Last updated <time datetime="2026-09-29">September 2026</time></p>
 </footer>
+
+<!-- ============ COMMAND PALETTE (RUN.EXE) ============ -->
+<div class="pal" id="pal" hidden>
+  <div class="pal__back" id="palBack"></div>
+  <div class="pal__win win" role="dialog" aria-modal="true" aria-labelledby="palTitle">
+    <div class="win__bar win__bar--pal">
+      <span class="win__title" id="palTitle">RUN.EXE</span>
+      <span class="win__ctrls" aria-hidden="true"><i></i><i></i><i></i></span>
+    </div>
+    <div class="win__body pal__body">
+      <label class="pal__label" for="palInput">Type a command, then press Enter</label>
+      <div class="pal__row">
+        <span class="pal__prompt" aria-hidden="true">C:\&gt;</span>
+        <input id="palInput" class="pal__input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="palList" aria-autocomplete="list">
+      </div>
+      <ul class="pal__list" id="palList" role="listbox" aria-label="Commands"></ul>
+      <p class="pal__hint">&#8593;&#8595; select &middot; Enter run &middot; Esc close</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script src="script.js"></script>
 </body>
