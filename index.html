@@ -147,6 +147,30 @@
 <div class="glow" id="glow" aria-hidden="true"></div>
 <div class="crt" aria-hidden="true"></div>
 
+<!-- ============ THEME FX (lightning / fireflies / gnr) ============ -->
+<div class="fx fx--back" aria-hidden="true">
+  <img class="gnr-cross" src="assets/art/px-cross.svg" alt="">
+  <img class="gnr-sprite gnr-sprite--skull" src="assets/art/px-skull.svg" alt="">
+  <img class="gnr-sprite gnr-sprite--rose" src="assets/art/px-rose.svg" alt="">
+  <img class="gnr-sprite gnr-sprite--guitar" src="assets/art/px-guitar.svg" alt="">
+</div>
+<div class="fx fx--sky" aria-hidden="true">
+  <div class="bolts" id="bolts">
+    <img class="bolt bolt--1" src="assets/art/px-bolt-cyan.svg" alt="">
+    <img class="bolt bolt--2" src="assets/art/px-bolt-cyan.svg" alt="">
+    <img class="bolt bolt--3" src="assets/art/px-bolt-cyan.svg" alt="">
+  </div>
+  <div class="flies" aria-hidden="true">
+    <span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span>
+  </div>
+</div>
+<div class="fx fx--front" aria-hidden="true">
+  <span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span><span class="ember"></span>
+</div>
+<div class="storm" id="storm" aria-hidden="true"></div>
+<div class="flash" id="flash" aria-hidden="true"></div>
+<div class="themewash" id="themewash" aria-hidden="true"></div>
+
 <!-- ============ SCROLL PROGRESS ============ -->
 <div class="progress" aria-hidden="true"><span class="progress__fill" id="scrollBar"></span></div>
 
@@ -165,7 +189,7 @@
     <a href="#contact" class="bar__link"><span class="lbl-full">CONTACT</span><span class="lbl-short">MAIL</span></a>
   </nav>
   <button class="bar__run" id="runBtn" type="button" aria-keyshortcuts="Control+K Meta+K" title="Run a command (Ctrl+K)">RUN</button>
-  <button class="bar__tray" id="achvBtn" type="button" title="View achievements">ACHV <span id="achvCount">0/9</span></button>
+  <button class="bar__tray" id="achvBtn" type="button" title="View achievements">ACHV <span id="achvCount">0/10</span></button>
   <div class="bar__clock" id="clock">--:--</div>
 </header>
 
@@ -205,19 +229,29 @@
       </div>
       <p class="hero__status"><span class="hero__dot" aria-hidden="true"></span>Currently applying to Anargya, the ITS Formula Student EV team</p>
     </div>
-    <div class="hero__stage" aria-hidden="true">
+    <div class="hero__stage">
       <div class="cart" id="cart">
         <div class="cart__body">
           <div class="cart__screen">
             <div class="cart__screenInner" id="cartScreen">
-              <span class="cart__glyph">&#9835;</span>
-              <span class="cart__label">NOW PLAYING</span>
-              <span class="cart__track">ESP32-S3</span>
+              <img class="cart__cover" id="cartCover" src="assets/art/gnr-cover-96.png" alt="" width="40" height="40" hidden>
+              <span class="cart__glyph" id="cartGlyph">&#9835;</span>
+              <span class="cart__label" id="cartLabel">NOW PLAYING</span>
+              <span class="cart__track" id="cartTrack">ESP32-S3</span>
+              <span class="cart__eq" id="cartEq" hidden aria-hidden="true"><i></i><i></i><i></i><i></i></span>
             </div>
           </div>
-          <div class="cart__pad"></div>
-          <div class="cart__pad cart__pad--b"></div>
-          <div class="cart__slot"></div>
+          <div class="cart__prog" id="cartProg" hidden>
+            <span class="cart__progTrack" id="cartProgTrack" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span class="cart__progFill" id="cartProgFill"></span>
+            </span>
+            <span class="cart__time" id="cartTime">0:00</span>
+          </div>
+          <button class="cart__play" id="cartPlay" type="button" aria-label="Play Sweet Child O' Mine by Guns N' Roses" title="Play Sweet Child O' Mine">
+            <span class="cart__playIco" aria-hidden="true"><i class="ico-play"></i><i class="ico-pause"></i></span>
+          </button>
+          <div class="cart__pad" aria-hidden="true"></div>
+          <div class="cart__slot" aria-hidden="true"></div>
         </div>
         <div class="cart__glow"></div>
       </div>
@@ -710,6 +744,25 @@
       <p class="pal__hint">&#8593;&#8595; select &middot; Enter run &middot; Esc close</p>
     </div>
   </div>
+</div>
+
+<!-- ============ MINI PLAYER (bottom-left while the song plays) ============ -->
+<div class="mini" id="mini" aria-hidden="true" aria-label="Now playing: Sweet Child O' Mine by Guns N' Roses">
+  <div class="mini__bar">
+    <span class="mini__title">NOW_PLAYING.EXE</span>
+    <button class="mini__close" id="miniClose" type="button" aria-label="Hide player">&#215;</button>
+  </div>
+  <div class="mini__body">
+    <img class="mini__cover" src="assets/art/gnr-cover-96.png" alt="" width="44" height="44">
+    <div class="mini__meta">
+      <p class="mini__song">SWEET CHILD O' MINE</p>
+      <p class="mini__artist">Guns N' Roses</p>
+    </div>
+    <button class="mini__btn" id="miniBtn" type="button" aria-label="Pause">
+      <span class="mini__ico" aria-hidden="true"><i class="ico-pause"></i><i class="ico-play"></i></span>
+    </button>
+  </div>
+  <div class="mini__prog" aria-hidden="true"><span class="mini__fill" id="miniFill"></span></div>
 </div>
 
 <!-- ============ TOASTS ============ -->

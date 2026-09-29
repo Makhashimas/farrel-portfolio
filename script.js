@@ -12,6 +12,8 @@
    10. Animated counters
    11. Text scramble on section titles
    12. Copy site link, Konami code
+   13. Lightning strikes (night theme ambient)
+   14. MP3 player + GNR theme + mini player
    ============================================================ */
 
 (function () {
@@ -190,6 +192,7 @@
 
   var NIGHT_COLORS  = ['#e8ecf7', '#3de8c4', '#ffd34d', '#4fc3e8'];
   var SUNSET_COLORS = ['#fff1e4', '#ff9a5c', '#ffd93d', '#ff4d6d'];
+  var GNR_COLORS    = ['#f5e7cd', '#ffb347', '#ffd34d', '#d32f2f'];
 
   function drawStars(t) {
     if (!ctx) return;
@@ -197,9 +200,9 @@
     var h = window.innerHeight;
     ctx.clearRect(0, 0, w, h);
 
-    var isSunset = document.documentElement.getAttribute('data-theme') === 'sunset';
-    var cols = isSunset ? SUNSET_COLORS : NIGHT_COLORS;
-    var alphaMult = isSunset ? 0.4 : 1;
+    var themeNow = document.documentElement.getAttribute('data-theme');
+    var cols = themeNow === 'sunset' ? SUNSET_COLORS : themeNow === 'gnr' ? GNR_COLORS : NIGHT_COLORS;
+    var alphaMult = themeNow === 'sunset' ? 0.4 : themeNow === 'gnr' ? 0.8 : 1;
 
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
@@ -327,44 +330,75 @@
   }
 
   /* ==========================================================
-     5. SUNSET / NIGHT THEME TOGGLE (click the moon)
+     5. THEME SYSTEM (night / sunset / gnr)
      ========================================================== */
   var moonBtn = document.getElementById('moonBtn');
   var themeMeta = document.getElementById('themeColor');
+  var gnrActive = false;   // true while the GNR theme should be on screen
 
-  function updateThemeMeta(isSunset) {
-    if (themeMeta) themeMeta.setAttribute('content', isSunset ? '#1c0b2e' : '#0a0e27');
+  // the base theme is where the site returns to when the song pauses
+  var baseTheme = 'night';
+  try {
+    if (localStorage.getItem('farrel-theme') === 'sunset') baseTheme = 'sunset';
+  } catch (e) {}
+
+  function currentTheme() {
+    return document.documentElement.getAttribute('data-theme') || 'night';
+  }
+
+  function updateThemeMeta() {
+    var th = currentTheme();
+    var colors = { night: '#0a0e27', sunset: '#1c0b2e', gnr: '#070608' };
+    if (themeMeta) themeMeta.setAttribute('content', colors[th] || colors.night);
     if (moonBtn) {
+      var isSunset = baseTheme === 'sunset';
       moonBtn.setAttribute('aria-pressed', isSunset ? 'true' : 'false');
       moonBtn.setAttribute('aria-label', isSunset ? 'Switch to night theme' : 'Switch to sunset theme');
       moonBtn.setAttribute('title', isSunset ? 'Night mode' : 'Sunset mode');
     }
   }
 
-  function setTheme(sunset) {
+  // cross-fade between themes; fadeMs controls how soft the gradient feels
+  function applyTheme(name, fadeMs) {
     var doc = document.documentElement;
-    doc.classList.add('theme-fading');
-    if (sunset) {
-      doc.setAttribute('data-theme', 'sunset');
-      try { localStorage.setItem('farrel-theme', 'sunset'); } catch (e) {}
-    } else {
-      doc.removeAttribute('data-theme');
-      try { localStorage.setItem('farrel-theme', 'night'); } catch (e) {}
+    var ms = fadeMs || 460;
+    var cls = ms >= 700 ? 'theme-fading--slow' : 'theme-fading';
+    // a soft gradient sweep rides along with the cross-fade
+    if (!reduced && themewashEl) {
+      themewashEl.classList.remove('is-on');
+      void themewashEl.offsetWidth;
+      themewashEl.classList.add('is-on');
     }
-    updateThemeMeta(sunset);
-    if (reduced || !ctx) {
-      doc.classList.remove('theme-fading');
+    doc.classList.add(cls);
+    if (name === 'night') {
+      doc.removeAttribute('data-theme');
     } else {
-      window.setTimeout(function () { doc.classList.remove('theme-fading'); }, 460);
+      doc.setAttribute('data-theme', name);
+    }
+    updateThemeMeta();
+    if (reduced) {
+      doc.classList.remove(cls);
+    } else {
+      window.setTimeout(function () { doc.classList.remove(cls); }, ms);
     }
   }
 
-  updateThemeMeta(document.documentElement.getAttribute('data-theme') === 'sunset');
+  function setBaseTheme(name) {
+    baseTheme = name;
+    try { localStorage.setItem('farrel-theme', name); } catch (e) {}
+    if (!gnrActive) applyTheme(name, 460);
+    else updateThemeMeta(); // song on screen: remember it, apply when the music stops
+  }
+
+  function setTheme(sunset) {
+    setBaseTheme(sunset ? 'sunset' : 'night');
+  }
+
+  updateThemeMeta();
 
   if (moonBtn) {
     moonBtn.addEventListener('click', function () {
-      var nextSunset = document.documentElement.getAttribute('data-theme') !== 'sunset';
-      setTheme(nextSunset);
+      setBaseTheme(baseTheme === 'sunset' ? 'night' : 'sunset');
       unlock('theme');
     });
   }
@@ -385,7 +419,8 @@
     { id: 'linkedin', ico: '\u260E', name: 'NETWORKER',       desc: 'Opened LinkedIn from the site.' },
     { id: 'github',   ico: '\u2699', name: 'OPEN SOURCE',     desc: 'Opened GitHub from the site.' },
     { id: 'explorer', ico: '\u2193', name: 'EXPLORER',        desc: 'Scrolled all the way to the bottom.' },
-    { id: 'konami',   ico: '\u2605', name: 'CHEAT CODE',      desc: 'Entered the Konami code.' }
+    { id: 'konami',   ico: '\u2605', name: 'CHEAT CODE',      desc: 'Entered the Konami code.' },
+    { id: 'music',    ico: '\u266B', name: 'ROCK ON',         desc: 'Played Sweet Child O\u2019 Mine on the cartridge player.' }
   ];
 
   var unlockedSet = {};
@@ -1018,5 +1053,390 @@
       konamiPos = (key === KONAMI[0]) ? 1 : 0;
     }
   });
+
+  /* ==========================================================
+     13. LIGHTNING (night theme ambient storm)
+     ========================================================== */
+  var boltEls = [].slice.call(document.querySelectorAll('.bolt'));
+  var stormEl = document.getElementById('storm');
+  var boltTimer = null;
+
+  function strikeBolt() {
+    if (reduced || currentTheme() !== 'night' || document.hidden) return;
+    var bolt = boltEls[Math.floor(Math.random() * boltEls.length)];
+    if (!bolt) return;
+    bolt.classList.remove('is-strike');
+    void bolt.offsetWidth; // restart the animation
+    bolt.classList.add('is-strike');
+    if (stormEl && Math.random() < 0.75) {
+      stormEl.classList.remove('is-flash');
+      void stormEl.offsetWidth;
+      stormEl.classList.add('is-flash');
+    }
+  }
+
+  function scheduleStrike() {
+    window.clearTimeout(boltTimer);
+    // ambient: roughly one strike every 6-14 seconds
+    var delay = 6000 + Math.random() * 8000;
+    boltTimer = window.setTimeout(function () {
+      strikeBolt();
+      scheduleStrike();
+    }, delay);
+  }
+
+  if (boltEls.length) {
+    // first strike shortly after the visitor settles in
+    boltTimer = window.setTimeout(function () {
+      strikeBolt();
+      scheduleStrike();
+    }, 2800);
+  }
+
+  /* ==========================================================
+     14. MP3 PLAYER - Sweet Child O' Mine + GNR theme + mini player
+     ========================================================== */
+  var audio = null;
+  var audioCtx = null;
+  var analyser = null;
+  var analyserData = null;
+  var beatRaf = null;
+  var lastBeatPaint = 0;
+  var beatAvg = 120;        // slow-moving energy baseline, adapts to the song
+  var isPlaying = false;
+
+  var cartEl = document.getElementById('cart');
+  var cartPlay = document.getElementById('cartPlay');
+  var cartCover = document.getElementById('cartCover');
+  var cartGlyph = document.getElementById('cartGlyph');
+  var cartLabel = document.getElementById('cartLabel');
+  var cartTrack = document.getElementById('cartTrack');
+  var cartEq = document.getElementById('cartEq');
+  var cartProg = document.getElementById('cartProg');
+  var cartProgTrack = document.getElementById('cartProgTrack');
+  var cartProgFill = document.getElementById('cartProgFill');
+  var cartTime = document.getElementById('cartTime');
+  var flashEl = document.getElementById('flash');
+  var themewashEl = document.getElementById('themewash');
+
+  var mini = document.getElementById('mini');
+  var miniBtn = document.getElementById('miniBtn');
+  var miniFill = document.getElementById('miniFill');
+  var miniClose = document.getElementById('miniClose');
+  var miniHidden = false;
+
+  var AUDIO_SRC = 'assets/audio/sweet-child-o-mine.mp3';
+  var GNR_TRACK = "SWEET CHILD O' MINE";
+  var GNR_ARTIST = "Guns N' Roses";
+
+  // ticker original text is captured so the GNR swap can be reverted
+  var tickerItems = [].slice.call(document.querySelectorAll('.ticker__item'));
+  var tickerBackup = tickerItems.map(function (el) { return el.innerHTML; });
+
+  // section command lines get a temporary GNR flavour
+  var sectCmds = [].slice.call(document.querySelectorAll('.sect__cmd'));
+  var sectCmdsBackup = sectCmds.map(function (el) { return el.innerHTML; });
+
+  var GNR_TICKER = [
+    '<b>NOW:</b> SWEET CHILD O&#39; MINE &#9835; GUNS N&#39; ROSES',
+    '<b>PLAYING:</b> APPETITE FOR DESTRUCTION &#9733; 1987',
+    '<b>RIFF:</b> SHE&#39;S GOT A SMILE THAT SEEMS TO ME',
+    'WHERE DO WE GO NOW &#9835; WHERE DO WE GO'
+  ];
+
+  var GNR_CMDS = {
+    '#projects': 'C:\\> open quest_log --gnr',
+    '#now':      'C:\\> tail -f appetite_for_destruction.log',
+    '#skills':   'C:\\> inventory --equipped --rock',
+    '#awards':   'C:\\> achievements --unlocked --gnr'
+  };
+
+  function fmtTime(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    var m = Math.floor(sec / 60);
+    var s = Math.floor(sec % 60);
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function ensureAudio() {
+    if (audio) return audio;
+    audio = new Audio();
+    audio.preload = 'none';           // no download until the play button is pressed
+    audio.src = AUDIO_SRC;
+    audio.loop = true;                // loop, so the GNR theme never dies mid-song
+
+    audio.addEventListener('play', onPlay);
+    audio.addEventListener('pause', onPause);
+    audio.addEventListener('timeupdate', onTimeUpdate);
+    audio.addEventListener('ended', onEnded);
+    return audio;
+  }
+
+  function setupAnalyser() {
+    if (audioCtx || !audio) return;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    try {
+      audioCtx = new AC();
+      var src = audioCtx.createMediaElementSource(audio);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 128;
+      analyser.smoothingTimeConstant = 0.82;
+      src.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      analyserData = new Uint8Array(analyser.frequencyBinCount);
+    } catch (e) {
+      audioCtx = null;
+      analyser = null;
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(function () {});
+    }
+  }
+
+  function beatLoop(t) {
+    if (!analyser || !analyserData) return;
+    analyser.getByteFrequencyData(analyserData);
+    var sum = 0;
+    var bins = Math.min(analyserData.length, 24); // bass + low mids carry the beat
+    for (var i = 0; i < bins; i++) sum += analyserData[i];
+    var inst = sum / bins;                      // 0..255, current energy
+    // pulse on transients (kick hits) instead of raw loudness:
+    // a slow baseline follows the song, the level is the deviation above it
+    beatAvg = beatAvg * 0.96 + inst * 0.04;
+    var level = Math.max(0, Math.min(1, (inst - beatAvg) / 70 + 0.3));
+    // paint at ~30fps, the CSS var does the rest
+    if (t - lastBeatPaint > 33) {
+      document.documentElement.style.setProperty('--beat', level.toFixed(3));
+      lastBeatPaint = t;
+    }
+    beatRaf = window.requestAnimationFrame(beatLoop);
+  }
+
+  function startBeat() {
+    if (!analyser) return;
+    if (beatRaf) window.cancelAnimationFrame(beatRaf);
+    beatAvg = 120;                // fresh baseline for each playback start
+    beatRaf = window.requestAnimationFrame(beatLoop);
+  }
+
+  function stopBeat() {
+    if (beatRaf) window.cancelAnimationFrame(beatRaf);
+    beatRaf = null;
+    document.documentElement.style.setProperty('--beat', '0');
+  }
+
+  /* ---------- theme swap ---------- */
+  function enterGnrTheme() {
+    gnrActive = true;
+    applyTheme('gnr', 380);           // fast, soft cross-fade
+    swapTicker(true);
+    swapSectCmds(true);
+  }
+
+  function leaveGnrTheme() {
+    gnrActive = false;
+    applyTheme(baseTheme, 900);       // slow, gentle return to the base theme
+    swapTicker(false);
+    swapSectCmds(false);
+    stopBeat();
+  }
+
+  function swapTicker(on) {
+    tickerItems.forEach(function (el, i) {
+      if (on) el.innerHTML = GNR_TICKER[i % GNR_TICKER.length];
+      else el.innerHTML = tickerBackup[i];
+    });
+  }
+
+  function swapSectCmds(on) {
+    sectCmds.forEach(function (el, i) {
+      var id = el.closest('section') ? '#' + el.closest('section').id : '';
+      if (on && GNR_CMDS[id]) el.innerHTML = GNR_CMDS[id];
+      else el.innerHTML = sectCmdsBackup[i];
+    });
+  }
+
+  /* ---------- player UI ---------- */
+  var hasStarted = false;   // true once the song has been started at least once
+
+  function paintPlaying(on) {
+    if (on) hasStarted = true;
+    isPlaying = on;
+    if (cartEl) cartEl.classList.toggle('is-playing', on);
+    if (cartCover) cartCover.hidden = !hasStarted;
+    if (cartGlyph) cartGlyph.hidden = hasStarted;
+    if (cartEq) cartEq.hidden = !on;
+    if (cartProg) cartProg.hidden = !hasStarted;
+    if (miniBtn) miniBtn.classList.toggle('is-paused', !on);
+    if (cartPlay) {
+      cartPlay.setAttribute('aria-label', on
+        ? "Pause Sweet Child O' Mine"
+        : "Play Sweet Child O' Mine by Guns N' Roses");
+      cartPlay.title = on ? 'Pause' : "Play Sweet Child O' Mine";
+    }
+    if (miniBtn) miniBtn.setAttribute('aria-label', on ? 'Pause' : 'Play');
+    if (cartLabel) cartLabel.textContent = on ? 'NOW PLAYING' : (hasStarted ? 'PAUSED' : 'NOW PLAYING');
+    if (cartTrack && hasStarted) cartTrack.textContent = GNR_TRACK;
+  }
+
+  function onPlay() {
+    paintPlaying(true);
+    enterGnrTheme();
+    startBeat();
+    miniHidden = false;
+    updateMini();
+    unlock('music');
+  }
+
+  function onPause() {
+    paintPlaying(false);
+    updateMini(); // keep the mini reachable so resume is one tap away
+    // gentle gradient back to whatever theme was set before the song
+    if (!audio || audio.ended) return;
+    leaveGnrTheme();
+  }
+
+  function onEnded() {
+    // loop is on, so 'ended' only fires if loop is unsupported; treat like pause
+    paintPlaying(false);
+    leaveGnrTheme();
+  }
+
+  function onTimeUpdate() {
+    if (!audio) return;
+    var pct = 0;
+    if (audio.duration) pct = (audio.currentTime / audio.duration) * 100;
+    if (cartProgFill) cartProgFill.style.width = pct + '%';
+    if (miniFill) miniFill.style.width = pct + '%';
+    if (cartTime) cartTime.textContent = fmtTime(audio.currentTime);
+    if (cartProgTrack) cartProgTrack.setAttribute('aria-valuenow', Math.round(pct));
+    updateMini();
+  }
+
+  function seekToPct(pct) {
+    if (!audio || !audio.duration) return;
+    audio.currentTime = Math.max(0, Math.min(1, pct)) * audio.duration;
+  }
+
+  /* ---------- mini player visibility ---------- */
+  function updateMini() {
+    if (!mini || !cartEl) return;
+    // stays on screen once the song has started, even when paused,
+    // so the resume button is always reachable while scrolled away
+    if (miniHidden || !hasStarted) {
+      mini.classList.remove('is-on');
+      mini.setAttribute('aria-hidden', 'true');
+      return;
+    }
+    var rect = cartEl.getBoundingClientRect();
+    var cartOut = rect.bottom < 0 || rect.top > window.innerHeight;
+    mini.classList.toggle('is-on', cartOut);
+    mini.setAttribute('aria-hidden', cartOut ? 'false' : 'true');
+  }
+
+  /* ---------- the big moment: boot flash, then the riff ---------- */
+  function startPlayback(withBoot) {
+    var a = ensureAudio();
+    setupAnalyser();
+
+    function go() {
+      var p = a.play();
+      if (p && p.catch) {
+        p.catch(function () {
+          paintPlaying(false);
+          showToast('SYSTEM', 'Audio blocked', 'The browser refused playback. Press play once more.', true);
+        });
+      }
+    }
+
+    if (withBoot && !reduced && flashEl) {
+      // full boot flash on the very first press;
+      // the riff hits right as the theme reveals
+      flashEl.classList.remove('is-boot', 'is-short');
+      void flashEl.offsetWidth;
+      flashEl.classList.add('is-boot');
+      window.setTimeout(function () {
+        go();
+      }, 900);
+    } else {
+      // resume after a pause: short flash, not the full boot
+      if (flashEl && !reduced) {
+        flashEl.classList.remove('is-boot', 'is-short');
+        void flashEl.offsetWidth;
+        flashEl.classList.add('is-short');
+      }
+      go();
+    }
+  }
+
+  if (cartPlay) {
+    cartPlay.addEventListener('click', function () {
+      var a = ensureAudio();
+      if (a.paused) {
+        // boot flash only on the very first press; resume gets a short flash
+        startPlayback(a.currentTime === 0);
+      } else {
+        a.pause();
+      }
+    });
+  }
+
+  if (miniBtn) {
+    miniBtn.addEventListener('click', function () {
+      if (!audio) return;
+      if (audio.paused) {
+        // resume: short flash, not the full boot
+        if (flashEl && !reduced) {
+          flashEl.classList.remove('is-boot', 'is-short');
+          void flashEl.offsetWidth;
+          flashEl.classList.add('is-short');
+        }
+        var p = audio.play();
+        if (p && p.catch) p.catch(function () {});
+      } else {
+        audio.pause();
+      }
+    });
+  }
+
+  if (miniClose) {
+    miniClose.addEventListener('click', function () {
+      miniHidden = true;
+      if (mini) mini.classList.remove('is-on');
+    });
+  }
+
+  // scrubbing on the cartridge progress bar
+  function scrubFromEvent(e) {
+    var rect = cartProgTrack.getBoundingClientRect();
+    var x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    seekToPct(x / rect.width);
+  }
+
+  if (cartProgTrack) {
+    cartProgTrack.addEventListener('click', function (e) {
+      if (audio) scrubFromEvent(e);
+    });
+    cartProgTrack.addEventListener('keydown', function (e) {
+      if (!audio || !audio.duration) return;
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        audio.currentTime = Math.max(0, audio.currentTime - 10);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        audio.currentTime = 0;
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateMini, { passive: true });
+  window.addEventListener('resize', updateMini);
+
+  // pause the audio when the tab is hidden for a long time? No: keep playing,
+  // it is the user's music. But if the page unloads nothing to clean up.
 
 })();
