@@ -150,14 +150,6 @@
 <!-- ============ THEME FX (lightning / fireflies / gnr) ============ -->
 <div class="fx fx--back" aria-hidden="true">
   <img class="gnr-cross" src="assets/art/px-cross.svg" alt="">
-  <img class="gnr-sprite gnr-sprite--skull" src="assets/art/px-skull.svg" alt="">
-  <img class="gnr-sprite gnr-sprite--rose" src="assets/art/px-rose.svg" alt="">
-  <img class="gnr-sprite gnr-sprite--guitar" src="assets/art/px-guitar.svg" alt="">
-  <img class="gnr-sprite gnr-sprite--emblem" src="assets/art/px-emblem.svg" alt="">
-  <img class="gnr-sprite gnr-sprite--hat" src="assets/art/px-hat.svg" alt="">
-  <img class="gnr-sprite gnr-sprite--vinyl" src="assets/art/px-vinyl.svg" alt="">
-  <img class="gnr-sprite gnr-sprite--amp" src="assets/art/px-amp.svg" alt="">
-  <img class="gnr-sprite gnr-sprite--drums" src="assets/art/px-drums.svg" alt="">
 </div>
 <div class="fx fx--sky" aria-hidden="true">
   <div class="bolts" id="bolts">
@@ -204,7 +196,6 @@
     <a href="#contact" class="bar__link"><span class="lbl-full">CONTACT</span><span class="lbl-short">MAIL</span></a>
   </nav>
   <button class="bar__run" id="runBtn" type="button" aria-keyshortcuts="Control+K Meta+K" title="Run a command (Ctrl+K)">RUN</button>
-  <button class="bar__tray" id="achvBtn" type="button" title="View achievements">ACHV <span id="achvCount">0/10</span></button>
   <div class="bar__clock" id="clock">--:--</div>
 </header>
 
@@ -245,6 +236,16 @@
       <p class="hero__status"><span class="hero__dot" aria-hidden="true"></span>Currently applying to Anargya, the ITS Formula Student EV team</p>
     </div>
     <div class="hero__stage">
+      <div class="gnr-stage" aria-hidden="true">
+        <img class="gnr-sprite gnr-sprite--skull" src="assets/art/px-skull.svg" alt="">
+        <img class="gnr-sprite gnr-sprite--guitar" src="assets/art/px-guitar.svg" alt="">
+        <img class="gnr-sprite gnr-sprite--emblem" src="assets/art/px-emblem.svg" alt="">
+        <img class="gnr-sprite gnr-sprite--rose" src="assets/art/px-rose.svg" alt="">
+        <img class="gnr-sprite gnr-sprite--hat" src="assets/art/px-hat.svg" alt="">
+        <img class="gnr-sprite gnr-sprite--vinyl" src="assets/art/px-vinyl.svg" alt="">
+        <img class="gnr-sprite gnr-sprite--amp" src="assets/art/px-amp.svg" alt="">
+        <img class="gnr-sprite gnr-sprite--drums" src="assets/art/px-drums.svg" alt="">
+      </div>
       <div class="cart" id="cart">
         <div class="cart__body">
           <div class="cart__top">
@@ -264,7 +265,7 @@
                 <img class="cart__cover" id="cartCover" src="assets/art/gnr-cover-96.png" alt="" width="40" height="40" hidden>
                 <span class="cart__glyph" id="cartGlyph">&#9835;</span>
                 <span class="cart__label" id="cartLabel">NOW PLAYING</span>
-                <span class="cart__track" id="cartTrack">ESP32-S3</span>
+                <span class="cart__track" id="cartTrack"><span class="cart__trackTxt" id="cartTrackTxt">ESP32-S3</span></span>
                 <span class="cart__eq" id="cartEq" hidden aria-hidden="true"><i></i><i></i><i></i><i></i></span>
               </div>
             </div>

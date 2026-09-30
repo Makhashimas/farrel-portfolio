@@ -6,7 +6,7 @@
    4. Scroll reveal
    5. Sunset / night theme toggle (click the moon)
    6. Command palette (RUN.EXE, Ctrl+K)
-   7. Achievements + toasts
+   7. Toasts
    8. Interactive terminal
    9. Scroll progress + cursor spotlight + card spotlight
    10. Animated counters
@@ -87,7 +87,6 @@
       window.sessionStorage.setItem('farrel-booted', '1');
     } catch (e) { /* storage blocked, no problem */ }
     startStarfield();
-    unlock('boot');
     // hand focus back to the page so keyboard users are not stranded
     var firstNav = document.querySelector('.bar__link');
     if (firstNav) firstNav.focus();
@@ -399,60 +398,13 @@
   if (moonBtn) {
     moonBtn.addEventListener('click', function () {
       setBaseTheme(baseTheme === 'sunset' ? 'night' : 'sunset');
-      unlock('theme');
     });
   }
 
   /* ==========================================================
-     6. TOASTS + ACHIEVEMENTS
+     6. TOASTS
      ========================================================== */
   var toastWrap = document.getElementById('toasts');
-  var achvCountEl = document.getElementById('achvCount');
-  var achvBtn = document.getElementById('achvBtn');
-
-  var ACHIEVEMENTS = [
-    { id: 'boot',     ico: '\u25B6', name: 'SYSTEM ONLINE',  desc: 'Booted FARREL.OS and pressed start.' },
-    { id: 'theme',    ico: '\u25D0', name: 'NIGHT SHIFT',     desc: 'Switched between night and sunset themes.' },
-    { id: 'palette',  ico: '\u2318', name: 'POWER USER',      desc: 'Opened RUN.EXE with Ctrl+K.' },
-    { id: 'terminal', ico: '\u25B6', name: 'COMMAND LINE',    desc: 'Ran a command in the contact terminal.' },
-    { id: 'copy',     ico: '\u29C9', name: 'SHARE',           desc: 'Copied the site link to the clipboard.' },
-    { id: 'linkedin', ico: '\u260E', name: 'NETWORKER',       desc: 'Opened LinkedIn from the site.' },
-    { id: 'github',   ico: '\u2699', name: 'OPEN SOURCE',     desc: 'Opened GitHub from the site.' },
-    { id: 'explorer', ico: '\u2193', name: 'EXPLORER',        desc: 'Scrolled all the way to the bottom.' },
-    { id: 'konami',   ico: '\u2605', name: 'CHEAT CODE',      desc: 'Entered the Konami code.' },
-    { id: 'music',    ico: '\u266B', name: 'ROCK ON',         desc: 'Played Sweet Child O\u2019 Mine on the cartridge player.' }
-  ];
-
-  var unlockedSet = {};
-  try {
-    var saved = window.localStorage.getItem('farrel-achv');
-    if (saved) unlockedSet = JSON.parse(saved) || {};
-  } catch (e) { unlockedSet = {}; }
-
-  function saveAchv() {
-    try { window.localStorage.setItem('farrel-achv', JSON.stringify(unlockedSet)); } catch (e) {}
-  }
-
-  function updateAchvCount() {
-    if (!achvCountEl) return;
-    var n = 0;
-    for (var id in unlockedSet) { if (unlockedSet[id]) n++; }
-    achvCountEl.textContent = n + '/' + ACHIEVEMENTS.length;
-  }
-
-  function unlock(id) {
-    if (unlockedSet[id]) return;
-    for (var i = 0; i < ACHIEVEMENTS.length; i++) {
-      if (ACHIEVEMENTS[i].id === id) {
-        unlockedSet[id] = true;
-        saveAchv();
-        updateAchvCount();
-        showToast('ACHIEVEMENT UNLOCKED', ACHIEVEMENTS[i].name, ACHIEVEMENTS[i].desc);
-        return;
-      }
-    }
-  }
-
   function showToast(title, name, desc, cyan) {
     if (!toastWrap) return;
     var toast = document.createElement('div');
@@ -499,97 +451,6 @@
     window.setTimeout(dismiss, 6000);
   }
 
-  updateAchvCount();
-
-  /* ---------- achievements window ---------- */
-  var achvWin = null;
-
-  function buildAchvWindow() {
-    var wrap = document.createElement('div');
-    wrap.className = 'pal';
-    wrap.setAttribute('hidden', '');
-
-    var back = document.createElement('div');
-    back.className = 'pal__back';
-
-    var win = document.createElement('div');
-    win.className = 'pal__win win';
-    win.setAttribute('role', 'dialog');
-    win.setAttribute('aria-modal', 'true');
-    win.setAttribute('aria-label', 'Achievements');
-
-    var bar = document.createElement('div');
-    bar.className = 'win__bar win__bar--pal';
-    var title = document.createElement('span');
-    title.className = 'win__title';
-    title.textContent = 'ACHV.EXE';
-    var ctrls = document.createElement('span');
-    ctrls.className = 'win__ctrls';
-    ctrls.setAttribute('aria-hidden', 'true');
-    ctrls.innerHTML = '<i></i><i></i><i></i>';
-    bar.appendChild(title);
-    bar.appendChild(ctrls);
-
-    var body = document.createElement('div');
-    body.className = 'win__body achv__body';
-
-    var sub = document.createElement('p');
-    sub.className = 'achv__sub';
-    var list = document.createElement('div');
-    list.className = 'achv__list';
-
-    var n = 0;
-    for (var id in unlockedSet) { if (unlockedSet[id]) n++; }
-    sub.textContent = n + ' of ' + ACHIEVEMENTS.length + ' unlocked. Keep exploring.';
-
-    ACHIEVEMENTS.forEach(function (a) {
-      var item = document.createElement('div');
-      item.className = 'achv__item' + (unlockedSet[a.id] ? '' : ' achv__item--locked');
-      var ico = document.createElement('span');
-      ico.className = 'achv__ico';
-      ico.textContent = unlockedSet[a.id] ? a.ico : '?';
-      var info = document.createElement('div');
-      var nm = document.createElement('p');
-      nm.className = 'achv__name';
-      nm.textContent = unlockedSet[a.id] ? a.name : 'LOCKED';
-      var ds = document.createElement('p');
-      ds.className = 'achv__desc';
-      ds.textContent = a.desc;
-      info.appendChild(nm);
-      info.appendChild(ds);
-      item.appendChild(ico);
-      item.appendChild(info);
-      list.appendChild(item);
-    });
-
-    body.appendChild(sub);
-    body.appendChild(list);
-    win.appendChild(bar);
-    win.appendChild(body);
-    wrap.appendChild(back);
-    wrap.appendChild(win);
-    document.body.appendChild(wrap);
-
-    function close() {
-      wrap.setAttribute('hidden', '');
-      if (achvBtn) achvBtn.focus();
-    }
-    back.addEventListener('click', close);
-    wrap.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') close();
-    });
-
-    return { wrap: wrap, close: close };
-  }
-
-  if (achvBtn) {
-    achvBtn.addEventListener('click', function () {
-      if (!achvWin) achvWin = buildAchvWindow();
-      achvWin.wrap.removeAttribute('hidden');
-      achvWin.wrap.setAttribute('tabindex', '-1');
-      achvWin.wrap.focus();
-    });
-  }
 
   /* ==========================================================
      7. COMMAND PALETTE (RUN.EXE)
@@ -612,19 +473,13 @@
     { key: 'theme',    label: 'Toggle sunset theme', run: function () {
         var nextSunset = document.documentElement.getAttribute('data-theme') !== 'sunset';
         setTheme(nextSunset);
-        unlock('theme');
-      } },
-    { key: 'achv',     label: 'View achievements',   run: function () {
-        if (achvBtn) achvBtn.click();
       } },
     { key: 'copy',     label: 'Copy site link',      run: copySiteLink },
     { key: 'github',   label: 'Open GitHub profile', run: function () {
         window.open('https://github.com/makhashimas', '_blank', 'noopener');
-        unlock('github');
       } },
     { key: 'linkedin', label: 'Open LinkedIn profile', run: function () {
         window.open('https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b', '_blank', 'noopener');
-        unlock('linkedin');
       } },
     { key: 'top',      label: 'Scroll to top',       run: function () {
         window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
@@ -687,7 +542,6 @@
     palInput.value = '';
     renderPal();
     palInput.focus();
-    unlock('palette');
   }
 
   function closePal() {
@@ -800,7 +654,6 @@
       case 'theme':
         var nextSunset = document.documentElement.getAttribute('data-theme') !== 'sunset';
         setTheme(nextSunset);
-        unlock('theme');
         termLine(nextSunset ? 'Theme set to sunset.' : 'Theme set to night.', 'term__out--ok');
         break;
       case 'date':
@@ -829,7 +682,6 @@
       if (e.key === 'Enter') {
         runTermCmd(termInput.value);
         termInput.value = '';
-        unlock('terminal');
       }
     });
   }
@@ -855,16 +707,6 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // bottom of page achievement
-  var explorerHit = false;
-  window.addEventListener('scroll', function () {
-    if (explorerHit) return;
-    var doc = document.documentElement;
-    if (window.scrollY + window.innerHeight >= doc.scrollHeight - 80) {
-      explorerHit = true;
-      unlock('explorer');
-    }
-  }, { passive: true });
 
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (finePointer && !reduced && glow) {
@@ -1009,7 +851,6 @@
     var url = 'https://makhashimas.github.io/farrel-portfolio/';
     function done() {
       showToast('SYSTEM', 'Link copied', 'The site URL is on your clipboard.', true);
-      unlock('copy');
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(url).then(done, function () {
@@ -1023,14 +864,6 @@
 
   if (copyBtn) copyBtn.addEventListener('click', copySiteLink);
 
-  // LinkedIn / GitHub unlocks, wherever they are clicked
-  document.addEventListener('click', function (e) {
-    var a = e.target.closest ? e.target.closest('a[href]') : null;
-    if (!a) return;
-    var href = a.getAttribute('href') || '';
-    if (href.indexOf('linkedin.com') !== -1) unlock('linkedin');
-    if (href.indexOf('github.com') !== -1) unlock('github');
-  });
 
   // Konami code
   var KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
@@ -1043,7 +876,6 @@
       if (konamiPos === KONAMI.length) {
         konamiPos = 0;
         document.documentElement.classList.add('konami');
-        unlock('konami');
         showToast('CHEAT ACCEPTED', '30 lives granted', 'Konami mode on. It will settle after a while.', true);
         window.setTimeout(function () {
           document.documentElement.classList.remove('konami');
@@ -1111,6 +943,7 @@
   var cartGlyph = document.getElementById('cartGlyph');
   var cartLabel = document.getElementById('cartLabel');
   var cartTrack = document.getElementById('cartTrack');
+  var cartTrackTxt = document.getElementById('cartTrackTxt');
   var cartEq = document.getElementById('cartEq');
   var cartProg = document.getElementById('cartProg');
   var cartProgTrack = document.getElementById('cartProgTrack');
@@ -1294,6 +1127,24 @@
   /* ---------- player UI ---------- */
   var hasStarted = false;   // true once the song has been started at least once
 
+  // the LCD is narrow: long titles scroll across it like a real deck display
+  function fitTrackTitle() {
+    if (!cartTrack || !cartTrackTxt) return;
+    cartTrack.classList.remove('is-scroll');
+    cartTrackTxt.style.transform = '';
+    var avail = cartTrack.clientWidth;
+    var need = cartTrackTxt.offsetWidth;
+    if (need > avail + 2) {
+      var shift = need - avail;
+      cartTrack.style.setProperty('--lcd-shift', '-' + shift + 'px');
+      cartTrack.style.setProperty('--lcd-steps', Math.max(16, Math.min(64, Math.round(shift / 2))));
+      cartTrack.style.setProperty('--lcd-dur', Math.max(6, Math.round(shift / 9)) + 's');
+      cartTrack.classList.add('is-scroll');
+    }
+  }
+  window.addEventListener('resize', fitTrackTitle);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTrackTitle);
+
   function paintPlaying(on) {
     if (on) hasStarted = true;
     isPlaying = on;
@@ -1311,7 +1162,8 @@
     }
     if (miniBtn) miniBtn.setAttribute('aria-label', on ? 'Pause' : 'Play');
     if (cartLabel) cartLabel.textContent = on ? 'NOW PLAYING' : (hasStarted ? 'PAUSED' : 'NOW PLAYING');
-    if (cartTrack && hasStarted) cartTrack.textContent = GNR_TRACK;
+    if (cartTrackTxt && hasStarted) cartTrackTxt.textContent = GNR_TRACK;
+    window.requestAnimationFrame(fitTrackTitle);
   }
 
   function onPlay() {
@@ -1320,7 +1172,6 @@
     startBeat();
     miniHidden = false;
     updateMini();
-    unlock('music');
   }
 
   function onPause() {
