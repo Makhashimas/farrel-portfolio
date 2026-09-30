@@ -279,11 +279,11 @@
           <div class="cart__grille" aria-hidden="true"></div>
           <div class="cart__controls">
             <div class="cart__keys">
-              <span class="cart__key cart__key--prev"><img src="assets/art/px-prev.svg" alt=""></span>
+              <button class="cart__key cart__key--prev" id="cartPrev" type="button" aria-label="Previous song" title="Previous song"><img src="assets/art/px-prev.svg" alt=""></button>
               <button class="cart__play" id="cartPlay" type="button" aria-label="Play Sweet Child O' Mine by Guns N' Roses" title="Play Sweet Child O' Mine">
                 <span class="cart__playIco" aria-hidden="true"><i class="ico-play"></i><i class="ico-pause"></i></span>
               </button>
-              <span class="cart__key cart__key--next"><img src="assets/art/px-next.svg" alt=""></span>
+              <button class="cart__key cart__key--next" id="cartNext" type="button" aria-label="Next song" title="Next song"><img src="assets/art/px-next.svg" alt=""></button>
               <span class="cart__key cart__key--stop"><img src="assets/art/px-stop.svg" alt=""></span>
             </div>
             <span class="cart__jack" aria-hidden="true"><img src="assets/art/px-jack.svg" alt=""></span>
@@ -293,7 +293,7 @@
           <span class="cart__screw cart__screw--bl" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
           <span class="cart__screw cart__screw--br" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
         </div>
-        <span class="cart__tag" aria-hidden="true">SIDE A &middot; SWEET CHILD O' MINE</span>
+        <span class="cart__tag" id="cartTag" aria-hidden="true">SIDE A &middot; SWEET CHILD O' MINE</span>
         <div class="cart__glow"></div>
       </div>
     </div>
@@ -764,7 +764,7 @@
       </ul>
     </div>
   </div>
-  <p class="foot__base">&copy; 2026 Farrel Fayzul Haqqi &middot; Last updated <time datetime="2026-09-29">September 2026</time></p>
+  <p class="foot__base">&copy; 2026 Farrel Fayzul Haqqi &middot; Last updated <time datetime="2026-09-30">September 2026</time></p>
 </footer>
 
 <!-- ============ COMMAND PALETTE (RUN.EXE) ============ -->
@@ -794,9 +794,9 @@
     <button class="mini__close" id="miniClose" type="button" aria-label="Hide player">&#215;</button>
   </div>
   <div class="mini__body">
-    <img class="mini__cover" src="assets/art/gnr-cover-96.png" alt="" width="44" height="44">
+    <img class="mini__cover" id="miniCover" src="assets/art/gnr-cover-96.png" alt="" width="44" height="44">
     <div class="mini__meta">
-      <p class="mini__song">SWEET CHILD O' MINE</p>
+      <p class="mini__song" id="miniSong">SWEET CHILD O' MINE</p>
       <p class="mini__artist">Guns N' Roses</p>
     </div>
     <button class="mini__btn" id="miniBtn" type="button" aria-label="Pause">

@@ -926,7 +926,7 @@
   }
 
   /* ==========================================================
-     14. MP3 PLAYER - Sweet Child O' Mine + GNR theme + mini player
+     14. MP3 PLAYER - GNR playlist (Sweet Child + Jungle) + theme + mini
      ========================================================== */
   var audio = null;
   var audioCtx = null;
@@ -939,12 +939,15 @@
 
   var cartEl = document.getElementById('cart');
   var cartPlay = document.getElementById('cartPlay');
+  var cartPrev = document.getElementById('cartPrev');
+  var cartNext = document.getElementById('cartNext');
   var cartCover = document.getElementById('cartCover');
   var cartGlyph = document.getElementById('cartGlyph');
   var cartLabel = document.getElementById('cartLabel');
   var cartTrack = document.getElementById('cartTrack');
   var cartTrackTxt = document.getElementById('cartTrackTxt');
   var cartEq = document.getElementById('cartEq');
+  var cartTag = document.getElementById('cartTag');
   var cartProg = document.getElementById('cartProg');
   var cartProgTrack = document.getElementById('cartProgTrack');
   var cartProgFill = document.getElementById('cartProgFill');
@@ -956,11 +959,44 @@
   var miniBtn = document.getElementById('miniBtn');
   var miniFill = document.getElementById('miniFill');
   var miniClose = document.getElementById('miniClose');
+  var miniCover = document.getElementById('miniCover');
+  var miniSong = document.getElementById('miniSong');
   var miniHidden = false;
 
-  var AUDIO_SRC = 'assets/audio/sweet-child-o-mine.mp3';
-  var GNR_TRACK = "SWEET CHILD O' MINE";
-  var GNR_ARTIST = "Guns N' Roses";
+  // the cartridge plays a two-song GNR playlist; prev / next cycle through it
+  var TRACKS = [
+    {
+      src: "assets/audio/sweet-child-o-mine.mp3",
+      title: "SWEET CHILD O' MINE",
+      spoken: "Sweet Child O' Mine",
+      side: 'SIDE A',
+      cover: 'assets/art/gnr-cover-96.png',
+      ticker: [
+        '<b>NOW:</b> SWEET CHILD O&#39; MINE &#9835; GUNS N&#39; ROSES',
+        '<b>PLAYING:</b> APPETITE FOR DESTRUCTION &#9733; 1987',
+        '<b>RIFF:</b> SHE&#39;S GOT A SMILE THAT SEEMS TO ME',
+        'WHERE DO WE GO NOW &#9835; WHERE DO WE GO'
+      ]
+    },
+    {
+      src: 'assets/audio/welcome-to-the-jungle.mp3',
+      title: 'WELCOME TO THE JUNGLE',
+      spoken: 'Welcome to the Jungle',
+      side: 'SIDE B',
+      cover: 'assets/art/gnr-cover-96.png',
+      ticker: [
+        '<b>NOW:</b> WELCOME TO THE JUNGLE &#9835; GUNS N&#39; ROSES',
+        '<b>PLAYING:</b> APPETITE FOR DESTRUCTION &#9733; 1987',
+        '<b>RIFF:</b> WE&#39;VE GOT FUN AND GAMES',
+        'FEEL MY, MY, MY SERPENTINE &#9835; WATCH IT BRING YOU TO YOUR KNEES'
+      ]
+    }
+  ];
+  var trackIndex = 0;
+  var switchingTrack = false;   // true while the source swaps: a src change fires 'pause'
+  var switchTimer = 0;
+
+  function cur() { return TRACKS[trackIndex]; }
 
   // ticker original text is captured so the GNR swap can be reverted
   var tickerItems = [].slice.call(document.querySelectorAll('.ticker__item'));
@@ -969,13 +1005,6 @@
   // section command lines get a temporary GNR flavour
   var sectCmds = [].slice.call(document.querySelectorAll('.sect__cmd'));
   var sectCmdsBackup = sectCmds.map(function (el) { return el.innerHTML; });
-
-  var GNR_TICKER = [
-    '<b>NOW:</b> SWEET CHILD O&#39; MINE &#9835; GUNS N&#39; ROSES',
-    '<b>PLAYING:</b> APPETITE FOR DESTRUCTION &#9733; 1987',
-    '<b>RIFF:</b> SHE&#39;S GOT A SMILE THAT SEEMS TO ME',
-    'WHERE DO WE GO NOW &#9835; WHERE DO WE GO'
-  ];
 
   var GNR_CMDS = {
     '#projects': 'C:\\> open quest_log --gnr',
@@ -995,8 +1024,8 @@
     if (audio) return audio;
     audio = new Audio();
     audio.preload = 'none';           // no download until the play button is pressed
-    audio.src = AUDIO_SRC;
-    audio.loop = true;                // loop, so the GNR theme never dies mid-song
+    audio.src = cur().src;
+    audio.loop = false;               // 'ended' advances to the next song on the tape
 
     audio.addEventListener('play', onPlay);
     audio.addEventListener('pause', onPause);
@@ -1110,8 +1139,9 @@
   }
 
   function swapTicker(on) {
+    var t = cur();
     tickerItems.forEach(function (el, i) {
-      if (on) el.innerHTML = GNR_TICKER[i % GNR_TICKER.length];
+      if (on) el.innerHTML = t.ticker[i % t.ticker.length];
       else el.innerHTML = tickerBackup[i];
     });
   }
@@ -1156,17 +1186,79 @@
     if (miniBtn) miniBtn.classList.toggle('is-paused', !on);
     if (cartPlay) {
       cartPlay.setAttribute('aria-label', on
-        ? "Pause Sweet Child O' Mine"
-        : "Play Sweet Child O' Mine by Guns N' Roses");
-      cartPlay.title = on ? 'Pause' : "Play Sweet Child O' Mine";
+        ? 'Pause ' + cur().spoken
+        : 'Play ' + cur().spoken + " by Guns N' Roses");
+      cartPlay.title = on ? 'Pause' : 'Play ' + cur().spoken;
     }
     if (miniBtn) miniBtn.setAttribute('aria-label', on ? 'Pause' : 'Play');
     if (cartLabel) cartLabel.textContent = on ? 'NOW PLAYING' : (hasStarted ? 'PAUSED' : 'NOW PLAYING');
-    if (cartTrackTxt && hasStarted) cartTrackTxt.textContent = GNR_TRACK;
+    if (cartTrackTxt && hasStarted) cartTrackTxt.textContent = cur().title;
     window.requestAnimationFrame(fitTrackTitle);
   }
 
+  /* ---------- playlist: every label that follows the current track ---------- */
+  function paintTrack() {
+    var t = cur();
+    if (cartTrackTxt && hasStarted) cartTrackTxt.textContent = t.title;
+    if (cartTag) cartTag.textContent = t.side + ' \u00b7 ' + t.title;
+    if (cartCover) cartCover.src = t.cover;
+    if (miniCover) miniCover.src = t.cover;
+    if (miniSong) miniSong.textContent = t.title;
+    if (mini) mini.setAttribute('aria-label', 'Now playing: ' + t.spoken + " by Guns N' Roses");
+    if (cartPlay) {
+      cartPlay.setAttribute('aria-label', isPlaying
+        ? 'Pause ' + t.spoken
+        : 'Play ' + t.spoken + " by Guns N' Roses");
+      cartPlay.title = isPlaying ? 'Pause' : 'Play ' + t.spoken;
+    }
+    window.requestAnimationFrame(fitTrackTitle);
+  }
+
+  // swap the source to another song on the tape
+  function switchTo(index) {
+    trackIndex = ((index % TRACKS.length) + TRACKS.length) % TRACKS.length;
+    var a = ensureAudio();
+    switchingTrack = true;              // a src swap fires 'pause': swallow that one
+    window.clearTimeout(switchTimer);
+    switchTimer = window.setTimeout(function () { switchingTrack = false; }, 2000);
+    a.src = cur().src;
+    if (cartProgFill) cartProgFill.style.width = '0%';
+    if (miniFill) miniFill.style.width = '0%';
+    if (cartTime) cartTime.textContent = '0:00';
+    if (cartProgTrack) cartProgTrack.setAttribute('aria-valuenow', '0');
+    paintTrack();
+    if (gnrActive) swapTicker(true);    // the ticker follows the song on the tape
+    return a;
+  }
+
+  // prev / next transport keys: always start the selected song
+  function skip(dir) {
+    var wasStarted = hasStarted;
+    var wasPaused = !audio || audio.paused;
+    var a = switchTo(trackIndex + dir);
+    if (!wasStarted) {
+      startPlayback(true);              // very first playback keeps the full boot flash
+    } else {
+      // resuming from pause gets the same short flash as the mini player
+      if (wasPaused && flashEl && !reduced) {
+        flashEl.classList.remove('is-boot', 'is-short');
+        void flashEl.offsetWidth;
+        flashEl.classList.add('is-short');
+      }
+      var p = a.play();
+      if (p && p.catch) {
+        p.catch(function () {
+          switchingTrack = false;
+          paintPlaying(false);
+          showToast('SYSTEM', 'Audio blocked', 'The browser refused playback. Press play once more.', true);
+        });
+      }
+    }
+  }
+
   function onPlay() {
+    switchingTrack = false;
+    window.clearTimeout(switchTimer);
     paintPlaying(true);
     enterGnrTheme();
     startBeat();
@@ -1175,6 +1267,7 @@
   }
 
   function onPause() {
+    if (switchingTrack) return;         // src swap, not a real pause: keep the stage alive
     paintPlaying(false);
     updateMini(); // keep the mini reachable so resume is one tap away
     // gentle gradient back to whatever theme was set before the song
@@ -1183,9 +1276,16 @@
   }
 
   function onEnded() {
-    // loop is on, so 'ended' only fires if loop is unsupported; treat like pause
-    paintPlaying(false);
-    leaveGnrTheme();
+    // the tape rolls on: when side A finishes, side B starts
+    var a = switchTo(trackIndex + 1);
+    var p = a.play();
+    if (p && p.catch) {
+      p.catch(function () {
+        switchingTrack = false;
+        paintPlaying(false);
+        leaveGnrTheme();
+      });
+    }
   }
 
   function onTimeUpdate() {
@@ -1265,6 +1365,14 @@
         a.pause();
       }
     });
+  }
+
+  // transport keys: previous / next song on the tape
+  if (cartPrev) {
+    cartPrev.addEventListener('click', function () { skip(-1); });
+  }
+  if (cartNext) {
+    cartNext.addEventListener('click', function () { skip(1); });
   }
 
   if (miniBtn) {
