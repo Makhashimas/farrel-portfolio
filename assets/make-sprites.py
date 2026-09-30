@@ -37,6 +37,16 @@ PAL = {
     'L': '#d8dae2',  # string
     'V': '#17151c',  # vinyl black
     'v': '#2b2833',  # vinyl groove
+    # night set: cyan signal + periwinkle metal
+    'T': '#3de8c4',  # cyan signal
+    't': '#1f8f7a',  # cyan dim
+    'P': '#7aa2f7',  # periwinkle
+    'p': '#46589e',  # periwinkle dim
+    # sunset set: warm orange + palm green
+    'Q': '#ff9a5c',  # sunset orange
+    'q': '#b35a24',  # sunset orange dim
+    'E': '#4ec27a',  # palm green
+    'e': '#2e7d4f',  # palm green dim
 }
 
 
@@ -351,6 +361,842 @@ def build_icons():
     return out
 
 
+# ------------------------------------------------------------------
+# night set: the sky over the bench - rocket, satellite, planet,
+# telescope, comet, chip, scope, stars
+# ------------------------------------------------------------------
+
+ROCKET = [
+    "......R......",
+    ".....RRR.....",
+    ".....RRR.....",
+    "....RRRRR....",
+    "....RRRRR....",
+    "...WWWWWWW...",
+    "...WWWWWWW...",
+    "...WTTTTTW...",
+    "...WTTTTTW...",
+    "...WWWWWWW...",
+    "...WWWWWWW...",
+    "...WWWWWWW...",
+    "...WWWWWWW...",
+    "..RWWWWWWWR..",
+    "..RRWWWWWRR..",
+    "..RRRWWWRRR..",
+    "..RRRWWWRRR..",
+    "...RWWWWWR...",
+    ".....GGG.....",
+    ".....GQG.....",
+    "....GQQQG....",
+    ".....GQG.....",
+    "......G......",
+]
+
+TELESCOPE = [
+    "..............TT........",
+    ".............TTTT.......",
+    "............BBBBBB......",
+    "..........BBBBBBBBB.....",
+    "........BBBBBBBBBBBB....",
+    "......BBBBBBBBBBBBB.....",
+    "....BBBBBBBBBBBBBB......",
+    "...GGGGGGGGGGGGG........",
+    "...BBBBBBBBBBBBB........",
+    "....BBBBBBBBB...........",
+    ".....BBBBBB.............",
+    "......A.A...............",
+    ".....A...A..............",
+    "....A.....A.............",
+    "...A.......A............",
+    "..A.........A...........",
+]
+
+LIGHTHOUSE = [
+    ".....GGGGG......",
+    "....GTTTTTG.....",
+    "....GGGGGGG.....",
+    ".....AAAAA......",
+    "....WWWWWWW.....",
+    "....WRRRRRW.....",
+    "....WRRRRRW.....",
+    "....WWWWWWW.....",
+    "....WRRRRRW.....",
+    "....WRRRRRW.....",
+    "....WWWWWWW.....",
+    "....WRRRRRW.....",
+    "....WWWWWWW.....",
+    "...WWWWWWWWW....",
+    "...WRRRRRRRW....",
+    "...WWWWWWWWW....",
+    "..WWWWWWWWWWW...",
+    "..WRRRRRRRRRW...",
+    "..WWWWWWWWWWW...",
+    ".WWWWWWWWWWWWW..",
+    ".WRRRRRRRRRRRW..",
+    ".WWWWWWWWWWWWW..",
+    "WWWWWWWWWWWWWWW.",
+    "WRRRRRRRRRRRRRW.",
+    "WWWWWWWWWWWWWWW.",
+]
+
+PALM = [
+    "........E.EE..........",
+    ".....EEEEEEEEEE.......",
+    "....EEEEEEEEEEEE......",
+    "...EEEEEEEEEEEEEE.....",
+    "....EEEEEEEEEEEE......",
+    "......EEEEEEEE........",
+    ".........EE...........",
+    ".........bb...........",
+    "..........bb..........",
+    "..........bb..........",
+    "...........bb.........",
+    "...........bb.........",
+    "............bb........",
+    "............bb........",
+    ".............bb.......",
+    ".............bb.......",
+    "..............bb......",
+    "..............bb......",
+    "...............bb.....",
+    "...............bb.....",
+    "................bb....",
+    "................bb....",
+    ".................bb...",
+]
+
+BOAT = [
+    "..........RR...........",
+    "..........b............",
+    "..........bb...........",
+    "..........bbb..........",
+    "..........bbbb.........",
+    "..........bbbbb........",
+    "..........bbbbbb.......",
+    "..........bWWWWWWW.....",
+    "..........bWWWWWWWW....",
+    "..........bWWWWWWWWW...",
+    "..........bWWWWWWWWWW..",
+    "..........bWWWWWWWWWWW.",
+    "..........bWWWWWWWWWWW.",
+    "..........bWWWWWWWWWWW.",
+    ".RRRRRRRRRRRRRRRRRRRRR.",
+    "RRRRRRRRRRRRRRRRRRRRRRR",
+    "GGGGGGGGGGGGGGGGGGGGGGG",
+]
+
+CRAB = [
+    ".....R.........R......",
+    "....RRR.......RRR.....",
+    "....RRR.......RRR.....",
+    "...RRRR.......RRRR....",
+    "...RRRRR.....RRRRR....",
+    "....RRRRRRRRRRRRR.....",
+    "..RRWWRRRRRRRRWWRRR...",
+    ".RRRRRRRRRRRRRRRRRRR..",
+    ".RRRRRRRRRRRRRRRRRRR..",
+    "..RRRRRRRRRRRRRRRRR...",
+    "..R.RRRRRRRRRRRRR.R...",
+    "..R..RRR..RRR..RRR.R..",
+    ".....RR.....RR....R...",
+]
+
+GULL = [
+    "...WW..........WW...",
+    "..WWWW........WWWW..",
+    ".WWWWWW......WWWWWW.",
+    "..WWWWWW....WWWWWW..",
+    "...WWWWWWWWWWWWWW...",
+    ".....WWWWWWWWWW.....",
+    ".........WW.........",
+    ".........WW.........",
+]
+
+
+def build_satellite():
+    W, H = 25, 15
+    g = Grid(W, H)
+    cx = 12
+    # dish
+    g.rect(cx - 1, 1, cx + 1, 1, 'A')
+    g.rect(cx - 2, 2, cx + 2, 2, 'A')
+    g.px(cx - 2, 3, 'A')
+    g.px(cx + 2, 3, 'A')
+    g.px(cx, 3, 'A')
+    g.px(cx, 4, 'a')
+    # body
+    g.rect(8, 5, 16, 10, 'B')
+    g.rect(9, 6, 15, 9, 'N')
+    g.rect(10, 7, 14, 8, 'T')
+    # solar panels
+    g.rect(1, 6, 6, 9, 'P')
+    g.rect(18, 6, 23, 9, 'P')
+    for x in range(1, 7):
+        for y in range(6, 10):
+            if (x + y) % 2 == 0:
+                g.px(x, y, 'p')
+    for x in range(18, 24):
+        for y in range(6, 10):
+            if (x + y) % 2 == 0:
+                g.px(x, y, 'p')
+    # thruster + glow
+    g.rect(11, 11, 13, 12, 'a')
+    g.px(12, 13, 'G')
+    return g
+
+
+def build_planet():
+    W, H = 26, 20
+    cx, cy = 13, 10
+    g = Grid(W, H)
+    # ring: upper arc sits behind the planet, lower arc is redrawn on top
+    for x in range(W):
+        dx = (x - cx) / 11.6
+        if abs(dx) <= 1:
+            dy = 2.9 * math.sqrt(1 - dx * dx)
+            g.px(x, round(cy - dy), 'G')
+            g.px(x, round(cy + dy), 'G')
+    g.disc(cx, cy, 8.2, 'P')
+    for (x, y), ch in list(g.g.items()):
+        if ch == 'P' and (x - cx) + (y - cy) > 6:
+            g.px(x, y, 'p')
+    g.disc(10, 7, 1.4, 'p')
+    g.disc(16, 11, 1.8, 'p')
+    for x in range(W):
+        dx = (x - cx) / 11.6
+        if abs(dx) <= .92:
+            dy = 2.9 * math.sqrt(1 - dx * dx)
+            g.px(x, round(cy + dy), 'G')
+            if abs(dx) < .7:
+                g.px(x, round(cy + dy) + 1, 'G')
+    g.disc(22, 4, 1.6, 'W')
+    return g
+
+
+def build_comet():
+    W, H = 27, 14
+    g = Grid(W, H)
+    for i in range(18):
+        x = 9 + i
+        t = max(1, 5 - i // 4)
+        col = 'G' if i < 5 else ('Q' if i < 11 else 'q')
+        y0 = 7 - t // 2
+        g.rect(x, y0, x, y0 + t - 1, col)
+    g.disc(5, 7, 1.6, 'W')
+    for dx, dy in ((0, -1), (0, -2), (0, -3), (0, 1), (0, 2), (0, 3),
+                   (-1, 0), (-2, 0), (-3, 0), (1, 0), (2, 0), (3, 0)):
+        g.px(5 + dx, 7 + dy, 'G')
+    g.px(5, 7, 'G')
+    return g
+
+
+def build_chip():
+    W = H = 22
+    g = Grid(W, H)
+    for y in (6, 7, 10, 11, 14, 15):
+        g.rect(1, y, 3, y, 'A')
+        g.rect(18, y, 20, y, 'A')
+    for x in (6, 7, 10, 11, 14, 15):
+        g.rect(x, 1, x, 3, 'A')
+        g.rect(x, 18, x, 20, 'A')
+    g.rect(4, 4, 17, 17, 'B')
+    g.rect(4, 4, 17, 4, 'b')
+    g.disc(6, 6, 1.3, 'a')
+    g.rect(8, 8, 13, 13, 'N')
+    g.rect(9, 10, 12, 10, 'T')
+    g.rect(10, 9, 10, 12, 'T')
+    g.rect(12, 11, 12, 12, 'T')
+    for (x, y) in ((8, 8), (13, 8), (8, 13), (13, 13)):
+        g.px(x, y, 'G')
+    return g
+
+
+def build_scope():
+    W, H = 24, 20
+    g = Grid(W, H)
+    g.rect(1, 2, 22, 17, 'B')
+    g.rect(1, 2, 22, 2, 'b')
+    g.rect(2, 4, 15, 15, 'a')
+    g.rect(3, 5, 14, 14, 'N')
+    for x in range(3, 15):
+        y = 9.5 - 3.4 * math.sin((x - 3) / 11.0 * 2 * math.pi)
+        g.px(x, round(y), 'T')
+    for (x, y) in ((5, 6), (12, 13), (6, 12)):
+        g.px(x, y, 't')
+    g.disc(19, 7, 2.3, 'G')
+    g.disc(19, 13, 2.3, 'g')
+    g.px(20, 3, 'T')
+    g.rect(2, 18, 6, 18, 'a')
+    g.rect(17, 18, 21, 18, 'a')
+    return g
+
+
+def build_stars():
+    W, H = 22, 20
+    g = Grid(W, H)
+
+    def star(cx, cy, r, col, core):
+        for i in range(1, r + 1):
+            g.px(cx - i, cy, col)
+            g.px(cx + i, cy, col)
+            g.px(cx, cy - i, col)
+            g.px(cx, cy + i, col)
+        g.px(cx, cy, core)
+        g.px(cx + 1, cy + 1, col)
+        g.px(cx - 1, cy - 1, col)
+
+    star(11, 9, 4, 'W', 'G')
+    star(4, 4, 2, 'T', 'T')
+    star(17, 5, 2, 'G', 'G')
+    for (x, y, c) in ((6, 16, 'T'), (16, 15, 'W'), (20, 11, 'G'), (2, 12, 't')):
+        g.px(x, y, c)
+    return g
+
+
+def build_antenna():
+    W, H = 21, 26
+    g = Grid(W, H)
+    cx = 10
+    # mast
+    g.rect(cx, 4, cx, 23, 'A')
+    # crossbars
+    g.rect(cx - 5, 8, cx + 5, 8, 'A')
+    g.rect(cx - 4, 13, cx + 4, 13, 'A')
+    g.rect(cx - 3, 18, cx + 3, 18, 'A')
+    # diagonal braces
+    for i, (y0, y1) in enumerate(((8, 13), (13, 18), (18, 23))):
+        g.px(cx - 5 + i, y0 + 2, 'a')
+        g.px(cx - 4 + i, y0 + 3, 'a')
+        g.px(cx + 5 - i, y0 + 2, 'a')
+        g.px(cx + 4 - i, y0 + 3, 'a')
+    # beacon
+    g.disc(cx, 2, 1.8, 'R')
+    # feet
+    g.rect(cx - 6, 24, cx + 6, 24, 'a')
+    return g
+
+
+def build_cassette():
+    W, H = 22, 14
+    g = Grid(W, H)
+    g.rect(0, 0, 21, 12, 'C')
+    g.rect(0, 0, 21, 0, 'c')
+    g.rect(0, 12, 21, 12, 'c')
+    # label
+    g.rect(2, 2, 19, 4, 'W')
+    g.rect(3, 3, 9, 3, 'g')
+    g.rect(3, 4, 7, 4, 'g')
+    # window + reels
+    g.rect(3, 6, 18, 10, 'N')
+    g.disc(7, 8, 2.4, 'K')
+    g.disc(7, 8, 1.0, 'G')
+    g.disc(15, 8, 2.4, 'K')
+    g.disc(15, 8, 1.0, 'G')
+    g.px(1, 6, 'a')
+    g.px(20, 6, 'a')
+    return g
+
+
+def build_signal():
+    W, H = 22, 16
+    g = Grid(W, H)
+    # broadcast tower base + arcs radiating up-right
+    g.rect(3, 12, 5, 15, 'a')
+    g.rect(4, 8, 4, 11, 'A')
+    g.px(4, 7, 'A')
+    g.disc(4, 5, 1.4, 'G')
+    for r, col in ((3.5, 'T'), (6.5, 't'), (9.5, 'T'), (12.5, 't')):
+        for ang in range(-42, 43, 4):
+            x = 4 + r * math.cos(math.radians(ang))
+            y = 5 - r * math.sin(math.radians(ang))
+            g.px(round(x), round(y), col)
+    return g
+
+
+def build_headphones():
+    W, H = 18, 16
+    g = Grid(W, H)
+    for ang in range(15, 166, 3):
+        x = 8.5 + 7.6 * math.cos(math.radians(ang))
+        y = 11 - 7.6 * math.sin(math.radians(ang))
+        g.px(round(x), round(y), 'H')
+        g.px(round(x), round(y) - 1, 'h')
+    g.rect(0, 7, 3, 14, 'B')
+    g.rect(14, 7, 17, 14, 'B')
+    g.rect(1, 8, 2, 13, 'G')
+    g.rect(15, 8, 16, 13, 'G')
+    return g
+
+
+def build_mic():
+    W, H = 13, 24
+    g = Grid(W, H)
+    # head
+    g.disc(6, 5.5, 4.4, 'A')
+    g.rect(2, 4, 10, 7, 'A')
+    for x in range(2, 11):
+        for y in range(2, 9):
+            if (x + y) % 2 == 0:
+                g.px(x, y, 'a')
+    g.rect(3, 9, 9, 10, 'a')
+    # stem
+    g.rect(5, 10, 7, 20, 'B')
+    g.rect(5, 10, 5, 20, 'b')
+    # base
+    g.rect(2, 21, 10, 22, 'B')
+    g.rect(1, 23, 11, 23, 'b')
+    return g
+
+
+def build_ticket():
+    W, H = 24, 13
+    g = Grid(W, H)
+    g.rect(0, 1, 23, 11, 'W')
+    g.rect(0, 1, 23, 1, 'w')
+    g.rect(0, 11, 23, 11, 'w')
+    # perforation
+    for y in range(2, 11):
+        if y % 2 == 0:
+            g.px(17, y, 'w')
+    # star row
+    for cx in (4, 8, 12):
+        for i in range(1, 3):
+            g.px(cx - i, 5, 'G')
+            g.px(cx + i, 5, 'G')
+            g.px(cx, 5 - i, 'G')
+            g.px(cx, 5 + i, 'G')
+        g.px(cx, 5, 'G')
+    g.rect(3, 8, 13, 8, 'r')
+    g.rect(19, 4, 21, 4, 'R')
+    g.rect(19, 7, 21, 7, 'R')
+    return g
+
+
+def build_pick():
+    W, H = 16, 20
+    g = Grid(W, H)
+    for y in range(H):
+        t = y / (H - 1.0)
+        hw = 6.6 * (1 - t * t * .92)
+        for x in range(W):
+            if abs(x - 7.5) <= hw:
+                col = 'R'
+                if abs(x - 7.5) > hw - 1.4:
+                    col = 'r'
+                if y > 14:
+                    col = 'W' if abs(x - 7.5) < hw - .5 else col
+                g.px(x, y, col)
+    g.rect(4, 7, 11, 7, 'G')
+    g.rect(5, 9, 10, 9, 'G')
+    return g
+
+
+LIGHTER = [
+    "......Q......",
+    ".....QGQ.....",
+    ".....QGQ.....",
+    "......Q......",
+    ".....AAA.....",
+    ".....AAA.....",
+    "....AAAAA....",
+    "....AAAAA....",
+    "...ABBBBBA...",
+    "...ABBBBBA...",
+    "...ABGGGBA...",
+    "...ABGGGBA...",
+    "...ABBBBBA...",
+    "...ABRRRBA...",
+    "...ABRRRBA...",
+    "...ABBBBBA...",
+    "...ABBBBBA...",
+    "....AAAAA....",
+]
+
+
+# ------------------------------------------------------------------
+# sunset set: the shore at golden hour - palm, boat, lighthouse,
+# gull, fire, umbrella, crab, shell
+# ------------------------------------------------------------------
+
+def build_fire():
+    W, H = 20, 20
+    g = Grid(W, H)
+    g.rect(2, 15, 17, 17, 'b')
+    g.rect(5, 13, 14, 15, 'b')
+    g.rect(2, 15, 17, 15, 'a')
+    for y in range(3, 14):
+        hw = max(1, int((y - 2) * .62))
+        g.rect(10 - hw, y, 10 + hw, y, 'Q')
+    for y in range(6, 14):
+        hw = int((y - 5) * .45)
+        if hw >= 1:
+            g.rect(10 - hw, y, 10 + hw, y, 'G')
+    g.rect(10, 12, 10, 13, 'K')
+    for (x, y, c) in ((10, 1, 'G'), (13, 3, 'G'), (7, 4, 'Q'), (16, 8, 'G'), (4, 9, 'Q')):
+        g.px(x, y, c)
+    return g
+
+
+def build_umbrella():
+    W, H = 26, 22
+    cx = 12
+    g = Grid(W, H)
+    for x in range(W):
+        dx = x - cx
+        if abs(dx) <= 12:
+            dy = math.sqrt(max(0.0, 144 - dx * dx)) * .8
+            ytop = round(12 - dy)
+            for y in range(ytop, 12):
+                col = 'R' if ((x + 2) // 3) % 2 == 0 else 'W'
+                g.px(x, y, col)
+    for x in range(W):
+        if abs(x - cx) <= 12 and x % 4 != 3:
+            g.px(x, 12, 'W' if ((x + 2) // 3) % 2 == 0 else 'R')
+    g.px(cx, 0, 'G')
+    g.px(cx + 1, 0, 'G')
+    g.rect(cx, 1, cx, 21, 'a')
+    g.rect(cx - 2, 21, cx + 3, 21, 'a')
+    return g
+
+
+def build_shell():
+    W, H = 20, 18
+    cx, cy = 10, 17
+    g = Grid(W, H)
+    for y in range(H):
+        for x in range(W):
+            d = math.hypot(x - cx, y - cy)
+            if d <= 9.2 and y <= cy:
+                ang = math.degrees(math.atan2(cy - y, x - cx))
+                wedge = int(ang // 22.5) % 2
+                col = 'W' if wedge == 0 else 'w'
+                if d > 8.1:
+                    col = 'q'
+                g.px(x, y, col)
+    for ang in (22.5, 67.5, 112.5, 157.5):
+        for d in range(3, 9):
+            x = cx + d * math.cos(math.radians(ang))
+            y = cy - d * math.sin(math.radians(ang))
+            g.px(round(x), round(y), 'w')
+    g.rect(cx - 1, cy, cx + 1, cy, 'q')
+    return g
+
+
+def build_surfboard():
+    W, H = 12, 26
+    g = Grid(W, H)
+    cx = 5.5
+    for y in range(H):
+        t = y / (H - 1.0)
+        hw = 4.4 * math.sin(math.pi * (0.08 + t * 0.84))
+        for x in range(W):
+            if abs(x - cx) <= hw:
+                col = 'W'
+                if abs(x - cx) > hw - 1.2:
+                    col = 'q'
+                g.px(x, y, col)
+    for y in range(4, H - 4):
+        g.px(5, y, 'R')
+    g.rect(3, 10, 7, 10, 'R')
+    return g
+
+
+def build_beachball():
+    W = H = 20
+    cx, cy = 9.5, 9.5
+    g = Grid(W, H)
+    g.disc(cx, cy, 9.0, 'W')
+    for y in range(H):
+        for x in range(W):
+            d = math.hypot(x - cx, y - cy)
+            if d <= 9.0:
+                ang = (math.degrees(math.atan2(y - cy, x - cx)) + 360) % 360
+                seg = int(ang // 45) % 3
+                if seg == 0:
+                    g.px(x, y, 'R')
+                elif seg == 1:
+                    g.px(x, y, 'Q')
+    g.disc(cx - 2, cy - 2, 1.4, 'G')
+    return g
+
+
+def build_bucket():
+    W, H = 18, 18
+    g = Grid(W, H)
+    g.rect(2, 5, 15, 16, 'R')
+    g.rect(2, 5, 15, 5, 'r')
+    g.rect(2, 16, 15, 16, 'r')
+    for x in range(3, 15, 3):
+        g.rect(x, 8, x, 14, 'r')
+    for ang in range(0, 181, 6):
+        x = 8.5 + 6.8 * math.cos(math.radians(ang))
+        y = 6 - 5.4 * math.sin(math.radians(ang))
+        g.px(round(x), round(y), 'A')
+    g.px(1, 4, 'A')
+    g.px(16, 4, 'A')
+    return g
+
+
+def build_starfish():
+    W = H = 21
+    cx, cy = 10, 10.5
+    g = Grid(W, H)
+    for ang in range(0, 360, 2):
+        a = math.radians(ang)
+        r = 9.2 if (ang % 72) < 36 else 4.2
+        x = cx + r * math.cos(a)
+        y = cy + r * math.sin(a)
+        g.px(round(x), round(y), 'Q')
+    g.disc(cx, cy, 3.4, 'Q')
+    for ang in range(36, 360, 72):
+        a = math.radians(ang)
+        x = cx + 5.4 * math.cos(a)
+        y = cy + 5.4 * math.sin(a)
+        g.disc(x, y, 1.2, 'q')
+    g.disc(cx, cy, 1.2, 'G')
+    return g
+
+
+# ------------------------------------------------------------------
+# wide-screen extras: four more props per theme for the outer slots
+# ------------------------------------------------------------------
+
+UFO = [
+    "........TT........",
+    "......TTTTTT......",
+    ".....TTTTTTTT.....",
+    "....TTTTTTTTTT....",
+    "..TTTTTTTTTTTTTT..",
+    ".TTTTTTTTTTTTTTTT.",
+    "..AAAAAAAAAAAAAA..",
+    "...AAAATTTTAAAA...",
+    "....AAATTTTAAA....",
+    ".....AAAAAAA......",
+    ".......T..T.......",
+]
+
+MOON = [
+    ".....SSS.....",
+    "...SSSS......",
+    "..SSSS.......",
+    ".SSSS........",
+    ".SSS.........",
+    "SSS..........",
+    "SSS..........",
+    "SSS..........",
+    ".SSS.........",
+    ".SSSS........",
+    "..SSSS.......",
+    "...SSSS......",
+    ".....SSS.....",
+]
+
+FLOPPY = [
+    "...AAAAAAAA....",
+    "..ABBBBBBBBA...",
+    "..ABssssssBA...",
+    "..ABssssssBA...",
+    "..ABBBBBBBBA...",
+    "..AAAAAAAAAA...",
+    "..AWWWWWWWWA...",
+    "..AWWWWWWWWA...",
+    "..AWWWWWWWWA...",
+    "..AWWWWWWWWA...",
+    "..AWWWWWWWWA...",
+    "..AAAAAAAAAA...",
+]
+
+GAMEPAD = [
+    "...AAAAAAAAAAAA...",
+    "..ABBBBBBBBBBBBA..",
+    ".ABBBBBBBBBBBBBBA.",
+    ".AB.A..BB..A..BBA.",
+    ".AB.A..BB..A..BBA.",
+    ".AB.A..BB..A..BBA.",
+    ".ABBBBBBBBBBBBBBA.",
+    "..ABBBBBBBBBBBBA..",
+    "...AAAAAAAAAAAA...",
+]
+
+SUN = [
+    "......G......",
+    "..G...G...G..",
+    "...G.GGG.G...",
+    "....GGGGG....",
+    ".GGGGGGGGGGG.",
+    "....GGGGG....",
+    "...G.GGG.G...",
+    "..G...G...G..",
+    "......G......",
+]
+
+DRINK = [
+    ".....W......",
+    ".....W......",
+    "..WWWWWWWW..",
+    "..WQQQQQQW..",
+    "..WQQQQQQW..",
+    "..WQQQQQQW..",
+    "...WQQQQW...",
+    "...WQQQQW...",
+    "....WQQW....",
+    "....WQQW....",
+    ".....WW.....",
+]
+
+FLIPFLOP = [
+    "...EEEEEE...",
+    "..EEEEEEEE..",
+    ".EEEEEEEEEE.",
+    ".EEE.EE.EEE.",
+    ".EE..EE..EE.",
+    ".EE..EE..EE.",
+    ".EEE.EE.EEE.",
+    ".EEEEEEEEEE.",
+    "..EEEEEEEE..",
+    "...EEEEEE...",
+]
+
+ICECREAM = [
+    "..WWWWWW..",
+    ".WWWWWWWW.",
+    "WWWWWWWWWW",
+    ".QQQQQQQQ.",
+    "..QQQQQQ..",
+    "...QQQQ...",
+    "....QQ....",
+    "....QQ....",
+    ".....Q....",
+]
+
+BOOTS = [
+    ".BBBB...BBBB.",
+    ".BBBB...BBBB.",
+    ".BBBB...BBBB.",
+    ".BBBB...BBBB.",
+    ".BBBB...BBBB.",
+    ".BBBBB.BBBBB.",
+    "BBBBBBBBBBBBB",
+    "BBBBBB.BBBBBB",
+    "RRRRRR.RRRRRR",
+    "RRRRRR.RRRRRR",
+]
+
+STAR = [
+    "......G......",
+    "......G......",
+    ".....GGG.....",
+    "GGGGGGGGGGGGG",
+    ".GGGGGGGGGGG.",
+    "..GGGGGGGGG..",
+    "...GGG.GGG...",
+    "..GGG...GGG..",
+    ".GG.......GG.",
+]
+
+SPEAKER = [
+    "..BBBBBBBBBB..",
+    ".BBBBBBBBBBBB.",
+    ".BBAAAAAAAAAB.",
+    ".BAAAKKKKKKAAB.",
+    ".BAKK.....KKAB.",
+    ".BAK.......KAB.",
+    ".BAKK.....KKAB.",
+    ".BAAAKKKKKKAAB.",
+    ".BBAAAAAAAAAB.",
+    ".BBBBBBBBBBBB.",
+    "..BBBBBBBBBB..",
+]
+
+WRISTBAND = [
+    "..GGGGGGGGGG..",
+    ".G..........G.",
+    "GG..........GG",
+    "G.RRRRRRRRRR.G",
+    "G.RWWWWWWWWR.G",
+    "G.RRRRRRRRRR.G",
+    "GG..........GG",
+    ".G..........G.",
+    "..GGGGGGGGGG..",
+]
+
+ROBOT = [
+    "....TT....",
+    "..AAAAAA..",
+    ".AAAAAAAA.",
+    ".AKKAAKKA.",
+    ".AAAAAAAA.",
+    "..TTTTTT..",
+    ".TTTTTTTT.",
+    ".TAATTAAT.",
+    ".TTTTTTTT.",
+    "..T....T..",
+    "..A....A..",
+    "..AA..AA..",
+]
+
+CRT = [
+    "..AAAAAAAAAA..",
+    "..ABBBBBBBBA..",
+    "..ABTTTTTTBA..",
+    "..ABTTTTTTBA..",
+    "..ABTTTTTTBA..",
+    "..ABBBBBBBBA..",
+    "..AAAAAAAAAA..",
+    "...A......A...",
+    "..AAAA..AAAA..",
+    "..A..A..A..A..",
+]
+
+COCONUT = [
+    "......W.....",
+    "......W.....",
+    "...bbbbbb...",
+    "..bbbbbbbb..",
+    ".bbbbbbbbbb.",
+    ".bbbbbbbbbb.",
+    "..bbbbbbbb..",
+    "...bbbbbb...",
+]
+
+SUNHAT = [
+    "....WWWW....",
+    "...WWWWWW...",
+    "..WWWWWWWW..",
+    "..RRRRRRRR..",
+    ".WWWWWWWWWW.",
+    "WWWWWWWWWWWW",
+    ".wwwwwwwwww.",
+]
+
+POSTER = [
+    "RRRRRRRRRRRRRR",
+    "RWWWWWWWWWWWWR",
+    "RWWWWGGWWWWWWR",
+    "RWWWGGGGWWWWWR",
+    "RWWGGGGGGWWWWR",
+    "RWWWWGGWWWWWWR",
+    "RWWWWGGWWWWWWR",
+    "RWWWWGGWWWWWWR",
+    "RWWWWWWWWWWWWR",
+    "RWWWWWWWWWWWWR",
+    "RWWWWWWWWWWWWR",
+    "RWWWWWWWWWWWWR",
+    "RRRRRRRRRRRRRR",
+]
+
+BADGE = [
+    "....LL.....",
+    "..LLLLLL...",
+    "..WWWWWW...",
+    ".WWWWWWWW..",
+    ".WGGGGGGW..",
+    ".WGGGGGGW..",
+    ".WWWWWWWW..",
+    "..WWWWWW...",
+]
+
+
 SPRITES = {
     'skull': outline(from_ascii(SKULL)),
     'guitar': outline(from_ascii(GUITAR)),
@@ -363,6 +1209,59 @@ SPRITES = {
     'reel': build_reel(),
     'screw': build_screw(),
     'jack': build_jack(),
+    'mic': outline(build_mic()),
+    'ticket': outline(build_ticket()),
+    'pick': outline(build_pick()),
+    'lighter': outline(from_ascii(LIGHTER)),
+    # night set
+    'rocket': outline(from_ascii(ROCKET)),
+    'satellite': outline(build_satellite()),
+    'planet': outline(build_planet()),
+    'telescope': outline(from_ascii(TELESCOPE)),
+    'comet': outline(build_comet()),
+    'chip': outline(build_chip()),
+    'scope': outline(build_scope()),
+    'stars': outline(build_stars()),
+    'antenna': outline(build_antenna()),
+    'cassette': outline(build_cassette()),
+    'signal': outline(build_signal()),
+    'headphones': outline(build_headphones()),
+    # sunset set
+    'palm': outline(from_ascii(PALM)),
+    'boat': outline(from_ascii(BOAT)),
+    'lighthouse': outline(from_ascii(LIGHTHOUSE)),
+    'gull': outline(from_ascii(GULL)),
+    'fire': outline(build_fire()),
+    'umbrella': outline(build_umbrella()),
+    'crab': outline(from_ascii(CRAB)),
+    'shell': outline(build_shell()),
+    'surfboard': outline(build_surfboard()),
+    'beachball': outline(build_beachball()),
+    'bucket': outline(build_bucket()),
+    'starfish': outline(build_starfish()),
+    # wide-screen extra set: four more props per theme for the outer slots
+    # (13-16) that fill the pockets a 1920 window leaves around the copy
+    # and the deck
+    'ufo': outline(from_ascii(UFO)),
+    'moon': outline(from_ascii(MOON)),
+    'floppy': outline(from_ascii(FLOPPY)),
+    'gamepad': outline(from_ascii(GAMEPAD)),
+    'sun': outline(from_ascii(SUN)),
+    'drink': outline(from_ascii(DRINK)),
+    'flipflop': outline(from_ascii(FLIPFLOP)),
+    'icecream': outline(from_ascii(ICECREAM)),
+    'boots': outline(from_ascii(BOOTS)),
+    'star': outline(from_ascii(STAR)),
+    'speaker': outline(from_ascii(SPEAKER)),
+    'wristband': outline(from_ascii(WRISTBAND)),
+    # two more per theme: fill the pockets above the deck and under the
+    # status banner on very wide screens
+    'robot': outline(from_ascii(ROBOT)),
+    'crt': outline(from_ascii(CRT)),
+    'coconut': outline(from_ascii(COCONUT)),
+    'sunhat': outline(from_ascii(SUNHAT)),
+    'poster': outline(from_ascii(POSTER)),
+    'badge': outline(from_ascii(BADGE)),
 }
 
 for k, v in build_icons().items():
