@@ -1429,6 +1429,24 @@
   window.addEventListener('scroll', updateMini, { passive: true });
   window.addEventListener('resize', updateMini);
 
+  /* ==========================================================
+     15. QUEST CARDS -> PROJECT DETAIL PAGES
+     Clicking anywhere on a card opens its detail page, except
+     on the links inside it (which already point there) or when
+     the user is selecting text.
+     ========================================================== */
+  var quests = document.querySelectorAll('.quest[data-project]');
+  for (var qi = 0; qi < quests.length; qi++) {
+    (function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;
+        var sel = window.getSelection ? String(window.getSelection()) : '';
+        if (sel.length) return;
+        window.location.href = 'project.html?p=' + encodeURIComponent(card.getAttribute('data-project'));
+      });
+    })(quests[qi]);
+  }
+
   // pause the audio when the tab is hidden for a long time? No: keep playing,
   // it is the user's music. But if the page unloads nothing to clean up.
 

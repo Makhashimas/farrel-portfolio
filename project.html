@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project | Farrel Fayzul Haqqi</title>
+<meta name="description" content="Project detail. Electrical engineering builds by Farrel Fayzul Haqqi.">
+<meta name="theme-color" content="#0a0e27" id="themeColor">
+<script>
+  try { if (localStorage.getItem('farrel-theme') === 'sunset') document.documentElement.setAttribute('data-theme', 'sunset'); } catch (e) {}
+</script>
+<meta name="author" content="Farrel Fayzul Haqqi">
+<meta name="robots" content="index, follow">
+
+<!-- Icons -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<link rel="preload" href="assets/fonts/press-start-2p-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/vt323-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="body--proj">
+
+<!-- ============ STARFIELD BACKDROP ============ -->
+<div class="sky__grad" aria-hidden="true"></div>
+<div class="sky__scene" aria-hidden="true">
+  <div class="sky__hills"></div>
+</div>
+<div class="sky__moonwrap">
+  <div class="sky__sunrays" aria-hidden="true"></div>
+  <button class="sky__moon" id="moonBtn" type="button" aria-label="Switch to sunset theme" aria-pressed="false" title="Sunset mode"></button>
+</div>
+<div class="crt" aria-hidden="true"></div>
+
+<!-- ============ TASKBAR NAV ============ -->
+<header class="bar">
+  <div class="bar__brand">
+    <span class="bar__logo" aria-hidden="true"></span>
+    <span class="bar__name">FARREL.OS</span>
+  </div>
+  <nav class="bar__nav" aria-label="Main">
+    <a href="index.html#about" class="bar__link"><span class="lbl-full">PROFILE</span><span class="lbl-short">ABOUT</span></a>
+    <a href="index.html#projects" class="bar__link"><span class="lbl-full">PROJECTS</span><span class="lbl-short">WORK</span></a>
+    <a href="index.html#now" class="bar__link"><span class="lbl-full">NOW</span><span class="lbl-short">NOW</span></a>
+    <a href="index.html#skills" class="bar__link"><span class="lbl-full">SKILLS</span><span class="lbl-short">SKILLS</span></a>
+    <a href="index.html#awards" class="bar__link"><span class="lbl-full">AWARDS</span><span class="lbl-short">WINS</span></a>
+    <a href="index.html#contact" class="bar__link"><span class="lbl-full">CONTACT</span><span class="lbl-short">MAIL</span></a>
+  </nav>
+  <div class="bar__clock" id="clock">--:--</div>
+</header>
+
+<main class="proj" id="projRoot">
+  <!-- rendered by project.js from projects-data.js -->
+</main>
+
+<footer class="foot">
+  <div class="foot__grid">
+    <div class="foot__col">
+      <p class="foot__h">FARREL.OS</p>
+      <p class="foot__p">Farrel Fayzul Haqqi<br>Surabaya, Indonesia</p>
+    </div>
+    <div class="foot__col">
+      <p class="foot__h">NAVIGATE</p>
+      <ul class="foot__links">
+        <li><a href="index.html#about">Profile</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="foot__col">
+      <p class="foot__h">CONNECT</p>
+      <ul class="foot__links">
+        <li><a href="https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://github.com/makhashimas" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="foot__base">&copy; 2026 Farrel Fayzul Haqqi</p>
+</footer>
+
+<script src="projects-data.js"></script>
+<script src="project.js"></script>
+<script>
+  (function () {
+    var clock = document.getElementById('clock');
+    function tick() {
+      if (!clock) return;
+      var d = new Date();
+      clock.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    }
+    tick();
+    setInterval(tick, 15000);
+  })();
+</script>
+</body>
+</html>
