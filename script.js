@@ -1471,18 +1471,18 @@
     var mouseY = fluidH / 2;
     var targetX = mouseX;
     var targetY = mouseY;
-    var maxParticles = 180;
+    var maxParticles = 300;
 
     function Particle(x, y) {
       this.x = x;
       this.y = y;
-      this.vx = (Math.random() - 0.5) * 3;
-      this.vy = (Math.random() - 0.5) * 3;
+      this.vx = (Math.random() - 0.5) * 2;
+      this.vy = (Math.random() - 0.5) * 2;
       this.life = 1.0;
-      this.decay = 0.008 + Math.random() * 0.012;
+      this.decay = 0.002 + Math.random() * 0.003;
       this.char = ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
-      this.size = 16 + Math.random() * 16;
-      this.depth = 0.4 + Math.random() * 0.6;
+      this.size = 24 + Math.random() * 12;
+      this.depth = 0.5 + Math.random() * 0.5;
     }
 
     Particle.prototype.update = function () {
@@ -1521,17 +1521,16 @@
       targetX += (mouseX - targetX) * 0.1;
       targetY += (mouseY - targetY) * 0.1;
 
-      // spawn particles
-      if (now - lastSpawn > 12 && particles.length < maxParticles) {
+      // spawn particles every frame for dense trail
+      if (particles.length < maxParticles) {
         particles.push(new Particle(targetX, targetY));
-        lastSpawn = now;
       }
 
       // update & cull
       particles = particles.filter(function (p) { return p.update(); });
 
-      // fade trail (instead of clearRect for trail persistence)
-      fluidCtx.fillStyle = 'rgba(11,16,33,0.05)';
+      // very slow fade for long-lasting trail
+      fluidCtx.fillStyle = 'rgba(11,16,33,0.02)';
       fluidCtx.fillRect(0, 0, fluidW, fluidH);
 
       // draw
