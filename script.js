@@ -1458,7 +1458,7 @@
   if (!reduced) {
     var fluidCanvas = document.createElement('canvas');
     fluidCanvas.id = 'fluidCanvas';
-    fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0.36;mix-blend-mode:screen;';
+    fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.2;mix-blend-mode:screen;';
     document.body.appendChild(fluidCanvas);
 
     var fluidCtx = fluidCanvas.getContext('2d');
@@ -1492,9 +1492,11 @@
       if (charSwapTimer > 48) {
         charSwapTimer = 0;
         for (var i = 0; i < trail.length; i++) {
-          if (trail[i].charIndices.length && Math.random() > 0.7) {
-            var idx = Math.floor(Math.random() * trail[i].charIndices.length);
-            trail[i].charIndices[idx] = Math.floor(Math.random() * ASCII_CHARS.length);
+          if (trail[i].charIndices.length) {
+            // swap all characters every cycle
+            for (var j = 0; j < trail[i].charIndices.length; j++) {
+              trail[i].charIndices[j] = Math.floor(Math.random() * ASCII_CHARS.length);
+            }
           }
         }
       }
