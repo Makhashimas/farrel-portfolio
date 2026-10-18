@@ -1458,7 +1458,7 @@
   if (!reduced) {
     var fluidCanvas = document.createElement('canvas');
     fluidCanvas.id = 'fluidCanvas';
-    fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;opacity:0.6;mix-blend-mode:screen;';
+    fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0.36;mix-blend-mode:screen;';
     document.body.appendChild(fluidCanvas);
 
     var fluidCtx = fluidCanvas.getContext('2d');
@@ -1472,6 +1472,7 @@
     var smoothX = mouseX;
     var smoothY = mouseY;
     var maxTrailLength = 40;
+    var charSwapTimer = 0;
 
     function fluidTick() {
       // slow smooth follow
@@ -1482,8 +1483,20 @@
       var lastPt = trail[0];
       var dist = lastPt ? Math.sqrt(Math.pow(smoothX - lastPt.x, 2) + Math.pow(smoothY - lastPt.y, 2)) : 999;
       if (dist > 8) {
-        trail.unshift({ x: smoothX, y: smoothY, chars: [] });
+        trail.unshift({ x: smoothX, y: smoothY, chars: [], charIndices: [] });
         if (trail.length > maxTrailLength) trail.pop();
+      }
+
+      // slowly swap characters (every ~800ms)
+      charSwapTimer++;
+      if (charSwapTimer > 48) {
+        charSwapTimer = 0;
+        for (var i = 0; i < trail.length; i++) {
+          if (trail[i].charIndices.length && Math.random() > 0.7) {
+            var idx = Math.floor(Math.random() * trail[i].charIndices.length);
+            trail[i].charIndices[idx] = Math.floor(Math.random() * ASCII_CHARS.length);
+          }
+        }
       }
 
       // fade background
@@ -1501,28 +1514,28 @@
         // radius: sphere at head (t=0), taper to thin tail
         var radius = (1 - t * t) * 70 + 5;
         
-        // number of chars based on circumference
+        // fewer chars for lower density (spacing 28px instead of 18px)
         var circumference = Math.PI * 2 * radius;
-        var numChars = Math.floor(circumference / 18);
+        var numChars = Math.floor(circumference / 28);
         var alpha = (1 - t) * 0.85;
         var size = Math.round((1 - t * 0.7) * 18 + 10);
         
-        // generate stable characters for this ring if not exists
-        if (!pt.chars.length) {
+        // generate stable character indices if not exists
+        if (!pt.charIndices.length) {
           for (var j = 0; j < numChars; j++) {
-            pt.chars.push(ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)]);
+            pt.charIndices.push(Math.floor(Math.random() * ASCII_CHARS.length));
           }
         }
         
         // draw ring with spacing
-        for (var j = 0; j < pt.chars.length; j++) {
-          var angle = (j / pt.chars.length) * Math.PI * 2;
+        for (var j = 0; j < pt.charIndices.length; j++) {
+          var angle = (j / pt.charIndices.length) * Math.PI * 2;
           var x = pt.x + Math.cos(angle) * radius;
           var y = pt.y + Math.sin(angle) * radius;
           
           fluidCtx.fillStyle = 'rgba(' + color + ',' + alpha + ')';
           fluidCtx.font = size + 'px monospace';
-          fluidCtx.fillText(pt.chars[j], x - size/2, y + size/3);
+          fluidCtx.fillText(ASCII_CHARS[pt.charIndices[j]], x - size/2, y + size/3);
         }
       }
 
