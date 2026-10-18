@@ -1453,7 +1453,7 @@
   // it is the user's music. But if the page unloads nothing to clean up.
 
   /* ==========================================================
-     16. ASCII FLUID TRAIL (3D hollow cylinder comet)
+     16. ASCII FLUID TRAIL (3D comet with stable characters)
      ========================================================== */
   if (!reduced) {
     var fluidCanvas = document.createElement('canvas');
@@ -1469,42 +1469,60 @@
     var trail = [];
     var mouseX = fluidW / 2;
     var mouseY = fluidH / 2;
-    var maxTrailLength = 60;
+    var smoothX = mouseX;
+    var smoothY = mouseY;
+    var maxTrailLength = 40;
 
     function fluidTick() {
-      // add current mouse position to trail
-      trail.unshift({ x: mouseX, y: mouseY });
-      if (trail.length > maxTrailLength) trail.pop();
+      // slow smooth follow
+      smoothX += (mouseX - smoothX) * 0.08;
+      smoothY += (mouseY - smoothY) * 0.08;
+
+      // add current position if moved enough
+      var lastPt = trail[0];
+      var dist = lastPt ? Math.sqrt(Math.pow(smoothX - lastPt.x, 2) + Math.pow(smoothY - lastPt.y, 2)) : 999;
+      if (dist > 8) {
+        trail.unshift({ x: smoothX, y: smoothY, chars: [] });
+        if (trail.length > maxTrailLength) trail.pop();
+      }
 
       // fade background
-      fluidCtx.fillStyle = 'rgba(11,16,33,0.12)';
+      fluidCtx.fillStyle = 'rgba(11,16,33,0.15)';
       fluidCtx.fillRect(0, 0, fluidW, fluidH);
 
-      // draw 3D hollow cylinder - each trail point is a ring
+      // draw 3D comet - sphere at head, tail behind
       var theme = document.documentElement.getAttribute('data-theme') || 'night';
-      var color = theme === 'sunset' ? 'rgba(255,183,77,' : (theme === 'gnr' ? 'rgba(255,215,0,' : 'rgba(0,255,255,');
+      var color = theme === 'sunset' ? '255,183,77' : (theme === 'gnr' ? '255,215,0' : '0,255,255');
 
       for (var i = 0; i < trail.length; i++) {
         var t = i / trail.length;
         var pt = trail[i];
         
-        // radius shrinks toward tail (comet shape)
-        var radius = (1 - t) * 80 + 10;
+        // radius: sphere at head (t=0), taper to thin tail
+        var radius = (1 - t * t) * 70 + 5;
         
-        // ring of characters at this depth
-        var numChars = Math.floor(radius / 4);
-        var alpha = (1 - t) * 0.9;
-        var size = Math.round((1 - t) * 20 + 8);
+        // number of chars based on circumference
+        var circumference = Math.PI * 2 * radius;
+        var numChars = Math.floor(circumference / 18);
+        var alpha = (1 - t) * 0.85;
+        var size = Math.round((1 - t * 0.7) * 18 + 10);
         
-        for (var j = 0; j < numChars; j++) {
-          var angle = (j / numChars) * Math.PI * 2;
+        // generate stable characters for this ring if not exists
+        if (!pt.chars.length) {
+          for (var j = 0; j < numChars; j++) {
+            pt.chars.push(ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)]);
+          }
+        }
+        
+        // draw ring with spacing
+        for (var j = 0; j < pt.chars.length; j++) {
+          var angle = (j / pt.chars.length) * Math.PI * 2;
           var x = pt.x + Math.cos(angle) * radius;
           var y = pt.y + Math.sin(angle) * radius;
-          var char = ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
           
-          fluidCtx.fillStyle = color + alpha + ')';
+          fluidCtx.fillStyle = 'rgba(' + color + ',' + alpha + ')';
           fluidCtx.font = size + 'px monospace';
-          fluidCtx.fillText(char, x, y);
+          fluidCtx.fillText(pt.chars[j], x - size/2, y + size/3);
         }
       }
 
