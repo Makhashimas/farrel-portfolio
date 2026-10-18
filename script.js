@@ -1458,7 +1458,7 @@
   if (!reduced) {
     var fluidCanvas = document.createElement('canvas');
     fluidCanvas.id = 'fluidCanvas';
-    fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.4;mix-blend-mode:screen;';
+    fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;opacity:0.4;mix-blend-mode:screen;';
     document.body.appendChild(fluidCanvas);
 
     var fluidCtx = fluidCanvas.getContext('2d');
