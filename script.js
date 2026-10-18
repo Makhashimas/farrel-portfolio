@@ -476,6 +476,14 @@
         var nextSunset = document.documentElement.getAttribute('data-theme') !== 'sunset';
         setTheme(nextSunset);
       } },
+    { key: 'fluid',    label: 'Toggle ASCII comet trail', run: function () {
+        var fc = document.getElementById('fluidCanvas');
+        if (!fc) return;
+        var isOn = fc.style.display !== 'none';
+        fc.style.display = isOn ? 'none' : 'block';
+        try { localStorage.setItem('farrel-fluid', isOn ? '0' : '1'); } catch (e) {}
+        showToast('ASCII Trail', isOn ? 'Disabled' : 'Enabled', isOn ? 'Trail hidden' : 'Trail active');
+      } },
     { key: 'copy',     label: 'Copy site link',      run: copySiteLink },
     { key: 'github',   label: 'Open GitHub profile', run: function () {
         window.open('https://github.com/makhashimas', '_blank', 'noopener');
@@ -1459,6 +1467,12 @@
     var fluidCanvas = document.createElement('canvas');
     fluidCanvas.id = 'fluidCanvas';
     fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.2;mix-blend-mode:screen;';
+    
+    // default OFF, check localStorage
+    var fluidEnabled = false;
+    try { fluidEnabled = localStorage.getItem('farrel-fluid') === '1'; } catch (e) {}
+    fluidCanvas.style.display = fluidEnabled ? 'block' : 'none';
+    
     document.body.appendChild(fluidCanvas);
 
     var fluidCtx = fluidCanvas.getContext('2d');
