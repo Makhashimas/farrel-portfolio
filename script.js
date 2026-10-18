@@ -1465,7 +1465,7 @@
     var fluidW = fluidCanvas.width = window.innerWidth;
     var fluidH = fluidCanvas.height = window.innerHeight;
 
-    var ASCII_CHARS = '░▒▓█▄▀■▪▫●◘◙';
+    var ASCII_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-=+[]{}|;:,.<>?/~`';
     var particles = [];
     var mouseX = fluidW / 2;
     var mouseY = fluidH / 2;
