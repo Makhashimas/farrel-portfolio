@@ -1453,7 +1453,7 @@
   // it is the user's music. But if the page unloads nothing to clean up.
 
   /* ==========================================================
-     16. ASCII FLUID TRAIL (follows mouse pointer)
+     16. ASCII FLUID TRAIL (3D hollow cylinder comet)
      ========================================================== */
   if (!reduced) {
     var fluidCanvas = document.createElement('canvas');
@@ -1466,76 +1466,46 @@
     var fluidH = fluidCanvas.height = window.innerHeight;
 
     var ASCII_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-=+[]{}|;:,.<>?/~`';
-    var particles = [];
+    var trail = [];
     var mouseX = fluidW / 2;
     var mouseY = fluidH / 2;
-    var targetX = mouseX;
-    var targetY = mouseY;
-    var maxParticles = 300;
+    var maxTrailLength = 60;
 
-    function Particle(x, y) {
-      this.x = x;
-      this.y = y;
-      this.vx = (Math.random() - 0.5) * 2;
-      this.vy = (Math.random() - 0.5) * 2;
-      this.life = 1.0;
-      this.decay = 0.002 + Math.random() * 0.003;
-      this.char = ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
-      this.size = 24 + Math.random() * 12;
-      this.depth = 0.5 + Math.random() * 0.5;
-    }
+    function fluidTick() {
+      // add current mouse position to trail
+      trail.unshift({ x: mouseX, y: mouseY });
+      if (trail.length > maxTrailLength) trail.pop();
 
-    Particle.prototype.update = function () {
-      // spring force toward smoothed mouse position
-      var dx = targetX - this.x;
-      var dy = targetY - this.y;
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist > 1) {
-        var force = dist * 0.008 * this.depth;
-        this.vx += (dx / dist) * force;
-        this.vy += (dy / dist) * force;
-      }
-      // friction
-      this.vx *= 0.92;
-      this.vy *= 0.92;
-      // move
-      this.x += this.vx;
-      this.y += this.vy;
-      // fade
-      this.life -= this.decay;
-      return this.life > 0;
-    };
-
-    Particle.prototype.draw = function () {
-      var alpha = this.life * this.depth;
-      var theme = document.documentElement.getAttribute('data-theme') || 'night';
-      var color = theme === 'sunset' ? 'rgba(255,183,77,' : (theme === 'gnr' ? 'rgba(255,215,0,' : 'rgba(0,255,255,');
-      fluidCtx.fillStyle = color + alpha + ')';
-      fluidCtx.font = Math.round(this.size) + 'px monospace';
-      fluidCtx.fillText(this.char, this.x, this.y);
-    };
-
-    var lastSpawn = 0;
-    function fluidTick(now) {
-      // smooth mouse follow
-      targetX += (mouseX - targetX) * 0.1;
-      targetY += (mouseY - targetY) * 0.1;
-
-      // spawn particles every frame for dense trail
-      if (particles.length < maxParticles) {
-        particles.push(new Particle(targetX, targetY));
-      }
-
-      // update & cull
-      particles = particles.filter(function (p) { return p.update(); });
-
-      // very slow fade for long-lasting trail
-      fluidCtx.fillStyle = 'rgba(11,16,33,0.02)';
+      // fade background
+      fluidCtx.fillStyle = 'rgba(11,16,33,0.12)';
       fluidCtx.fillRect(0, 0, fluidW, fluidH);
 
-      // draw
-      for (var i = 0; i < particles.length; i++) {
-        particles[i].draw();
+      // draw 3D hollow cylinder - each trail point is a ring
+      var theme = document.documentElement.getAttribute('data-theme') || 'night';
+      var color = theme === 'sunset' ? 'rgba(255,183,77,' : (theme === 'gnr' ? 'rgba(255,215,0,' : 'rgba(0,255,255,');
+
+      for (var i = 0; i < trail.length; i++) {
+        var t = i / trail.length;
+        var pt = trail[i];
+        
+        // radius shrinks toward tail (comet shape)
+        var radius = (1 - t) * 80 + 10;
+        
+        // ring of characters at this depth
+        var numChars = Math.floor(radius / 4);
+        var alpha = (1 - t) * 0.9;
+        var size = Math.round((1 - t) * 20 + 8);
+        
+        for (var j = 0; j < numChars; j++) {
+          var angle = (j / numChars) * Math.PI * 2;
+          var x = pt.x + Math.cos(angle) * radius;
+          var y = pt.y + Math.sin(angle) * radius;
+          var char = ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
+          
+          fluidCtx.fillStyle = color + alpha + ')';
+          fluidCtx.font = size + 'px monospace';
+          fluidCtx.fillText(char, x, y);
+        }
       }
 
       requestAnimationFrame(fluidTick);
