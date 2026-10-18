@@ -1458,7 +1458,7 @@
   if (!reduced) {
     var fluidCanvas = document.createElement('canvas');
     fluidCanvas.id = 'fluidCanvas';
-    fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;opacity:0.4;mix-blend-mode:screen;';
+    fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;opacity:0.6;mix-blend-mode:screen;';
     document.body.appendChild(fluidCanvas);
 
     var fluidCtx = fluidCanvas.getContext('2d');
@@ -1481,7 +1481,7 @@
       this.life = 1.0;
       this.decay = 0.008 + Math.random() * 0.012;
       this.char = ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
-      this.size = 10 + Math.random() * 14;
+      this.size = 16 + Math.random() * 16;
       this.depth = 0.4 + Math.random() * 0.6;
     }
 
