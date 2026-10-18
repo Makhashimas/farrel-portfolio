@@ -1530,8 +1530,11 @@
       // update & cull
       particles = particles.filter(function (p) { return p.update(); });
 
+      // fade trail (instead of clearRect for trail persistence)
+      fluidCtx.fillStyle = 'rgba(11,16,33,0.15)';
+      fluidCtx.fillRect(0, 0, fluidW, fluidH);
+
       // draw
-      fluidCtx.clearRect(0, 0, fluidW, fluidH);
       for (var i = 0; i < particles.length; i++) {
         particles[i].draw();
       }
