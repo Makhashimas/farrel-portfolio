@@ -1522,7 +1522,7 @@
       targetY += (mouseY - targetY) * 0.1;
 
       // spawn particles
-      if (now - lastSpawn > 16 && particles.length < maxParticles) {
+      if (now - lastSpawn > 12 && particles.length < maxParticles) {
         particles.push(new Particle(targetX, targetY));
         lastSpawn = now;
       }
@@ -1531,7 +1531,7 @@
       particles = particles.filter(function (p) { return p.update(); });
 
       // fade trail (instead of clearRect for trail persistence)
-      fluidCtx.fillStyle = 'rgba(11,16,33,0.15)';
+      fluidCtx.fillStyle = 'rgba(11,16,33,0.05)';
       fluidCtx.fillRect(0, 0, fluidW, fluidH);
 
       // draw
