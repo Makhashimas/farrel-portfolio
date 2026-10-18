@@ -14,6 +14,8 @@
    12. Copy site link, Konami code
    13. Lightning strikes (night theme ambient)
    14. MP3 player + GNR theme + mini player
+   15. Quest cards -> project detail pages
+   16. ASCII fluid trail (follows mouse pointer)
    ============================================================ */
 
 (function () {
@@ -1449,5 +1451,105 @@
 
   // pause the audio when the tab is hidden for a long time? No: keep playing,
   // it is the user's music. But if the page unloads nothing to clean up.
+
+  /* ==========================================================
+     16. ASCII FLUID TRAIL (follows mouse pointer)
+     ========================================================== */
+  if (!reduced) {
+    var fluidCanvas = document.createElement('canvas');
+    fluidCanvas.id = 'fluidCanvas';
+    fluidCanvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.4;mix-blend-mode:screen;';
+    document.body.appendChild(fluidCanvas);
+
+    var fluidCtx = fluidCanvas.getContext('2d');
+    var fluidW = fluidCanvas.width = window.innerWidth;
+    var fluidH = fluidCanvas.height = window.innerHeight;
+
+    var ASCII_CHARS = '░▒▓█▄▀■▪▫●◘◙';
+    var particles = [];
+    var mouseX = fluidW / 2;
+    var mouseY = fluidH / 2;
+    var targetX = mouseX;
+    var targetY = mouseY;
+    var maxParticles = 180;
+
+    function Particle(x, y) {
+      this.x = x;
+      this.y = y;
+      this.vx = (Math.random() - 0.5) * 3;
+      this.vy = (Math.random() - 0.5) * 3;
+      this.life = 1.0;
+      this.decay = 0.008 + Math.random() * 0.012;
+      this.char = ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
+      this.size = 10 + Math.random() * 14;
+      this.depth = 0.4 + Math.random() * 0.6;
+    }
+
+    Particle.prototype.update = function () {
+      // spring force toward smoothed mouse position
+      var dx = targetX - this.x;
+      var dy = targetY - this.y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > 1) {
+        var force = dist * 0.008 * this.depth;
+        this.vx += (dx / dist) * force;
+        this.vy += (dy / dist) * force;
+      }
+      // friction
+      this.vx *= 0.92;
+      this.vy *= 0.92;
+      // move
+      this.x += this.vx;
+      this.y += this.vy;
+      // fade
+      this.life -= this.decay;
+      return this.life > 0;
+    };
+
+    Particle.prototype.draw = function () {
+      var alpha = this.life * this.depth;
+      var theme = document.documentElement.getAttribute('data-theme') || 'night';
+      var color = theme === 'sunset' ? 'rgba(255,183,77,' : (theme === 'gnr' ? 'rgba(255,215,0,' : 'rgba(0,255,255,');
+      fluidCtx.fillStyle = color + alpha + ')';
+      fluidCtx.font = Math.round(this.size) + 'px monospace';
+      fluidCtx.fillText(this.char, this.x, this.y);
+    };
+
+    var lastSpawn = 0;
+    function fluidTick(now) {
+      // smooth mouse follow
+      targetX += (mouseX - targetX) * 0.1;
+      targetY += (mouseY - targetY) * 0.1;
+
+      // spawn particles
+      if (now - lastSpawn > 16 && particles.length < maxParticles) {
+        particles.push(new Particle(targetX, targetY));
+        lastSpawn = now;
+      }
+
+      // update & cull
+      particles = particles.filter(function (p) { return p.update(); });
+
+      // draw
+      fluidCtx.clearRect(0, 0, fluidW, fluidH);
+      for (var i = 0; i < particles.length; i++) {
+        particles[i].draw();
+      }
+
+      requestAnimationFrame(fluidTick);
+    }
+
+    document.addEventListener('mousemove', function (e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    window.addEventListener('resize', function () {
+      fluidW = fluidCanvas.width = window.innerWidth;
+      fluidH = fluidCanvas.height = window.innerHeight;
+    });
+
+    requestAnimationFrame(fluidTick);
+  }
 
 })();
