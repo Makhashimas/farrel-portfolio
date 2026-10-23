@@ -255,12 +255,12 @@ ul { padding: 0; list-style: none; }
   pointer-events: none;
 }
 
-.sky__scene {
+/* ---------- HORIZON BACKDROP: starfield sky + far horizon silhouette ---------- */
+.horizon {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
-  overflow: hidden;
 }
 
 /* the moon is the theme switch, so it must accept clicks.
@@ -331,21 +331,6 @@ ul { padding: 0; list-style: none; }
 html[data-theme="sunset"] .sky__sunrays {
   opacity: 1;
   animation: spin 26s linear infinite;
-}
-
-.sky__hills {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 34vh;
-  background:
-    linear-gradient(to top, var(--hill-fill) 0 42%, transparent 42%),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 26px,
-      var(--hill-line) 26px 52px
-    );
-  mask-image: linear-gradient(to top, #000 0 60%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, #000 0 60%, transparent 100%);
 }
 
 /* theme cross-fade: only the surfaces, so pixel art stays crisp */
@@ -730,7 +715,7 @@ main, .bar, .foot { position: relative; z-index: 2; }
   62%, 100% { transform: translateX(var(--lcd-shift, 0px)); }
 }
 
-/* speaker grille — sits in flow between progress and controls */
+/* speaker grille : sits in flow between progress and controls */
 .cart__grille {
   height: 20px;
   margin-top: 10px;
@@ -805,7 +790,7 @@ main, .bar, .foot { position: relative; z-index: 2; }
 .cart__playIco { position: relative; width: 20px; height: 20px; display: block; }
 .cart__playIco i { position: absolute; inset: 0; }
 
-/* power LED — inline between brand and model */
+/* power LED : inline between brand and model */
 .cart__led {
   flex: 0 0 auto;
   width: 8px; height: 8px;
@@ -821,7 +806,7 @@ main, .bar, .foot { position: relative; z-index: 2; }
   50% { opacity: .55; }
 }
 
-/* headphone jack — in flow, right of the transport keys */
+/* headphone jack : in flow, right of the transport keys */
 .cart__jack {
   flex: 0 0 auto;
   width: 16px; height: 16px;
@@ -2647,56 +2632,6 @@ html[data-theme="gnr"] .field__img { filter: drop-shadow(0 0 6px rgba(255, 211, 
 @media (max-width: 380px) {
   .field__p { --w: 34px; }
   .field__p--4, .field__p--8 { left: 90%; }
-}
-
-/* ---------- sweeping spotlights: every theme gets its own sky show.
-   night sweeps cold aurora beams, sunset pours warm god rays, gnr keeps
-   the full concert rig with screen blend. */
-.stage { position: absolute; inset: 0; }
-.beam {
-  position: absolute;
-  top: -10vh;
-  width: 90px;
-  height: 130vh;
-  transform-origin: 50% 0;
-  background: linear-gradient(to bottom, rgba(255, 211, 77, .3), rgba(255, 211, 77, .06) 40%, transparent 72%);
-  mix-blend-mode: screen;
-  opacity: 0;
-  filter: blur(1px);
-  animation: beamSweep 6.4s ease-in-out infinite;
-}
-.beam--1 { left: 4%;  animation-delay: 0s; }
-.beam--2 { left: 30%; animation-delay: -1.6s; }
-.beam--3 { left: 58%; animation-delay: -3.1s; }
-.beam--4 { left: 82%; animation-delay: -4.7s; }
-
-/* night: faint aurora curtains */
-html:not([data-theme]) .beam { width: 130px; filter: blur(2px); }
-html:not([data-theme]) .beam--1 { background: linear-gradient(to bottom, rgba(61, 232, 196, .16), transparent 66%); animation-duration: 9.5s; }
-html:not([data-theme]) .beam--2 { background: linear-gradient(to bottom, rgba(122, 162, 247, .14), transparent 64%); animation-duration: 11s; }
-html:not([data-theme]) .beam--3 { background: linear-gradient(to bottom, rgba(61, 232, 196, .12), transparent 62%); animation-duration: 10.2s; }
-html:not([data-theme]) .beam--4 { background: linear-gradient(to bottom, rgba(122, 162, 247, .12), transparent 62%); animation-duration: 12s; }
-
-/* sunset: warm god rays */
-html[data-theme="sunset"] .beam { width: 110px; filter: blur(1.5px); }
-html[data-theme="sunset"] .beam--1 { background: linear-gradient(to bottom, rgba(255, 217, 61, .2), transparent 68%); animation-duration: 8.4s; }
-html[data-theme="sunset"] .beam--2 { background: linear-gradient(to bottom, rgba(255, 154, 92, .18), transparent 66%); animation-duration: 9.6s; }
-html[data-theme="sunset"] .beam--3 { background: linear-gradient(to bottom, rgba(255, 217, 61, .16), transparent 64%); animation-duration: 8.8s; }
-html[data-theme="sunset"] .beam--4 { background: linear-gradient(to bottom, rgba(255, 138, 61, .16), transparent 64%); animation-duration: 10.4s; }
-
-/* gnr: the full concert rig */
-html[data-theme="gnr"] .beam { width: 90px; filter: blur(1px); }
-html[data-theme="gnr"] .beam--1 { background: linear-gradient(to bottom, rgba(255, 211, 77, .28), transparent 70%); }
-html[data-theme="gnr"] .beam--2 { background: linear-gradient(to bottom, rgba(211, 47, 47, .26), transparent 70%); }
-html[data-theme="gnr"] .beam--3 { background: linear-gradient(to bottom, rgba(255, 138, 61, .26), transparent 70%); }
-html[data-theme="gnr"] .beam--4 { background: linear-gradient(to bottom, rgba(255, 211, 77, .22), transparent 70%); }
-
-@keyframes beamSweep {
-  0%   { opacity: 0;   transform: rotate(-16deg) scaleY(.9); }
-  22%  { opacity: .9; }
-  50%  { opacity: .5;  transform: rotate(14deg) scaleY(1.05); }
-  78%  { opacity: .85; }
-  100% { opacity: 0;   transform: rotate(-16deg) scaleY(.9); }
 }
 
 /* ---------- marquee bulbs along the top edge ---------- */
