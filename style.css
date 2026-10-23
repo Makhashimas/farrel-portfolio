@@ -251,11 +251,14 @@ ul { padding: 0; list-style: none; }
 .sky {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
 }
 
-/* ---------- HORIZON BACKDROP: starfield sky + far horizon silhouette ---------- */
+/* ---------- HORIZON BACKDROP: far horizon silhouette ---------- */
+/* paints above the sky gradient (same z-index, later in the DOM) but below
+   the star canvas. Only the silhouette band is opaque, so the stars above
+   it stay visible. */
 .horizon {
   position: fixed;
   inset: 0;

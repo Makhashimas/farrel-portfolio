@@ -176,15 +176,15 @@
   function buildStars() {
     var w = window.innerWidth;
     var h = window.innerHeight;
-    var count = Math.round((w * h) / 9000);
-    count = Math.max(50, Math.min(count, 190));
+    var count = Math.round((w * h) / 5200);
+    count = Math.max(110, Math.min(count, 340));
     stars = [];
     for (var i = 0; i < count; i++) {
       stars.push({
         x: Math.random() * w,
-        y: Math.random() * h,
-        size: Math.random() < 0.82 ? 2 : 3,
-        base: 0.25 + Math.random() * 0.55,
+        y: Math.random() * h * 0.94,
+        size: Math.random() < 0.68 ? 2 : (Math.random() < 0.75 ? 3 : 4),
+        base: 0.45 + Math.random() * 0.5,
         speed: 0.4 + Math.random() * 1.3,
         phase: Math.random() * Math.PI * 2
       });
@@ -203,7 +203,7 @@
 
     var themeNow = document.documentElement.getAttribute('data-theme');
     var cols = themeNow === 'sunset' ? SUNSET_COLORS : themeNow === 'gnr' ? GNR_COLORS : NIGHT_COLORS;
-    var alphaMult = themeNow === 'sunset' ? 0.4 : themeNow === 'gnr' ? 0.8 : 1;
+    var alphaMult = themeNow === 'sunset' ? 0.55 : themeNow === 'gnr' ? 0.8 : 1;
 
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
@@ -219,10 +219,15 @@
       m.x += m.vx;
       m.y += m.vy;
       m.life -= 1;
-      ctx.globalAlpha = Math.max(0, (m.life / m.maxLife) * alphaMult);
+      var ta = Math.max(0, (m.life / m.maxLife) * alphaMult);
+      ctx.globalAlpha = ta;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(Math.round(m.x), Math.round(m.y), 3, 3);
-      ctx.fillRect(Math.round(m.x - m.vx * 2), Math.round(m.y - m.vy * 2), 2, 2);
+      /* fading tail behind the head */
+      for (var k = 1; k <= 7; k++) {
+        ctx.globalAlpha = ta * (1 - k / 8) * 0.85;
+        ctx.fillRect(Math.round(m.x - m.vx * k), Math.round(m.y - m.vy * k), 2, 2);
+      }
       if (m.life <= 0 || m.x > w + 40 || m.y > h + 40) shootingStars.splice(j, 1);
     }
 
@@ -234,7 +239,7 @@
   function loop(t) {
     if (!running) return;
     drawStars(t);
-    if (t - lastShoot > 4200 && shootingStars.length < 2 && Math.random() < 0.5) {
+    if (t - lastShoot > 3400 && shootingStars.length < 3 && Math.random() < 0.75) {
       shootingStars.push({
         x: Math.random() * window.innerWidth * 0.5,
         y: Math.random() * window.innerHeight * 0.35,

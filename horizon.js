@@ -210,13 +210,13 @@
 
     /* --- own starfield for pages without the star canvas --- */
     if (!hasSky) {
-      var count = Math.max(40, Math.min(150, Math.round((W * H) / 11000)));
+      var count = Math.max(110, Math.min(320, Math.round((W * H) / 5600)));
       for (var si = 0; si < count; si++) {
         ownStars.push({
           x: Math.random() * W,
           y: Math.random() * (farY - 8),
-          size: Math.random() < 0.82 ? 2 : 3,
-          base: 0.25 + Math.random() * 0.55,
+          size: Math.random() < 0.68 ? 2 : (Math.random() < 0.75 ? 3 : 4),
+          base: 0.45 + Math.random() * 0.5,
           speed: 0.4 + Math.random() * 1.3,
           phase: Math.random() * Math.PI * 2
         });
@@ -366,14 +366,14 @@
     for (var i = 0; i < ownStars.length; i++) {
       var s = ownStars[i];
       var flicker = 0.55 + 0.45 * Math.sin(t * 0.0011 * s.speed + s.phase);
-      ctx.globalAlpha = Math.max(0.08, Math.min(1, s.base * flicker * p.starA));
+      ctx.globalAlpha = Math.max(0.12, Math.min(1, s.base * flicker * p.starA));
       ctx.fillStyle = p.starC[i % p.starC.length];
       ctx.fillRect(Math.round(s.x), Math.round(s.y), s.size, s.size);
     }
     ctx.globalAlpha = 1;
 
     /* shooting stars, same rhythm as the main starfield */
-    if (t - lastShoot > 5200 && shoot.length < 1 && Math.random() < 0.6) {
+    if (t - lastShoot > 3400 && shoot.length < 2 && Math.random() < 0.75) {
       shoot.push({
         x: Math.random() * W * 0.5,
         y: Math.random() * H * 0.35,
@@ -386,10 +386,14 @@
     for (var j = shoot.length - 1; j >= 0; j--) {
       var m = shoot[j];
       m.x += m.vx; m.y += m.vy; m.life -= 1;
-      ctx.globalAlpha = Math.max(0, (m.life / m.maxLife) * p.starA);
+      var ta = Math.max(0, (m.life / m.maxLife) * p.starA);
+      ctx.globalAlpha = ta;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(Math.round(m.x), Math.round(m.y), 3, 3);
-      ctx.fillRect(Math.round(m.x - m.vx * 2), Math.round(m.y - m.vy * 2), 2, 2);
+      for (var k = 1; k <= 7; k++) {
+        ctx.globalAlpha = ta * (1 - k / 8) * 0.85;
+        ctx.fillRect(Math.round(m.x - m.vx * k), Math.round(m.y - m.vy * k), 2, 2);
+      }
       if (m.life <= 0 || m.x > W + 40 || m.y > H + 40) shoot.splice(j, 1);
     }
     ctx.globalAlpha = 1;
