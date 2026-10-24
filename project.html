@@ -78,10 +78,17 @@
   <p class="foot__base">&copy; 2026 Farrel Fayzul Haqqi</p>
 </footer>
 
+<script src="assets/js/lenis.min.js"></script>
 <script src="projects-data.js"></script>
 <script src="project.js"></script>
 <script src="horizon.js"></script>
 <script>
+  (function () {
+    /* same smooth scroll as the home page; default autoRaf is enough here */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof window.Lenis === 'function') {
+      new window.Lenis();
+    }
+  })();
   (function () {
     var clock = document.getElementById('clock');
     function tick() {

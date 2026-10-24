@@ -24,6 +24,56 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ==========================================================
+     0. LENIS SMOOTH SCROLL (self-hosted, off when reduced-motion)
+     ========================================================== */
+  var lenis = null;
+  if (!reduced && typeof window.Lenis === 'function') {
+    lenis = new window.Lenis({
+      duration: 1.15,
+      smoothWheel: true,
+      syncTouch: false
+    });
+    function lenisRaf(time) {
+      lenis.raf(time);
+      window.requestAnimationFrame(lenisRaf);
+    }
+    window.requestAnimationFrame(lenisRaf);
+    /* a plain jump (hash change, back button) snaps instead of tweening */
+    window.addEventListener('hashchange', function () { lenis.stop(); lenis.start(); });
+  }
+
+  /* one entry point for every smooth jump on the page */
+  function smoothTo(target, offset) {
+    if (reduced) {
+      if (typeof target === 'number') window.scrollTo(0, target);
+      else { var el = document.querySelector(target); if (el) el.scrollIntoView(); }
+      return;
+    }
+    if (lenis) {
+      lenis.scrollTo(target, { offset: offset == null ? -84 : offset, duration: 1.3 });
+    } else if (typeof target === 'number') {
+      window.scrollTo({ top: target, behavior: 'smooth' });
+    } else {
+      var el2 = document.querySelector(target);
+      if (el2) el2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  /* anchor links go through Lenis too (the browser's native jump fights it) */
+  document.addEventListener('click', function (e) {
+    if (!lenis) return;
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href || href === '#') return;
+    var el = document.querySelector(href);
+    if (!el) return;
+    e.preventDefault();
+    smoothTo(href);
+    if (history.replaceState) history.replaceState(null, '', href);
+  });
+
+  /* ==========================================================
      1. BOOT SEQUENCE
      ========================================================== */
   var boot     = document.getElementById('boot');
@@ -497,14 +547,13 @@
         window.open('https://www.linkedin.com/in/farrel-fayzul-haqqi-26a31b29b', '_blank', 'noopener');
       } },
     { key: 'top',      label: 'Scroll to top',       run: function () {
-        window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
-      } }
-  ];
+            smoothTo(0, 0);
+          } }
+      ];
 
-  function go(sel) {
-    var el = document.querySelector(sel);
-    if (el) el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
-  }
+      function go(sel) {
+        smoothTo(sel);
+      }
 
   function renderPal() {
     var q = palInput.value.trim().toLowerCase();

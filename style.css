@@ -237,6 +237,14 @@ ul { padding: 0; list-style: none; }
 }
 
 /* ============================================================
+   LENIS SMOOTH SCROLL (recommended rules from lenis/dist/lenis.css)
+   ============================================================ */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* ============================================================
    STARFIELD BACKDROP
    ============================================================ */
 .sky__grad {
