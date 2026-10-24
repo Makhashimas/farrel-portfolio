@@ -173,4 +173,6 @@
         '<span class="proj__pgname">' + esc(next.name) + '</span>' +
       '</a>' +
     '</nav>';
+
+  if (window.MotionFX && window.MotionFX.detailEntrance) window.MotionFX.detailEntrance();
 })();

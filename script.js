@@ -139,6 +139,7 @@
       window.sessionStorage.setItem('farrel-booted', '1');
     } catch (e) { /* storage blocked, no problem */ }
     startStarfield();
+    if (window.MotionFX && window.MotionFX.heroIn) window.MotionFX.heroIn();
     // hand focus back to the page so keyboard users are not stranded
     var firstNav = document.querySelector('.bar__link');
     if (firstNav) firstNav.focus();
@@ -362,7 +363,7 @@
      4. SCROLL REVEAL
      ========================================================== */
   var revealTargets = document.querySelectorAll(
-    '.quest, .now__item, .inv__group, .win--award, .cert, .win, .sect__head'
+    '.quest, .now__item, .inv__group, .win--award, .cert, .sect__head'
   );
 
   if (reduced || !('IntersectionObserver' in window)) {
@@ -498,13 +499,23 @@
     function dismiss() {
       if (toast.classList.contains('toast--out')) return;
       toast.classList.add('toast--out');
-      window.setTimeout(function () {
-        if (toast.parentNode) toast.parentNode.removeChild(toast);
-      }, 260);
+      if (window.MotionFX && window.MotionFX.toastOut) {
+        window.MotionFX.toastOut(toast, function () {
+          if (toast.parentNode) toast.parentNode.removeChild(toast);
+        });
+      } else {
+        window.setTimeout(function () {
+          if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 260);
+      }
     }
 
     close.addEventListener('click', dismiss);
-    window.requestAnimationFrame(function () { toast.classList.add('toast--in'); });
+    if (window.MotionFX && window.MotionFX.toastIn) {
+      window.MotionFX.toastIn(toast);
+    } else {
+      window.requestAnimationFrame(function () { toast.classList.add('toast--in'); });
+    }
     window.setTimeout(dismiss, 6000);
   }
 
@@ -606,6 +617,7 @@
     palInput.value = '';
     renderPal();
     palInput.focus();
+    if (window.MotionFX && window.MotionFX.openPalette) window.MotionFX.openPalette();
   }
 
   function closePal() {
