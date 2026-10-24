@@ -38,6 +38,8 @@
       window.requestAnimationFrame(lenisRaf);
     }
     window.requestAnimationFrame(lenisRaf);
+    /* exposed so pages can re-measure after injecting content (project.js) */
+    window.__lenis = lenis;
     /* a plain jump (hash change, back button) snaps instead of tweening */
     window.addEventListener('hashchange', function () { lenis.stop(); lenis.start(); });
   }
@@ -877,9 +879,17 @@
   var GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&@$*+-<>[]{}';
 
   function scramble(el) {
-    var finalText = el.getAttribute('data-final') || el.textContent;
+    /* write ONLY into a text node: setting el.textContent would wipe the
+       decorative children Motion adds to the same title (sweep/outline),
+       which is what left scrambled glyphs sitting above the headings. */
+    var node = null;
+    for (var n = el.firstChild; n; n = n.nextSibling) {
+      if (n.nodeType === 3 && n.nodeValue.trim()) { node = n; break; }
+    }
+    var finalText = el.getAttribute('data-final') || (node ? node.nodeValue : '');
     el.setAttribute('data-final', finalText);
-    if (reduced) { el.textContent = finalText; return; }
+    if (!node) { node = document.createTextNode(finalText); el.insertBefore(node, el.firstChild); }
+    if (reduced) { node.nodeValue = finalText; return; }
 
     var len = finalText.length;
     var revealAt = 0;
@@ -893,13 +903,13 @@
         if (i < revealAt) { out += ch; continue; }
         out += GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
       }
-      el.textContent = out;
+      node.nodeValue = out;
       frame++;
       if (frame % 2 === 0) revealAt++;
       if (revealAt <= len) {
         window.setTimeout(tick, 34);
       } else {
-        el.textContent = finalText;
+        node.nodeValue = finalText;
       }
     }
     tick();

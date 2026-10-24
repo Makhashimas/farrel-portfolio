@@ -837,7 +837,7 @@
 </footer>
 
 <!-- ============ COMMAND PALETTE (RUN.EXE) ============ -->
-<div class="pal" id="pal" hidden>
+<div class="pal" id="pal" data-lenis-prevent hidden>
   <div class="pal__back" id="palBack"></div>
   <div class="pal__win win" role="dialog" aria-modal="true" aria-labelledby="palTitle">
     <div class="win__bar win__bar--pal">
@@ -850,7 +850,7 @@
         <span class="pal__prompt" aria-hidden="true">C:\&gt;</span>
         <input id="palInput" class="pal__input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="palList" aria-autocomplete="list">
       </div>
-      <ul class="pal__list" id="palList" role="listbox" aria-label="Commands"></ul>
+      <ul class="pal__list" id="palList" role="listbox" aria-label="Commands" data-lenis-prevent></ul>
       <p class="pal__hint">&#8593;&#8595; select &middot; Enter run &middot; Esc close</p>
     </div>
   </div>

@@ -1992,12 +1992,18 @@ html[data-theme="sunset"] .quest::after {
 .mret {
   position: fixed;
   left: 0; top: 0;
-  width: 22px; height: 22px;
-  margin: -11px 0 0 -11px;
+  width: 0; height: 0;
   z-index: 250;
   pointer-events: none;
   opacity: 0;
   mix-blend-mode: screen;
+  will-change: transform;   /* transform is written by the rAF follow loop */
+}
+/* inner box so scale/rotate never fights the tracked transform */
+.mret__box {
+  position: absolute;
+  left: -11px; top: -11px;
+  width: 22px; height: 22px;
 }
 .mret i {
   position: absolute;
@@ -2012,17 +2018,21 @@ html[data-theme="sunset"] .quest::after {
 html[data-theme="sunset"] .mret i { border-color: var(--gold); }
 html[data-theme="gnr"] .mret i { border-color: #ffd34d; }
 
-/* section-title outline twin, filled by the scroll highlight */
-.hl-twin {
+/* section-title underline, filled by the scroll highlight on scroll */
+.hl-line {
   position: absolute;
-  left: 0; top: 0;
+  left: 0;
+  bottom: -6px;
   width: 100%;
+  height: 3px;
   pointer-events: none;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--cyan);
-  clip-path: inset(100% 0 0 0);
+  background: var(--cyan);
+  opacity: .55;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
 }
-html[data-theme="sunset"] .hl-twin { -webkit-text-stroke-color: var(--gold); }
+html[data-theme="sunset"] .hl-line { background: var(--gold); }
+html[data-theme="gnr"] .hl-line { background: #ffd34d; }
 
 /* footer ticker strip */
 .foot__ticker {

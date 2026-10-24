@@ -175,4 +175,19 @@
     '</nav>';
 
   if (window.MotionFX && window.MotionFX.detailEntrance) window.MotionFX.detailEntrance();
+
+  /* the markup above was just injected: Lenis measured an empty page on init,
+     so its scroll limit is still 0 and the wheel is swallowed. Re-measure now,
+     then once more after the photos decode (their height changes the page). */
+  if (window.__lenis) {
+    window.__lenis.resize();
+    window.requestAnimationFrame(function () { window.__lenis.resize(); });
+    Array.prototype.forEach.call(document.images, function (img) {
+      if (!img.complete) {
+        img.addEventListener('load', function () { window.__lenis.resize(); }, { once: true });
+        img.addEventListener('error', function () { window.__lenis.resize(); }, { once: true });
+      }
+    });
+    window.setTimeout(function () { window.__lenis.resize(); }, 600);
+  }
 })();

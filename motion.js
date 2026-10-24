@@ -69,21 +69,20 @@
      highlight"). Outline drawn in the live theme colour.
      ========================================================== */
   function scrollHighlight() {
-    var heads = document.querySelectorAll('.sect__head');
+    /* An underline that fills as the heading crosses the viewport. The earlier
+       version cloned the heading text into an outline twin: the clone landed on
+       top of the real letters, and the scramble routine then rewrote it, which
+       is exactly what produced garbled characters above the subtitles. A
+       decorative line can never collide with the text. */
+    var heads = document.querySelectorAll('[data-scramble]');
     for (var i = 0; i < heads.length; i++) {
       (function (el) {
-        var title = el.querySelector('.sect__title');
-        if (!title) return;
-        var twin = document.createElement('span');
-        twin.setAttribute('aria-hidden', 'true');
-        twin.className = 'hl-twin';
-        twin.style.cssText = 'position:absolute;left:0;top:0;width:100%;pointer-events:none;' +
-          'color:transparent;-webkit-text-stroke:1px var(--cyan);clip-path:inset(100% 0 0 0);';
-        twin.textContent = title.getAttribute('data-final') || title.textContent;
-        el.appendChild(twin);
-        fin(M.scroll(M.animate(twin, {
-          clipPath: ['inset(100% 0 0 0)', 'inset(0% 0 0 0)']
-        }, { ease: 'linear' })));
+        if (el.querySelector('.hl-line')) return;
+        var line = document.createElement('span');
+        line.setAttribute('aria-hidden', 'true');
+        line.className = 'hl-line';
+        el.appendChild(line);
+        fin(M.scroll(M.animate(line, { scaleX: [0, 1] }, { ease: 'linear' })));
       })(heads[i]);
     }
   }
@@ -98,21 +97,46 @@
     var ring = document.createElement('div');
     ring.className = 'mret';
     ring.setAttribute('aria-hidden', 'true');
-    ring.innerHTML = '<i></i><i></i><i></i><i></i>';
+    ring.innerHTML = '<span class="mret__box"><i></i><i></i><i></i><i></i></span>';
     document.body.appendChild(ring);
 
+    /* The reticle tracks via its own rAF lerp, not a Motion tween per
+       mousemove: spawning a spring animation on every pointer event kept
+       restarting it from a stale position, so the brackets lagged far behind
+       the cursor. A short lerp (0.45) reads smooth but stays glued to the
+       pointer, and transform-only writes keep it on the compositor. */
     var visible = false;
+    var tx = 0, ty = 0, cx = 0, cy = 0, started = false, raf = null;
+
+    function follow() {
+      cx += (tx - cx) * 0.45;
+      cy += (ty - cy) * 0.45;
+      ring.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+      if (Math.abs(tx - cx) > 0.4 || Math.abs(ty - cy) > 0.4) {
+        raf = window.requestAnimationFrame(follow);
+      } else {
+        raf = null;
+      }
+    }
+
     document.addEventListener('mousemove', function (e) {
-      if (!visible) { visible = true; fin(M.animate(ring, { opacity: 1 }, { duration: 0.3 })); }
-      fin(M.animate(ring, { left: e.clientX, top: e.clientY }, {
-        duration: 0.5, ease: 'spring', stiffness: 250, damping: 24
-      }));
+      if (!visible) {
+        visible = true;
+        fin(M.animate(ring, { opacity: 1 }, { duration: 0.25 }));
+      }
+      tx = e.clientX;
+      ty = e.clientY;
+      if (!started) { started = true; cx = tx; cy = ty; ring.style.transform = 'translate3d(' + tx + 'px,' + ty + 'px,0)'; }
+      if (raf === null) raf = window.requestAnimationFrame(follow);
     }, { passive: true });
 
+    /* scale/rotate live on the inner wrapper: the outer element's transform is
+       owned by the follow loop above. */
     document.addEventListener('mouseover', function (e) {
       var hot = e.target.closest && e.target.closest('a, button, input, .quest, .sky__moon');
-      fin(M.animate(ring, { scale: hot ? 1.7 : 1, rotate: hot ? 45 : 0 },
-        { duration: 0.32, easing: EASE }));
+      var box = ring.firstChild;
+      if (box) fin(M.animate(box, { scale: hot ? 1.45 : 1, rotate: hot ? 45 : 0 },
+        { duration: 0.28, easing: EASE }));
     }, { passive: true });
 
     document.addEventListener('mouseleave', function () {

@@ -80,17 +80,21 @@
 
 <script src="assets/js/lenis.min.js"></script>
 <script src="assets/js/motion.min.js"></script>
+<script>
+  /* Lenis has to exist BEFORE project.js injects the markup: it measures the
+     page on construction, and an empty page gives it a scroll limit of 0,
+     which makes it swallow every wheel event. */
+  (function () {
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof window.Lenis === 'function') {
+      window.__lenis = new window.Lenis({ autoRaf: true });
+    }
+  })();
+</script>
 <script src="projects-data.js"></script>
 <script src="project.js"></script>
 <script src="motion.js"></script>
 <script src="horizon.js"></script>
 <script>
-  (function () {
-    /* same smooth scroll as the home page; default autoRaf is enough here */
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && typeof window.Lenis === 'function') {
-      new window.Lenis();
-    }
-  })();
   (function () {
     var clock = document.getElementById('clock');
     function tick() {
