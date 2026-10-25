@@ -167,12 +167,19 @@
   var alreadyBooted = false;
   try { alreadyBooted = window.sessionStorage.getItem('farrel-booted') === '1'; } catch (e) {}
 
+  /* the starfield module lives further down this file, so only record the
+     intent here; starfieldBoot() runs it once everything is defined. Calling
+     startStarfield() from this spot used to run against hoisted-but-unset
+     vars (canvas/ctx/stars/colour tables), which is why the sky appeared on
+     some loads and stayed blank on others. */
+  var wantStarfield = false;
+
   if (!boot) {
-    startStarfield();
+    wantStarfield = true;
   } else if (reduced || alreadyBooted) {
     boot.setAttribute('hidden', '');
     boot.setAttribute('aria-hidden', 'true');
-    startStarfield();
+    wantStarfield = true;
   } else {
     typingTimer = window.setTimeout(typeStep, 260);
     if (bootBtn) bootBtn.addEventListener('click', dismissBoot);
@@ -207,8 +214,27 @@
   /* ==========================================================
      2. STARFIELD
      ========================================================== */
-  var canvas = document.getElementById('sky');
-  var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+  /* resolved lazily: the boot gate above (sessionStorage/first visit) calls
+     startStarfield() while this section has not been evaluated yet, so a
+     plain getElementById here would still be undefined for that path and the
+     canvas silently kept its 300x150 default. */
+  var canvas = null;
+  var ctx = null;
+
+  /* the boot gate can call into this module before the var statements below
+     have executed, so everything it touches is created on demand: the
+     canvas (otherwise it stayed 300x150) and the star arrays (otherwise
+     drawStars threw on an undefined list). */
+  function ensureCanvas() {
+    if (!canvas) {
+      canvas = document.getElementById('sky');
+      ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+    }
+    if (!stars) stars = [];
+    if (!shootingStars) shootingStars = [];
+    return !!(canvas && ctx);
+  }
+
   var stars = [];
   var shootingStars = [];
   var rafId = null;
@@ -216,7 +242,7 @@
   var dpr = 1;
 
   function sizeCanvas() {
-    if (!canvas || !ctx) return;
+    if (!ensureCanvas()) return;
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width  = Math.floor(window.innerWidth  * dpr);
     canvas.height = Math.floor(window.innerHeight * dpr);
@@ -249,7 +275,8 @@
   var GNR_COLORS    = ['#f5e7cd', '#ffb347', '#ffd34d', '#d32f2f'];
 
   function drawStars(t) {
-    if (!ctx) return;
+    if (!ensureCanvas()) return;
+    if (!stars.length) buildStars();
     var w = window.innerWidth;
     var h = window.innerHeight;
     ctx.clearRect(0, 0, w, h);
@@ -307,7 +334,7 @@
   }
 
   function startStarfield() {
-    if (!canvas || !ctx) return;
+    if (!ensureCanvas()) return;
     if (reduced) {
       sizeCanvas();
       drawStars(0);
@@ -316,6 +343,10 @@
     if (running) return;
     running = true;
     sizeCanvas();
+    /* paint one frame synchronously: the field is visible immediately instead
+       of waiting for the first animation frame (which browsers throttle on a
+       background/occluded tab or before the first user interaction). */
+    drawStars(0);
     rafId = window.requestAnimationFrame(loop);
   }
 
@@ -340,9 +371,19 @@
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
       stopStarfield();
-    } else if (!reduced) {
+    } else {
       startStarfield();
     }
+  });
+
+  /* the boot gate above only recorded the intent: run the field now that the
+     whole module (canvas, star tables, colour palettes) is defined. */
+  if (wantStarfield) startStarfield();
+  /* and once more when the document really finishes loading, in case the
+     canvas had no layout box yet on the very first paint. */
+  window.addEventListener('load', function () {
+    if (wantStarfield && !reduced) { sizeCanvas(); drawStars(performance.now()); }
+    else if (wantStarfield && reduced) drawStars(0);
   });
 
   /* ==========================================================
