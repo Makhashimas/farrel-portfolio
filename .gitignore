@@ -1,4 +1,6 @@
 .agent/
 .agents/
+.claude/
+.codex/
 .gemini/
 skills-lock.json
