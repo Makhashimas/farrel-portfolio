@@ -123,6 +123,11 @@ html[data-theme="gnr"] {
 html {
   background: var(--night);
   transition: background-color .5s steps(8);
+  /* STEP 5 HARDEN: the full-bleed .field layer is sized in 100vw, which
+     includes the scrollbar, so the document was 8px wider than the viewport
+     and could be panned sideways. clip (not hidden) keeps the sticky bar
+     working and adds no scroll container. */
+  overflow-x: clip;
 }
 
 /* ---------- reset ---------- */
@@ -427,7 +432,7 @@ main, .bar, .foot { position: relative; z-index: 2; }
 
 .bar__link {
   font-family: var(--f-pixel);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .02em;
   color: var(--paper);
   padding: 10px 12px;
@@ -654,7 +659,7 @@ main, .bar, .foot { position: relative; z-index: 2; }
   width: 26px; height: 26px;
   display: block;
 }
-.cart__reel img { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+.cart__reel svg { display: block; width: 100%; height: 100%; }
 .cart__reel--l { left: 12px; }
 .cart__reel--r { right: 12px; }
 .cart.is-playing .cart__reel { animation: reelSpin 1.6s steps(4) infinite; }
@@ -682,7 +687,7 @@ main, .bar, .foot { position: relative; z-index: 2; }
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   place-items: center;
-  padding: 8px;
+  padding: 2px 0;
   overflow: hidden;
 }
 .cart__screen::after {
@@ -718,10 +723,8 @@ main, .bar, .foot { position: relative; z-index: 2; }
 .cart__track.is-scroll { text-align: left; }
 .cart__track.is-scroll .cart__trackTxt {
   animation: lcdScroll var(--lcd-dur, 7s) steps(var(--lcd-steps, 32), end) infinite;
-  animation-play-state: paused;
   will-change: transform;
 }
-.cart.is-playing .cart__track.is-scroll .cart__trackTxt { animation-play-state: running; }
 @keyframes lcdScroll {
   0%, 14%   { transform: translateX(0); }
   62%, 100% { transform: translateX(var(--lcd-shift, 0px)); }
@@ -778,13 +781,47 @@ main, .bar, .foot { position: relative; z-index: 2; }
   transform: translateY(2px);
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, .35), 1px 1px 0 rgba(3, 2, 3, .5);
 }
-.cart__key img {
+.cart__key svg {
   width: 14px; height: 14px;
   display: block;
   image-rendering: pixelated;
   opacity: .75;
 }
-.cart__key:hover img { opacity: 1; }
+.cart__key:hover svg { opacity: 1; }
+
+.cart__key:focus-visible,
+.cart__play:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.cart__key--mute { color: var(--ink); }
+.cart.is-muted .cart__key--mute {
+  background: linear-gradient(180deg, var(--gold), var(--gold-dim));
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, .5), 2px 3px 0 rgba(3, 2, 3, .55), inset 0 0 0 2px rgba(11, 15, 36, .35);
+}
+.cart.is-muted .cart__key--mute svg { opacity: 1; }
+.cart.is-muted .cart__prog::after {
+  content: 'MUTED';
+  flex: 0 0 auto;
+  font-family: var(--f-pixel);
+  font-size: 9px;
+  letter-spacing: .02em;
+  color: var(--rose);
+  white-space: nowrap;
+}
+.mini.is-muted .mini__artist::after { content: ' \00b7 MUTED'; color: var(--rose); }
+
+/* themed scrollbar + disabled states, existing palette only */
+html { scrollbar-color: var(--navy) var(--night); }
+html::-webkit-scrollbar { width: 12px; height: 12px; }
+html::-webkit-scrollbar-track { background: var(--night); border-left: 3px solid var(--navy); }
+html::-webkit-scrollbar-thumb { background: var(--navy); border: 3px solid var(--night); }
+html::-webkit-scrollbar-thumb:hover { background: var(--cyan-dim); }
+:is(a, button, [role="button"], input, summary)[aria-disabled="true"],
+:is(a, button, [role="button"], input, summary):disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+}
+
 
 .cart__play {
   width: 52px; height: 44px;
@@ -825,7 +862,7 @@ main, .bar, .foot { position: relative; z-index: 2; }
   display: block;
   opacity: .9;
 }
-.cart__jack img { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+.cart__jack svg { display: block; width: 100%; height: 100%; }
 
 /* corner screws */
 .cart__screw {
@@ -834,7 +871,7 @@ main, .bar, .foot { position: relative; z-index: 2; }
   display: block;
   opacity: .8;
 }
-.cart__screw img { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+.cart__screw svg { display: block; width: 100%; height: 100%; }
 .cart__screw--tl { top: 4px; left: 4px; }
 .cart__screw--tr { top: 4px; right: 4px; }
 .cart__screw--bl { bottom: 4px; left: 4px; }
@@ -997,7 +1034,11 @@ section[id] { scroll-margin-top: 84px; }
   letter-spacing: .04em;
 }
 
-.about__text p { margin-bottom: 18px; color: var(--paper); }
+/* STEP 5 HARDEN - measure: VT323 at 19px ran ~85 characters per line in this
+   column (~101 per the detector). Capping the measure at 75ch keeps the
+   paragraph under the 80-character readability limit and stops orphan words.
+   Copy, font, size, colour and column origin are untouched. */
+.about__text p { margin-bottom: 18px; color: var(--paper); max-width: 75ch; text-wrap: pretty; }
 .about__text p:last-child { margin-bottom: 0; }
 
 .about__lead {
@@ -1022,8 +1063,8 @@ section[id] { scroll-margin-top: 84px; }
 .stat__k {
   display: block;
   font-family: var(--f-pixel);
-  font-size: 11px;
-  color: var(--cyan-dim);
+  font-size: 12px;
+  color: var(--cyan);
   letter-spacing: .04em;
   margin-bottom: 8px;
 }
@@ -1233,7 +1274,7 @@ html[data-theme="gnr"] .quest__art--photo::after {
   align-self: flex-start;
   margin-top: 18px;
   font-family: var(--f-pixel);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: .04em;
   color: var(--ink);
   background: var(--gold);
@@ -1549,7 +1590,7 @@ html[data-theme="gnr"] .quest__art--photo::after {
 .win__bar--gold { background: var(--gold); }
 .win__bar--term { background: var(--ink); border-bottom-color: var(--cyan-dim); }
 
-.win--award .win__title { color: var(--ink); }
+.win--award .win__title { color: var(--paper); }
 .win__bar--gold .win__title { color: var(--ink); }
 
 .win--award .win__bar {
@@ -1601,7 +1642,7 @@ html[data-theme="gnr"] .quest__art--photo::after {
 
 .cert__name {
   font-family: var(--f-pixel);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.8;
   color: var(--paper);
   margin-bottom: 8px;
@@ -1763,9 +1804,11 @@ html[data-theme="gnr"] .quest__art--photo::after {
 .progress__fill {
   display: block;
   height: 100%;
-  width: 0;
+  width: 100%;
   background: linear-gradient(90deg, var(--cyan), var(--gold));
-  transition: width .1s linear;
+  transform: scaleX(var(--p, 0));
+  transform-origin: 0 50%;
+  transition: transform .1s linear;
 }
 
 /* ============================================================
@@ -1870,7 +1913,7 @@ body.glow-on .glow { opacity: 1; }
   display: block;
   margin-top: 9px;
   font-family: var(--f-pixel);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: .04em;
   color: var(--paper-dim);
 }
@@ -2355,7 +2398,7 @@ html.konami .bar__name { animation: blink 0.7s steps(2) infinite; }
 }
 .cart__time {
   font-family: var(--f-pixel);
-  font-size: 9px;
+  font-size: 10px;
   color: var(--gold);
   min-width: 32px;
   text-align: right;
@@ -2447,7 +2490,7 @@ html.konami .bar__name { animation: blink 0.7s steps(2) infinite; }
 .mini__meta { flex: 1 1 auto; min-width: 0; }
 .mini__song {
   font-family: var(--f-pixel);
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: .02em;
   color: var(--paper);
   margin-bottom: 6px;
@@ -2494,6 +2537,7 @@ html[data-theme] .bolts { display: none; }
 .bolt {
   position: absolute;
   width: 84px;
+  height: auto;
   image-rendering: pixelated;
   opacity: 0;
   filter: drop-shadow(0 0 12px rgba(61, 232, 196, .75));
@@ -2561,6 +2605,7 @@ html[data-theme="sunset"] .fly { animation: flyDrift 9s steps(20) infinite; }
   position: absolute;
   right: -34px; bottom: -14px;
   width: 180px;
+  height: auto;
   image-rendering: pixelated;
   opacity: 0;
   transition: opacity .6s steps(8);
@@ -3066,6 +3111,7 @@ html[data-theme="sunset"] .shot::after {
    REDUCED MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
+  .cart__track.is-scroll .cart__trackTxt { animation: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: .001ms !important;
@@ -3086,3 +3132,222 @@ html[data-theme="sunset"] .shot::after {
   .field__img { animation: none; }
   .mini { transition: none; }
 }
+
+
+/* ==========================================================
+   STEP 2 / STEP 4 - WORLD: scroll-linked layers + OS chrome
+   All motion here is transform/opacity only, driven by CSS
+   variables set from one rAF scroll handler in script.js.
+   No new colors: the night simply deepens into the palette's
+   own dark base, and the HUD reuses the existing pixel chrome.
+   ========================================================== */
+
+/* --- three parallax layers (stars / city+pylons / floating icons) --- */
+.sky     { transform: translate3d(0, var(--py-sky, 0px), 0); }
+.horizon { transform: translate3d(0, var(--py-horizon, 0px), 0); }
+.field   { transform: translateX(-50%) translate3d(0, var(--py-field, 0px), 0); }
+html.world-live .sky,
+html.world-live .horizon,
+html.world-live .field { will-change: transform; }
+
+/* time-of-night: the gradient gives way to the dark base, same palette */
+.sky__grad { opacity: var(--dusk, 1); }
+
+/* --- hero exit: stage drifts up + fades, the name stays in the nav --- */
+.hero__grid {
+  transform: translate3d(0, calc(var(--hero-out, 0) * -34px), 0);
+  opacity: calc(1 - var(--hero-out, 0) * .6);
+}
+html.hero-gone .bar__name { text-shadow: 0 0 10px currentColor; }
+
+/* --- quest cards lift as they cross the middle of the view --- */
+.quest { transform: translate3d(0, var(--pop, 0px), 0); }
+html.world-live .quest { transition: box-shadow .14s steps(2); }
+
+/* --- reveal stagger: same transition, offset by list position --- */
+.reveal { transition-delay: calc(var(--i, 0) * 60ms); }
+
+/* --- award window: one-shot pixel unlock flash on reveal (palette only) --- */
+.win--award.is-unlocking { animation: winUnlock .9s steps(4) 1; }
+@keyframes winUnlock {
+  0%   { outline: 3px solid var(--gold); outline-offset: 0; }
+  55%  { outline-color: var(--cyan); outline-offset: 6px; }
+  100% { outline: 3px solid transparent; outline-offset: 10px; }
+}
+
+/* --- progress HUD: "03 / 06 WORK" in the same pixel chrome --- */
+.progress__name {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  translate: -50% 0;
+  z-index: 64;
+  pointer-events: none;
+  font-family: var(--f-pixel);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--gold);
+  background: var(--ink);
+  border: 3px solid var(--navy-lite);
+  box-shadow: var(--shadow-soft);
+  padding: 6px 10px;
+  margin: 0;
+}
+.progress__name b { color: var(--cyan); font-weight: 400; }
+
+/* --- nav: current section + the RUN.EXE key hint --- */
+.bar__link.is-current {
+  color: var(--gold);
+  border-color: var(--navy-lite);
+  background: var(--night-2);
+}
+.bar__hint {
+  font-family: var(--f-term);
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: var(--cyan-dim);
+  border: 2px solid var(--navy-lite);
+  padding: 2px 5px;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+/* --- boot screen: visible SKIP --- */
+.boot__skip {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-family: var(--f-pixel);
+  /* STEP 5 HARDEN: 10px -> 11px; functional text below 11px fails the
+     detector's undersized-UI-text floor and is hard to hit on a phone.
+     Same pixel font, same cyan/gold tokens. */
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--cyan);
+  background: transparent;
+  border: 3px solid var(--cyan-dim);
+  padding: 9px 12px; /* STEP 5 HARDEN: >=24px tap target */
+  cursor: pointer;
+}
+.boot__skip:hover,
+.boot__skip:focus-visible { color: var(--gold); border-color: var(--gold); }
+
+/* --- footer system keys --- */
+.foot__sys {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 26px;
+}
+/* STEP 5 HARDEN: 9px -> 11px with a larger hit area; these three keys wake
+   REBOOT / SHUT DOWN / RESET, so they must clear the 11px UI-text floor and
+   the 24px touch target. Same pixel font, same gold/rose tokens. */
+.foot__sysbtn { font-size: 11px; padding: 13px 15px; letter-spacing: .06em; }
+
+/* --- shutdown screen (REBOOT / SHUT DOWN) --- */
+.shutdown {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .45s steps(6);
+}
+.shutdown::after {
+  content: "IT'S NOW SAFE TO TURN OFF YOUR COMPUTER";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: min(420px, 80%);
+  text-align: center;
+  font-family: var(--f-pixel);
+  font-size: 12px;
+  line-height: 2;
+  color: var(--gold);
+  opacity: 0;
+  transition: opacity .3s steps(4) .22s;
+}
+html.is-shutting .shutdown { opacity: 1; pointer-events: auto; cursor: pointer; }
+html.is-shutting .shutdown::after { opacity: 1; }
+
+@media (max-width: 1000px) { .progress__name { display: none; } }
+@media (max-width: 1180px) { .bar__hint { display: none; } }
+
+/* --- reduced motion: layers stay put, nothing drifts --- */
+@media (prefers-reduced-motion: reduce) {
+  .sky, .horizon, .hero__grid, .quest, .sky__grad { transform: none; opacity: 1; }
+  .field { transform: translateX(-50%); }
+  .reveal { transition-delay: 0s; }
+  .win--award.is-unlocking { animation: none; }
+}
+
+/* ==========================================================
+   STEP 5 - HARDEN: hit areas + small-screen affordances
+   Nothing here alters the desktop look: the taskbar nav only
+   gains a fade when it actually overflows, and list links in
+   the footer only gain a slightly taller hit box.
+   ========================================================== */
+
+/* footer list links: >=24px tall hit area (WCAG 2.2 target size) */
+.foot__links li > a,
+.foot__links li > button { display: inline-block; padding-block: 3px; }
+
+/* narrow screens: the taskbar nav scrolls instead of wrapping.
+   Hide the native scrollbar and fade the right edge while there
+   is still more to scroll (the class is toggled from script.js). */
+@media (max-width: 780px) {
+  .bar__nav {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-mask-image: linear-gradient(90deg, var(--ink) 0, var(--ink) calc(100% - 26px), transparent 100%);
+    mask-image: linear-gradient(90deg, var(--ink) 0, var(--ink) calc(100% - 26px), transparent 100%);
+  }
+  .bar__nav::-webkit-scrollbar { display: none; }
+  .bar__nav.is-at-end {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* STEP 5 HARDEN: on 781-1059px the full nav labels plus the clock need up to
+   1037px of bar, so the clock was pushed past the bar edge (up to 189px at
+   781px) and clipped. Use the short labels the bar already uses below 780px
+   (same words, same order) and let the links tighten slightly so all six labels
+   and the clock stay visible from 781px up. The nav still shrinks and scrolls
+   as a safety net, so nothing can ever be stranded off the edge. */
+@media (min-width: 781px) and (max-width: 1059px) {
+  .lbl-full { display: none; }
+  .lbl-short { display: inline; }
+  .bar__nav {
+    min-width: 0;
+    /* centered content that overflows loses its left edge with no way to scroll
+       it back, so start-align while the nav is scrollable (same as <780px) */
+    justify-content: flex-start;
+    /* 8px link padding already leaves 16px between labels at this width */
+    gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-mask-image: linear-gradient(90deg, var(--ink) 0, var(--ink) calc(100% - 26px), transparent 100%);
+    mask-image: linear-gradient(90deg, var(--ink) 0, var(--ink) calc(100% - 26px), transparent 100%);
+  }
+  .bar__nav::-webkit-scrollbar { display: none; }
+  .bar__nav.is-at-end {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .bar__link { white-space: nowrap; flex: 0 0 auto; padding-left: 8px; padding-right: 8px; }
+}
+
+
+/* ============================================================
+   STEP 5 - TYPOGRAPHY HARDENING
+   Headings balance, running copy wraps "pretty" so no single word
+   is left alone on a last line. No font, size or colour changes.
+   ============================================================ */
+h1, h2, h3, h4, .win__title { text-wrap: balance; }
+main p, main li, footer p, footer li, .sect__sub { text-wrap: pretty; }

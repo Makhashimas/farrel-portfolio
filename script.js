@@ -819,7 +819,7 @@
       var doc = document.documentElement;
       var max = doc.scrollHeight - window.innerHeight;
       var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
-      if (scrollBar) scrollBar.style.width = pct.toFixed(2) + '%';
+      if (scrollBar) scrollBar.style.setProperty('--p', (pct / 100).toFixed(4));
       ticking = false;
     });
   }
@@ -1153,6 +1153,7 @@
     audio.preload = 'none';           // no download until the play button is pressed
     audio.src = cur().src;
     audio.loop = false;               // 'ended' advances to the next song on the tape
+    audio.muted = isMuted;            // the deck starts silent; the mute key drives this
 
     audio.addEventListener('play', onPlay);
     audio.addEventListener('pause', onPause);
@@ -1160,6 +1161,36 @@
     audio.addEventListener('ended', onEnded);
     return audio;
   }
+
+
+  // ---- mute: deck key + M key. Silent by default, never autoplays. ----
+  var isMuted = false;
+  function setMuted(next) {
+    isMuted = !!next;
+    if (audio) audio.muted = isMuted;
+    var deck = document.querySelector('.cart');
+    var mini = document.getElementById('mini');
+    if (deck) deck.classList.toggle('is-muted', isMuted);
+    if (mini) mini.classList.toggle('is-muted', isMuted);
+    var btn = document.getElementById('cartMute');
+    if (btn) {
+      btn.setAttribute('aria-pressed', isMuted ? 'true' : 'false');
+      btn.setAttribute('aria-label', isMuted ? 'Unmute' : 'Mute');
+      btn.title = isMuted ? 'Unmute (M)' : 'Mute (M)';
+    }
+  }
+  function wireMute() {
+    var btn = document.getElementById('cartMute');
+    if (btn) btn.addEventListener('click', function () { setMuted(!isMuted); });
+    document.addEventListener('keydown', function (e) {
+      if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+      var t = e.target;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      if (e.key === 'm' || e.key === 'M') setMuted(!isMuted);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireMute);
+  else wireMute();
 
   function setupAnalyser() {
     if (audioCtx || !audio) return;
@@ -1687,5 +1718,216 @@
 
     requestAnimationFrame(fluidTick);
   }
+
+
+  /* ==========================================================
+     13. WORLD - scroll-linked layers, progress HUD, system keys
+     ----------------------------------------------------------
+     STEP 2 (parallax, hero exit, time-of-night) and the remaining
+     STEP 4 chrome (progress HUD name, current-section nav, boot
+     SKIP, footer system keys) all run from one rAF scroll handler.
+     Every value is written as a CSS variable or a transform, so the
+     browser keeps the frame on the compositor: no layout, no paint,
+     and no colors outside the existing palette.
+     ========================================================== */
+  var worldRoot = document.documentElement;
+  var worldReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var SECT_IDS = ['about', 'projects', 'now', 'skills', 'awards', 'contact'];
+  var SECT_LABELS = ['PROFILE', 'WORK', 'NOW', 'SKILLS', 'WINS', 'MAIL'];
+  var hudNum = document.getElementById('hudNum');
+  var hudWord = document.getElementById('hudWord');
+  var navLinks = [].slice.call(document.querySelectorAll('.bar__link'));
+  var heroEl = document.getElementById('top');
+  var popEls = [].slice.call(document.querySelectorAll('.quest'));
+  var sectTops = [], popTops = [], curSect = -1, heroGone = false, worldTick = false;
+
+  function docTop(el) {
+    var t = 0;
+    while (el) { t += el.offsetTop; el = el.offsetParent; }
+    return t;
+  }
+  function worldMeasure() {
+    sectTops = [];
+    for (var i = 0; i < SECT_IDS.length; i++) {
+      var s = document.getElementById(SECT_IDS[i]);
+      sectTops.push(s ? docTop(s) : Infinity);
+    }
+    popTops = [];
+    for (var k = 0; k < popEls.length; k++) popTops.push(docTop(popEls[k]));
+  }
+  function worldSet(name, val) { worldRoot.style.setProperty(name, val); }
+  function worldQ(v) { return Math.round(v * 2) / 2; }   /* half-pixel steps keep the pixel feel */
+
+  function worldFrame() {
+    worldTick = false;
+    var y = window.scrollY || window.pageYOffset || 0;
+    var vh = window.innerHeight || 1;
+    var max = Math.max(1, worldRoot.scrollHeight - vh);
+    var prog = Math.min(1, Math.max(0, y / max));
+
+    /* three layers, three speeds: stars, city + pylons, floating icons */
+    worldSet('--py-sky', worldQ(y * 0.05) + 'px');
+    worldSet('--py-horizon', worldQ(y * 0.12) + 'px');
+    worldSet('--py-field', worldQ(y * -0.07) + 'px');
+
+    /* time of night: the gradient recedes into the palette's own dark base */
+    worldSet('--dusk', (1 - prog * 0.4).toFixed(3));
+
+    /* hero exit: the stage drifts up and fades, the name lands in the nav */
+    var heroH = heroEl ? heroEl.offsetHeight : vh;
+    var out = Math.min(1, Math.max(0, (y - heroH * 0.32) / (heroH * 0.8)));
+    worldSet('--hero-out', (Math.round(out * 10) / 10).toFixed(2));
+    var gone = out > 0.15;
+    if (gone !== heroGone) {
+      heroGone = gone;
+      worldRoot.classList.toggle('hero-gone', gone);
+    }
+
+    /* each card lifts a little as it crosses the middle of the view */
+    var mid = y + vh * 0.5;
+    for (var i = 0; i < popEls.length; i++) {
+      var d = (popTops[i] + popEls[i].offsetHeight * 0.5 - mid) / vh;
+      var pop = Math.round(Math.max(-9, Math.min(9, d * -12)));
+      popEls[i].style.transform = 'translate3d(0,' + pop + 'px,0)';
+    }
+
+    /* progress HUD + current section in the nav */
+    var cur = 0;
+    for (var s = 0; s < sectTops.length; s++) if (y + 150 >= sectTops[s]) cur = s;
+    if (cur !== curSect) {
+      curSect = cur;
+      if (hudNum) hudNum.textContent = ('0' + (cur + 1)).slice(-2);
+      if (hudWord) hudWord.textContent = SECT_LABELS[cur];
+      var activeLink = null;
+      for (var n = 0; n < navLinks.length; n++) {
+        var on = navLinks[n].getAttribute('href') === '#' + SECT_IDS[cur];
+        navLinks[n].classList.toggle('is-current', on);
+        if (on) activeLink = navLinks[n];
+      }
+      navKeepCurrentInView(activeLink);
+    }
+  }
+  /* Lenis (already in the stack) suppresses native scroll events, so the
+     world is driven by one rAF monitor that re-reads the scroll offset only
+     when it actually changed. Anything Lenis-style that exposes .on('scroll')
+     gets hooked as well; the monitor is the fallback that always works. */
+  var worldLastY = -1;
+  function worldLoop() {
+    var y = window.scrollY || window.pageYOffset || 0;
+    if (y !== worldLastY) {
+      worldLastY = y;
+      try { worldFrame(); } catch (e) {}
+    }
+    window.requestAnimationFrame(worldLoop);
+  }
+
+  if (!worldReduced.matches) {
+    worldRoot.classList.add('world-live');
+    /* stagger the reveal list by position, no per-element CSS needed */
+    var reveals = [].slice.call(document.querySelectorAll('.reveal'));
+    for (var r = 0; r < reveals.length; r++) reveals[r].style.setProperty('--i', r);
+    worldMeasure();
+    worldFrame();
+    window.addEventListener('resize', function () { worldMeasure(); worldLastY = -1; });
+    try {
+      var worldLenis = window.__lenis || window.lenis;
+      if (worldLenis && typeof worldLenis.on === 'function') {
+        worldLenis.on('scroll', function () {
+          worldLastY = -1;
+          try { worldFrame(); } catch (e) {}
+        });
+      }
+    } catch (e) {}
+    window.requestAnimationFrame(worldLoop);
+    window.setTimeout(worldMeasure, 800);
+    window.setTimeout(worldMeasure, 2400);
+  }
+
+  /* ---- boot screen: visible SKIP ---- */
+  var bootSkip = document.getElementById('bootSkip');
+  if (bootSkip) bootSkip.addEventListener('click', dismissBoot);
+
+  /* ---- footer system keys ----
+     In-page arm/confirm instead of window.confirm(): a native modal
+     freezes the page (and reads as browser chrome, not FARREL.OS). */
+  var shutEl = document.getElementById('shutdown');
+  function worldWake() {
+    worldRoot.classList.remove('is-shutting');
+    worldRoot.removeAttribute('data-asleep');
+  }
+  function armKey(btn, label, run) {
+    btn.addEventListener('click', function () {
+      if (btn.getAttribute('data-armed') === '1') {
+        btn.removeAttribute('data-armed');
+        btn.textContent = label;
+        run();
+        return;
+      }
+      btn.setAttribute('data-armed', '1');
+      btn.textContent = 'SURE?';
+      window.setTimeout(function () {
+        if (btn.getAttribute('data-armed') === '1') {
+          btn.removeAttribute('data-armed');
+          btn.textContent = label;
+        }
+      }, 2800);
+    });
+  }
+  function systemReboot() {
+    try { window.sessionStorage.removeItem('farrel-booted'); } catch (e) {}
+    worldRoot.classList.add('is-shutting');
+    window.setTimeout(worldWake, 620);
+    window.setTimeout(function () { window.location.reload(); }, 640);
+  }
+  function systemShutdown() {
+    worldRoot.classList.add('is-shutting');
+    window.scrollTo(0, 0);
+    if (shutEl) shutEl.focus();
+  }
+  function systemReset() {
+    try { window.sessionStorage.clear(); window.localStorage.clear(); } catch (e) {}
+    worldRoot.classList.add('is-shutting');
+    window.setTimeout(function () { window.location.reload(); }, 400);
+  }
+  var rebootBtn = document.getElementById('rebootBtn');
+  var shutdownBtn = document.getElementById('shutdownBtn');
+  var resetBtn = document.getElementById('resetBtn');
+  if (rebootBtn) armKey(rebootBtn, 'REBOOT', systemReboot);
+  if (shutdownBtn) armKey(shutdownBtn, 'SHUT DOWN', systemShutdown);
+  if (resetBtn) armKey(resetBtn, 'RESET SESSION', systemReset);
+  if (shutEl) {
+    shutEl.setAttribute('tabindex', '-1');
+    shutEl.addEventListener('click', worldWake);
+  }
+
+  /* ---- STEP 5 harden: the taskbar nav scrolls instead of wrapping on
+     narrow screens, so keep the current pill reachable and mark when
+     there is nothing left to scroll (the fade is CSS-side). ---- */
+  var navScrollEl = document.querySelector('.bar__nav');
+  function navEdge() {
+    if (!navScrollEl) return;
+    var scrolled = navScrollEl.scrollWidth - navScrollEl.clientWidth;
+    navScrollEl.classList.toggle('is-at-end', scrolled <= 2 || navScrollEl.scrollLeft >= scrolled - 2);
+  }
+  function navKeepCurrentInView(link) {
+    if (!navScrollEl || !link) return;
+    var scrolled = navScrollEl.scrollWidth - navScrollEl.clientWidth;
+    if (scrolled <= 2) return;
+    var linkLeft = link.getBoundingClientRect().left - navScrollEl.getBoundingClientRect().left + navScrollEl.scrollLeft;
+    var target = linkLeft - (navScrollEl.clientWidth - link.offsetWidth) / 2;
+    target = Math.max(0, Math.min(scrolled, target));
+    if (Math.abs(target - navScrollEl.scrollLeft) < 4) return;
+    if (navScrollEl.scrollTo) navScrollEl.scrollTo({ left: target, behavior: worldReduced.matches ? 'auto' : 'smooth' });
+    else navScrollEl.scrollLeft = target;
+  }
+  if (navScrollEl) {
+    navScrollEl.addEventListener('scroll', navEdge, { passive: true });
+    window.addEventListener('resize', navEdge, { passive: true });
+    navEdge();
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && worldRoot.classList.contains('is-shutting')) worldWake();
+  });
 
 })();

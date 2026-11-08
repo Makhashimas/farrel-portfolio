@@ -131,6 +131,7 @@
       <span class="boot__prompt">&gt;</span>
       <button class="boot__btn" id="bootBtn">PRESS START</button>
     </div>
+    <button class="boot__skip" id="bootSkip" type="button">SKIP &gt;&gt;</button>
   </div>
 </div>
 
@@ -147,13 +148,13 @@
 
 <!-- ============ THEME FX (lightning / fireflies / gnr) ============ -->
 <div class="fx fx--back" aria-hidden="true">
-  <img class="gnr-cross" src="assets/art/px-cross.svg" alt="">
+  <svg viewBox="0 0 25 33" class="gnr-cross" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-cross" xlink:href="assets/art/icons-sprite.svg#fx-px-cross"/></svg>
 </div>
 <div class="fx fx--sky" aria-hidden="true">
   <div class="bolts" id="bolts">
-    <img class="bolt bolt--1" src="assets/art/px-bolt-cyan.svg" alt="">
-    <img class="bolt bolt--2" src="assets/art/px-bolt-cyan.svg" alt="">
-    <img class="bolt bolt--3" src="assets/art/px-bolt-cyan.svg" alt="">
+    <svg viewBox="0 0 12 13" class="bolt bolt--1" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-bolt-cyan" xlink:href="assets/art/icons-sprite.svg#fx-px-bolt-cyan"/></svg>
+    <svg viewBox="0 0 12 13" class="bolt bolt--2" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-bolt-cyan" xlink:href="assets/art/icons-sprite.svg#fx-px-bolt-cyan"/></svg>
+    <svg viewBox="0 0 12 13" class="bolt bolt--3" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-bolt-cyan" xlink:href="assets/art/icons-sprite.svg#fx-px-bolt-cyan"/></svg>
   </div>
   <div class="flies" aria-hidden="true">
     <span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span>
@@ -173,6 +174,7 @@
 
 <!-- ============ SCROLL PROGRESS ============ -->
 <div class="progress" aria-hidden="true"><span class="progress__fill" id="scrollBar"></span></div>
+<p class="progress__name" aria-hidden="true"><b id="hudNum">01</b> / 06 <span id="hudWord">PROFILE</span></p>
 
 <!-- ============ TASKBAR NAV ============ -->
 <header class="bar">
@@ -188,6 +190,7 @@
     <a href="#awards" class="bar__link"><span class="lbl-full">AWARDS</span><span class="lbl-short">WINS</span></a>
     <a href="#contact" class="bar__link"><span class="lbl-full">CONTACT</span><span class="lbl-short">MAIL</span></a>
   </nav>
+  <kbd class="bar__hint" aria-hidden="true">CTRL K</kbd>
   <button class="bar__run" id="runBtn" type="button" aria-keyshortcuts="Control+K Meta+K" title="Run a command (Ctrl+K)">RUN</button>
   <div class="bar__clock" id="clock">--:--</div>
 </header>
@@ -201,97 +204,97 @@
        only the sprite of the active theme is visible. -->
   <div class="field" aria-hidden="true">
     <span class="field__p field__p--1">
-      <img class="field__img field__img--n" src="assets/art/px-rocket.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-palm.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-guitar.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-rocket" xlink:href="assets/art/icons-sprite.svg#fx-px-rocket"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-palm" xlink:href="assets/art/icons-sprite.svg#fx-px-palm"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-guitar" xlink:href="assets/art/icons-sprite.svg#fx-px-guitar"/></svg>
     </span>
     <span class="field__p field__p--2">
-      <img class="field__img field__img--n" src="assets/art/px-planet.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-lighthouse.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-emblem.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-planet" xlink:href="assets/art/icons-sprite.svg#fx-px-planet"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-lighthouse" xlink:href="assets/art/icons-sprite.svg#fx-px-lighthouse"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-emblem" xlink:href="assets/art/icons-sprite.svg#fx-px-emblem"/></svg>
     </span>
     <span class="field__p field__p--3">
-      <img class="field__img field__img--n" src="assets/art/px-telescope.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-boat.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-drums.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-telescope" xlink:href="assets/art/icons-sprite.svg#fx-px-telescope"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-boat" xlink:href="assets/art/icons-sprite.svg#fx-px-boat"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-drums" xlink:href="assets/art/icons-sprite.svg#fx-px-drums"/></svg>
     </span>
     <span class="field__p field__p--4">
-      <img class="field__img field__img--n" src="assets/art/px-satellite.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-gull.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-mic.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-satellite" xlink:href="assets/art/icons-sprite.svg#fx-px-satellite"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-gull" xlink:href="assets/art/icons-sprite.svg#fx-px-gull"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-mic" xlink:href="assets/art/icons-sprite.svg#fx-px-mic"/></svg>
     </span>
     <span class="field__p field__p--5">
-      <img class="field__img field__img--n" src="assets/art/px-chip.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-crab.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-pick.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-chip" xlink:href="assets/art/icons-sprite.svg#fx-px-chip"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-crab" xlink:href="assets/art/icons-sprite.svg#fx-px-crab"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-pick" xlink:href="assets/art/icons-sprite.svg#fx-px-pick"/></svg>
     </span>
     <span class="field__p field__p--6">
-      <img class="field__img field__img--n" src="assets/art/px-comet.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-umbrella.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-ticket.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-comet" xlink:href="assets/art/icons-sprite.svg#fx-px-comet"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-umbrella" xlink:href="assets/art/icons-sprite.svg#fx-px-umbrella"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-ticket" xlink:href="assets/art/icons-sprite.svg#fx-px-ticket"/></svg>
     </span>
     <span class="field__p field__p--7">
-      <img class="field__img field__img--n" src="assets/art/px-scope.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-shell.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-vinyl.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-scope" xlink:href="assets/art/icons-sprite.svg#fx-px-scope"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-shell" xlink:href="assets/art/icons-sprite.svg#fx-px-shell"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-vinyl" xlink:href="assets/art/icons-sprite.svg#fx-px-vinyl"/></svg>
     </span>
     <span class="field__p field__p--8">
-      <img class="field__img field__img--n" src="assets/art/px-signal.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-starfish.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-hat.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-signal" xlink:href="assets/art/icons-sprite.svg#fx-px-signal"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-starfish" xlink:href="assets/art/icons-sprite.svg#fx-px-starfish"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-hat" xlink:href="assets/art/icons-sprite.svg#fx-px-hat"/></svg>
     </span>
     <span class="field__p field__p--9">
-      <img class="field__img field__img--n" src="assets/art/px-cassette.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-surfboard.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-amp.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-cassette" xlink:href="assets/art/icons-sprite.svg#fx-px-cassette"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-surfboard" xlink:href="assets/art/icons-sprite.svg#fx-px-surfboard"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-amp" xlink:href="assets/art/icons-sprite.svg#fx-px-amp"/></svg>
     </span>
     <span class="field__p field__p--10">
-      <img class="field__img field__img--n" src="assets/art/px-headphones.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-beachball.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-rose.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-headphones" xlink:href="assets/art/icons-sprite.svg#fx-px-headphones"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-beachball" xlink:href="assets/art/icons-sprite.svg#fx-px-beachball"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-rose" xlink:href="assets/art/icons-sprite.svg#fx-px-rose"/></svg>
     </span>
     <span class="field__p field__p--11">
-      <img class="field__img field__img--n" src="assets/art/px-stars.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-bucket.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-skull.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-stars" xlink:href="assets/art/icons-sprite.svg#fx-px-stars"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-bucket" xlink:href="assets/art/icons-sprite.svg#fx-px-bucket"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-skull" xlink:href="assets/art/icons-sprite.svg#fx-px-skull"/></svg>
     </span>
     <span class="field__p field__p--12">
-      <img class="field__img field__img--n" src="assets/art/px-antenna.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-fire.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-lighter.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-antenna" xlink:href="assets/art/icons-sprite.svg#fx-px-antenna"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-fire" xlink:href="assets/art/icons-sprite.svg#fx-px-fire"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-lighter" xlink:href="assets/art/icons-sprite.svg#fx-px-lighter"/></svg>
     </span>
     <!-- wide-screen extras: only shown past 1340px, where the copy and the
          deck leave open pockets at the top middle, the right gutter and the
          bottom corners -->
     <span class="field__p field__p--13">
-      <img class="field__img field__img--n" src="assets/art/px-ufo.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-sun.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-speaker.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-ufo" xlink:href="assets/art/icons-sprite.svg#fx-px-ufo"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-sun" xlink:href="assets/art/icons-sprite.svg#fx-px-sun"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-speaker" xlink:href="assets/art/icons-sprite.svg#fx-px-speaker"/></svg>
     </span>
     <span class="field__p field__p--14">
-      <img class="field__img field__img--n" src="assets/art/px-floppy.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-drink.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-star.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-floppy" xlink:href="assets/art/icons-sprite.svg#fx-px-floppy"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-drink" xlink:href="assets/art/icons-sprite.svg#fx-px-drink"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-star" xlink:href="assets/art/icons-sprite.svg#fx-px-star"/></svg>
     </span>
     <span class="field__p field__p--15">
-      <img class="field__img field__img--n" src="assets/art/px-gamepad.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-flipflop.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-boots.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-gamepad" xlink:href="assets/art/icons-sprite.svg#fx-px-gamepad"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-flipflop" xlink:href="assets/art/icons-sprite.svg#fx-px-flipflop"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-boots" xlink:href="assets/art/icons-sprite.svg#fx-px-boots"/></svg>
     </span>
     <span class="field__p field__p--16">
-      <img class="field__img field__img--n" src="assets/art/px-moon.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-icecream.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-wristband.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-moon" xlink:href="assets/art/icons-sprite.svg#fx-px-moon"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-icecream" xlink:href="assets/art/icons-sprite.svg#fx-px-icecream"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-wristband" xlink:href="assets/art/icons-sprite.svg#fx-px-wristband"/></svg>
     </span>
     <span class="field__p field__p--17">
-      <img class="field__img field__img--n" src="assets/art/px-robot.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-coconut.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-poster.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-robot" xlink:href="assets/art/icons-sprite.svg#fx-px-robot"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-coconut" xlink:href="assets/art/icons-sprite.svg#fx-px-coconut"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-poster" xlink:href="assets/art/icons-sprite.svg#fx-px-poster"/></svg>
     </span>
     <span class="field__p field__p--18">
-      <img class="field__img field__img--n" src="assets/art/px-crt.svg" alt="">
-      <img class="field__img field__img--s" src="assets/art/px-sunhat.svg" alt="">
-      <img class="field__img field__img--g" src="assets/art/px-badge.svg" alt="">
+      <svg class="field__img field__img--n" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-crt" xlink:href="assets/art/icons-sprite.svg#fx-px-crt"/></svg>
+      <svg class="field__img field__img--s" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-sunhat" xlink:href="assets/art/icons-sprite.svg#fx-px-sunhat"/></svg>
+      <svg class="field__img field__img--g" aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-badge" xlink:href="assets/art/icons-sprite.svg#fx-px-badge"/></svg>
     </span>
   </div>
   <div class="hero__grid">
@@ -337,8 +340,8 @@
           <div class="cart__deck">
             <div class="cart__window" aria-hidden="true">
               <span class="cart__tape"></span>
-              <span class="cart__reel cart__reel--l"><img src="assets/art/px-reel.svg" alt=""></span>
-              <span class="cart__reel cart__reel--r"><img src="assets/art/px-reel.svg" alt=""></span>
+              <span class="cart__reel cart__reel--l"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-reel" xlink:href="assets/art/icons-sprite.svg#fx-px-reel"/></svg></span>
+              <span class="cart__reel cart__reel--r"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-reel" xlink:href="assets/art/icons-sprite.svg#fx-px-reel"/></svg></span>
               <span class="cart__spindle"></span>
             </div>
             <div class="cart__screen">
@@ -360,19 +363,20 @@
           <div class="cart__grille" aria-hidden="true"></div>
           <div class="cart__controls">
             <div class="cart__keys">
-              <button class="cart__key cart__key--prev" id="cartPrev" type="button" aria-label="Previous song" title="Previous song"><img src="assets/art/px-prev.svg" alt=""></button>
+              <button class="cart__key cart__key--prev" id="cartPrev" type="button" aria-label="Previous song" title="Previous song"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-prev" xlink:href="assets/art/icons-sprite.svg#fx-px-prev"/></svg></button>
               <button class="cart__play" id="cartPlay" type="button" aria-label="Play Sweet Child O' Mine by Guns N' Roses" title="Play Sweet Child O' Mine">
                 <span class="cart__playIco" aria-hidden="true"><i class="ico-play"></i><i class="ico-pause"></i></span>
               </button>
-              <button class="cart__key cart__key--next" id="cartNext" type="button" aria-label="Next song" title="Next song"><img src="assets/art/px-next.svg" alt=""></button>
-              <span class="cart__key cart__key--stop"><img src="assets/art/px-stop.svg" alt=""></span>
+              <button class="cart__key cart__key--next" id="cartNext" type="button" aria-label="Next song" title="Next song"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-next" xlink:href="assets/art/icons-sprite.svg#fx-px-next"/></svg></button>
+              <span class="cart__key cart__key--stop"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-stop" xlink:href="assets/art/icons-sprite.svg#fx-px-stop"/></svg></span>
+              <button class="cart__key cart__key--mute" id="cartMute" type="button" aria-label="Mute" aria-pressed="false" title="Mute (M)"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-speaker" xlink:href="assets/art/icons-sprite.svg#fx-px-speaker"/></svg></button>
             </div>
-            <span class="cart__jack" aria-hidden="true"><img src="assets/art/px-jack.svg" alt=""></span>
+            <span class="cart__jack" aria-hidden="true"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-jack" xlink:href="assets/art/icons-sprite.svg#fx-px-jack"/></svg></span>
           </div>
-          <span class="cart__screw cart__screw--tl" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
-          <span class="cart__screw cart__screw--tr" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
-          <span class="cart__screw cart__screw--bl" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
-          <span class="cart__screw cart__screw--br" aria-hidden="true"><img src="assets/art/px-screw.svg" alt=""></span>
+          <span class="cart__screw cart__screw--tl" aria-hidden="true"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-screw" xlink:href="assets/art/icons-sprite.svg#fx-px-screw"/></svg></span>
+          <span class="cart__screw cart__screw--tr" aria-hidden="true"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-screw" xlink:href="assets/art/icons-sprite.svg#fx-px-screw"/></svg></span>
+          <span class="cart__screw cart__screw--bl" aria-hidden="true"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-screw" xlink:href="assets/art/icons-sprite.svg#fx-px-screw"/></svg></span>
+          <span class="cart__screw cart__screw--br" aria-hidden="true"><svg aria-hidden="true" focusable="false"><use href="assets/art/icons-sprite.svg#fx-px-screw" xlink:href="assets/art/icons-sprite.svg#fx-px-screw"/></svg></span>
         </div>
         <span class="cart__tag" id="cartTag" aria-hidden="true">SIDE A &middot; SWEET CHILD O' MINE</span>
         <div class="cart__glow"></div>
@@ -832,9 +836,17 @@
       </ul>
     </div>
   </div>
+  <div class="foot__sys">
+    <button class="boot__btn foot__sysbtn" id="rebootBtn" type="button">REBOOT</button>
+    <button class="boot__btn foot__sysbtn" id="shutdownBtn" type="button">SHUT DOWN</button>
+    <button class="boot__btn foot__sysbtn" id="resetBtn" type="button">RESET SESSION</button>
+  </div>
   <div class="foot__ticker"><span class="foot__ticker-in" id="footTicker"></span></div>
 <p class="foot__base">&copy; 2026 Farrel Fayzul Haqqi &middot; Last updated <time datetime="2026-10-14">October 2026</time></p>
 </footer>
+
+<!-- ============ SHUTDOWN SCREEN ============ -->
+<div class="shutdown" id="shutdown" aria-hidden="true"></div>
 
 <!-- ============ COMMAND PALETTE (RUN.EXE) ============ -->
 <div class="pal" id="pal" data-lenis-prevent hidden>

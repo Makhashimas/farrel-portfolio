@@ -4,3 +4,6 @@
 .codex/
 .gemini/
 skills-lock.json
+
+# impeccable tool state
+.impeccable/
