@@ -1739,7 +1739,8 @@
   var navLinks = [].slice.call(document.querySelectorAll('.bar__link'));
   var heroEl = document.getElementById('top');
   var popEls = [].slice.call(document.querySelectorAll('.quest'));
-  var sectTops = [], popTops = [], curSect = -1, heroGone = false, worldTick = false;
+  var sectTops = [], popTops = [], popHeights = [], popLast = [], curSect = -1, heroGone = false, worldTick = false;
+  var worldHeroH = 0, worldMax = 0, worldVh = 0;
 
   /* the HUD chip steps aside once the page is at rest: while it is
      fixed to the bottom edge it would sit on top of card copy, so it
@@ -1763,36 +1764,81 @@
     return t;
   }
   function worldMeasure() {
+    /* every number a frame needs is measured here, once. Reading layout
+       (scrollHeight, offsetHeight) inside the scroll frame forces a full
+       style + layout pass on every frame, which is what made scrolling stutter. */
+    worldVh = window.innerHeight || 1;
     sectTops = [];
     for (var i = 0; i < SECT_IDS.length; i++) {
       var s = document.getElementById(SECT_IDS[i]);
       sectTops.push(s ? docTop(s) : Infinity);
     }
     popTops = [];
-    for (var k = 0; k < popEls.length; k++) popTops.push(docTop(popEls[k]));
+    popHeights = [];
+    for (var k = 0; k < popEls.length; k++) {
+      popTops.push(docTop(popEls[k]));
+      popHeights.push(popEls[k].offsetHeight);
+    }
+    worldHeroH = heroEl ? heroEl.offsetHeight : worldVh;
+    worldMax = Math.max(1, worldRoot.scrollHeight - worldVh);
   }
-  function worldSet(name, val) { worldRoot.style.setProperty(name, val); }
   function worldQ(v) { return Math.round(v * 2) / 2; }   /* half-pixel steps keep the pixel feel */
+
+  /* The layers are painted straight on their own elements instead of through
+     custom properties on <html>. A custom property inherits, so five writes per
+     frame invalidated the whole document: ~1.2s of style recalc for every 1.5s
+     of scrolling. Inline transform/opacity on the four elements that consume
+     them is compositor work and touches no other node. */
+  var skyEl = document.querySelector('.sky');
+  var horEl = document.querySelector('.horizon');
+  var fieldEl = document.querySelector('.field');
+  var gradEl = document.querySelector('.sky__grad');
+  var stageEl = document.querySelector('.hero__grid');
+  var worldLastSky = null, worldLastHor = null, worldLastFld = null,
+      worldLastDusk = null, worldLastOut = null;
 
   function worldFrame() {
     worldTick = false;
     var y = window.scrollY || window.pageYOffset || 0;
-    var vh = window.innerHeight || 1;
-    var max = Math.max(1, worldRoot.scrollHeight - vh);
+    var vh = worldVh || (window.innerHeight || 1);
+    var max = worldMax || Math.max(1, worldRoot.scrollHeight - vh);
     var prog = Math.min(1, Math.max(0, y / max));
 
     /* three layers, three speeds: stars, city + pylons, floating icons */
-    worldSet('--py-sky', worldQ(y * 0.05) + 'px');
-    worldSet('--py-horizon', worldQ(y * 0.12) + 'px');
-    worldSet('--py-field', worldQ(y * -0.07) + 'px');
+    var sky = worldQ(y * 0.05);
+    if (sky !== worldLastSky) {
+      worldLastSky = sky;
+      if (skyEl) skyEl.style.transform = 'translate3d(0,' + sky + 'px,0)';
+    }
+    var hor = worldQ(y * 0.12);
+    if (hor !== worldLastHor) {
+      worldLastHor = hor;
+      if (horEl) horEl.style.transform = 'translate3d(0,' + hor + 'px,0)';
+    }
+    var fld = worldQ(y * -0.07);
+    if (fld !== worldLastFld) {
+      worldLastFld = fld;
+      if (fieldEl) fieldEl.style.transform = 'translateX(-50%) translate3d(0,' + fld + 'px,0)';
+    }
 
     /* time of night: the gradient recedes into the palette's own dark base */
-    worldSet('--dusk', (1 - prog * 0.4).toFixed(3));
+    var dusk = (1 - prog * 0.4).toFixed(3);
+    if (dusk !== worldLastDusk) {
+      worldLastDusk = dusk;
+      if (gradEl) gradEl.style.opacity = dusk;
+    }
 
     /* hero exit: the stage drifts up and fades, the name lands in the nav */
-    var heroH = heroEl ? heroEl.offsetHeight : vh;
+    var heroH = worldHeroH || vh;
     var out = Math.min(1, Math.max(0, (y - heroH * 0.32) / (heroH * 0.8)));
-    worldSet('--hero-out', (Math.round(out * 10) / 10).toFixed(2));
+    var outQ = Math.round(out * 10) / 10;
+    if (outQ !== worldLastOut) {
+      worldLastOut = outQ;
+      if (stageEl) {
+        stageEl.style.transform = 'translate3d(0,' + Math.round(outQ * -34) + 'px,0)';
+        stageEl.style.opacity = (1 - outQ * 0.6).toFixed(2);
+      }
+    }
     var gone = out > 0.15;
     if (gone !== heroGone) {
       heroGone = gone;
@@ -1802,8 +1848,10 @@
     /* each card lifts a little as it crosses the middle of the view */
     var mid = y + vh * 0.5;
     for (var i = 0; i < popEls.length; i++) {
-      var d = (popTops[i] + popEls[i].offsetHeight * 0.5 - mid) / vh;
+      var d = (popTops[i] + (popHeights[i] || 0) * 0.5 - mid) / vh;
       var pop = Math.round(Math.max(-9, Math.min(9, d * -12)));
+      if (popLast[i] === pop) continue;   /* skip a write the compositor cannot see */
+      popLast[i] = pop;
       popEls[i].style.transform = 'translate3d(0,' + pop + 'px,0)';
     }
 
@@ -1822,12 +1870,18 @@
       }
       navKeepCurrentInView(activeLink);
     }
+    worldLastY = y;
   }
-  /* Lenis (already in the stack) suppresses native scroll events, so the
-     world is driven by one rAF monitor that re-reads the scroll offset only
-     when it actually changed. Anything Lenis-style that exposes .on('scroll')
-     gets hooked as well; the monitor is the fallback that always works. */
-  var worldLastY = -1;
+  /* One driver. Lenis (already in the stack) suppresses native scroll events,
+     so a single rAF monitor re-reads the offset and paints only when it
+     changed. Lenis's own scroll event now just pokes the monitor instead of
+     running a second frame pass in the same tick. */
+  var worldLastY = -1, worldQueued = false;
+  function worldPoke() {
+    if (worldQueued) return;
+    worldQueued = true;
+    window.requestAnimationFrame(function () { worldQueued = false; worldLoop(); });
+  }
   function worldLoop() {
     var y = window.scrollY || window.pageYOffset || 0;
     if (y !== worldLastY) {
@@ -1845,15 +1899,22 @@
     worldMeasure();
     worldFrame();
     window.addEventListener('resize', function () { worldMeasure(); worldLastY = -1; });
-    try {
-      var worldLenis = window.__lenis || window.lenis;
-      if (worldLenis && typeof worldLenis.on === 'function') {
-        worldLenis.on('scroll', function () {
-          worldLastY = -1;
-          try { worldFrame(); } catch (e) {}
-        });
-      }
-    } catch (e) {}
+        /* content can settle after fonts/images load, so re-measure instead of
+           trusting the first pass; the frame itself never reads layout again. */
+        if (window.ResizeObserver) {
+          var worldRO = 0;
+          var worldRObs = new ResizeObserver(function () {
+            clearTimeout(worldRO);
+            worldRO = setTimeout(function () { worldMeasure(); worldLastY = -1; }, 200);
+          });
+          if (document.body) worldRObs.observe(document.body);
+        }
+        try {
+          var worldLenis = window.__lenis || window.lenis;
+          if (worldLenis && typeof worldLenis.on === 'function') {
+            worldLenis.on('scroll', function () { worldPoke(); });
+          }
+        } catch (e) {}
     window.requestAnimationFrame(worldLoop);
     window.setTimeout(worldMeasure, 800);
     window.setTimeout(worldMeasure, 2400);

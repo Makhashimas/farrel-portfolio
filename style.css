@@ -3146,6 +3146,10 @@ html[data-theme="sunset"] .shot::after {
    ========================================================== */
 
 /* --- three parallax layers (stars / city+pylons / floating icons) --- */
+/* These are the resting transforms (no-JS / before the first frame). script.js
+   writes inline transform/opacity straight onto these elements instead of
+   setting custom properties on <html>: an inherited property write invalidates
+   the whole document, and five of those per frame was the scroll stutter. */
 .sky     { transform: translate3d(0, var(--py-sky, 0px), 0); }
 .horizon { transform: translate3d(0, var(--py-horizon, 0px), 0); }
 .field   { transform: translateX(-50%) translate3d(0, var(--py-field, 0px), 0); }
