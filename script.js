@@ -1741,6 +1741,22 @@
   var popEls = [].slice.call(document.querySelectorAll('.quest'));
   var sectTops = [], popTops = [], curSect = -1, heroGone = false, worldTick = false;
 
+  /* the HUD chip steps aside once the page is at rest: while it is
+     fixed to the bottom edge it would sit on top of card copy, so it
+     fades out after a short idle and returns on the next scroll. */
+  var hudChip = document.querySelector('.progress__name');
+  var hudIdleTimer = 0;
+  function hudWake() {
+    if (!hudChip) return;
+    hudChip.classList.remove('is-idle');
+    clearTimeout(hudIdleTimer);
+    hudIdleTimer = setTimeout(function () {
+      hudChip.classList.add('is-idle');
+    }, 1400);
+  }
+  window.addEventListener('scroll', hudWake, { passive: true });
+  hudWake();
+
   function docTop(el) {
     var t = 0;
     while (el) { t += el.offsetTop; el = el.offsetParent; }

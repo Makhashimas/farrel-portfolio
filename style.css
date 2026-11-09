@@ -715,8 +715,8 @@ main, .bar, .foot { position: relative; z-index: 2; }
 }
 
 .cart__glyph { display: block; font-size: 17px; line-height: 1.2; margin-bottom: 2px; }
-.cart__label { display: block; font-size: 8px; line-height: 1.4; color: var(--cyan-dim); letter-spacing: 0; white-space: nowrap; }
-.cart__track { display: block; width: 100%; overflow: hidden; font-size: 8px; line-height: 1.45; color: var(--gold); letter-spacing: 0; }
+.cart__label { display: block; font-size: 11px; line-height: 1.4; color: var(--cyan-dim); letter-spacing: -1.2px; white-space: nowrap; }
+.cart__track { display: block; width: 100%; overflow: hidden; font-size: 11px; line-height: 1.45; color: var(--gold); letter-spacing: 0; }
 .cart__trackTxt { display: inline-block; white-space: nowrap; }
 
 /* long titles scroll across the LCD, cassette-deck style */
@@ -1716,6 +1716,9 @@ html[data-theme="gnr"] .quest__art--photo::after {
   .hero { min-height: auto; padding-top: 48px; }
   .hero__stage { order: -1; }
   .cart__body { width: 200px; height: 258px; }
+  /* the deck shrinks here, so the LCD readout keeps its original 8px measure:
+     11px text would overflow the 102px screen */
+  .cart__label, .cart__track { font-size: 8px; letter-spacing: 0; }
   .about { grid-template-columns: 1fr; gap: 26px; }
   .portrait { margin: 0 auto; }
   .quests { grid-template-columns: 1fr; }
@@ -3194,6 +3197,9 @@ html.world-live .quest { transition: box-shadow .14s steps(2); }
   margin: 0;
 }
 .progress__name b { color: var(--cyan); font-weight: 400; }
+/* idle: chip steps aside so it never sits on card copy */
+.progress__name { transition: opacity .3s ease, translate .3s ease; }
+.progress__name.is-idle { opacity: 0; translate: -50% 6px; }
 
 /* --- nav: current section + the RUN.EXE key hint --- */
 .bar__link.is-current {
