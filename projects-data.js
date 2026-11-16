@@ -138,7 +138,7 @@ window.PROJECTS = [
     name: 'PixelAmp: Lossless Music App',
     cmd: 'C:\\> open quests\\pixelamp',
     sub: 'An Android player for lossless and hi-res audio, aimed at headphones and external DACs rather than casual listening.',
-    art: { type: 'pixel', cls: 'quest__art--eq', html: '<div class="px-eq"><i></i><i></i><i></i><i></i><i></i></div>' },
+    art: { type: 'photo', src: 'assets/photos/pixelamp-hero.jpg?v=amp4', alt: 'PixelAmp cover: yellow play triangle app icon above the PixelAmp wordmark' },
     body: [
       'Kotlin with Jetpack Compose and Jetpack Media3 (ExoPlayer), background playback through a MediaSessionService, and a Room + DataStore layer for the library and preferences.',
       'The audiophile side is the point: FLAC, ALAC, WAV and DSD support, a bit-perfect / hi-res status readout, live USB DAC detection and routing, a multi-band equalizer with tuning presets (bass boost, treble, DSP envelope shaping), and a custom visualizer I drew on a Compose canvas and bound to the audio session.',
