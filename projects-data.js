@@ -133,16 +133,17 @@ window.PROJECTS = [
     gallery: []
   },
   {
-    slug: 'mkh-player',
+    slug: 'pixelamp',
     tag: 'MOBILE',
-    name: 'MKH Player: Lossless Music App',
-    cmd: 'C:\\> open quests\\mkh_player',
+    name: 'PixelAmp: Lossless Music App',
+    cmd: 'C:\\> open quests\\pixelamp',
     sub: 'An Android player for lossless and hi-res audio, aimed at headphones and external DACs rather than casual listening.',
-    art: { type: 'pixel', cls: 'quest__art--chip', html: '<div class="px-chip"><span class="px-chip__pin"></span><span class="px-chip__pin"></span><span class="px-chip__pin"></span><span class="px-chip__pin"></span><span class="px-chip__core">AI</span><span class="px-chip__pin"></span><span class="px-chip__pin"></span><span class="px-chip__pin"></span><span class="px-chip__pin"></span></div>' },
+    art: { type: 'pixel', cls: 'quest__art--eq', html: '<div class="px-eq"><i></i><i></i><i></i><i></i><i></i></div>' },
     body: [
       'Kotlin with Jetpack Compose and Jetpack Media3 (ExoPlayer), background playback through a MediaSessionService, and a Room + DataStore layer for the library and preferences.',
       'The audiophile side is the point: FLAC, ALAC, WAV and DSD support, a bit-perfect / hi-res status readout, live USB DAC detection and routing, a multi-band equalizer with tuning presets (bass boost, treble, DSP envelope shaping), and a custom visualizer I drew on a Compose canvas and bound to the audio session.',
-      'I used AI design and coding assistants to move fast, the same way I would use a framework or a smart autocomplete. The feature set, the architecture, the choice of Media3, the state model, and the long iteration until it actually played were mine.'
+      'I used AI design and coding assistants to move fast, the same way I would use a framework or a smart autocomplete. The feature set, the architecture, the choice of Media3, the state model, and the long iteration until it actually played were mine.',
+      'PixelAmp is the name it ships under now, and it runs on the phone: every screenshot on this page is from the current build.'
     ],
     specs: [
       ['Stack', 'Kotlin · Jetpack Compose · Media3 / ExoPlayer'],
@@ -153,7 +154,11 @@ window.PROJECTS = [
       ['Extras', 'Bit-perfect / hi-res readout · custom Compose visualizer']
     ],
     chips: ['Kotlin', 'Jetpack Compose', 'Media3 / ExoPlayer', 'Android Audio', 'USB DAC'],
-    gallery: []
+    gallery: [
+      { src: 'assets/photos/pixelamp-player.jpg', tall: true, cap: 'Now playing: a 96 kHz / 24-bit lossless track, with the hi-res readout, queue controls and the equalizer one tap away.' },
+      { src: 'assets/photos/pixelamp-library.jpg', tall: true, cap: 'Library: songs, folders, albums, artists, genres, playlists and bookmarks, with the mini player pinned above the tabs.' },
+      { src: 'assets/photos/pixelamp-eq.jpg', tall: true, cap: 'The equalizer screen: draggable bands, the response curve, tone and limiter stages, and bass / treble trims.' }
+    ]
   },
   {
     slug: 'ecometh-flobric',

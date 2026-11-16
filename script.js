@@ -755,7 +755,7 @@
         break;
       case 'projects':
         termLine('Offline MP3 Player / Step-Down Converter LM2575 / Laptop Cooling Pad');
-        termLine('Wall of Dream / Agentic AI Assistant / MKH Player / EcoMeth & FLOBRIC');
+        termLine('Wall of Dream / Agentic AI Assistant / PixelAmp / EcoMeth & FLOBRIC');
         break;
       case 'skills':
         termLine('Hardware: embedded, ESP32, KiCad PCB, analog, power, soldering, harness');

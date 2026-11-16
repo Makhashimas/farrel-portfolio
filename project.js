@@ -47,6 +47,16 @@
   try {
     slug = new URLSearchParams(window.location.search).get('p') || '';
   } catch (e) {}
+  /* the music app shipped as MKH Player first; keep old links alive */
+  var ALIASES = { 'mkh-player': 'pixelamp' };
+  if (ALIASES[slug]) {
+    slug = ALIASES[slug];
+    try {
+      var u = new URL(window.location.href);
+      u.searchParams.set('p', slug);
+      window.history.replaceState(null, '', u.pathname + u.search);
+    } catch (e) {}
+  }
   var idx = -1;
   for (var i = 0; i < PROJECTS.length; i++) {
     if (PROJECTS[i].slug === slug) { idx = i; break; }
@@ -119,11 +129,11 @@
   var galleryHTML = '';
   if ((p.gallery || []).length) {
     galleryHTML =
-      '<section class="proj__gal" aria-label="Project photos">' +
+      '<section class="proj__gal' + (p.gallery.some(function (g) { return g.tall; }) ? ' proj__gal--tall' : '') + '" aria-label="Project photos">' +
         '<h2 class="proj__h2">SCREENSHOTS</h2>' +
         '<div class="proj__galgrid">' +
           p.gallery.map(function (g) {
-            return '<figure class="proj__fig">' +
+            return '<figure class="proj__fig' + (g.tall ? ' proj__fig--tall' : '') + '">' +
               '<div class="shot"><img src="' + esc(g.src) + '" alt="' + esc(g.cap) + '" loading="lazy"></div>' +
               '<figcaption>' + esc(g.cap) + '</figcaption>' +
             '</figure>';
