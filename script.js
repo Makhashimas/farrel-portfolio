@@ -96,7 +96,7 @@
     '',
     'Profile loaded: Farrel Fayzul Haqqi',
     'Electrical Engineering, ITS Surabaya',
-    'Status: Decoration staff, MABA CUP 2026',
+    'Status: Decoration gate, MABA CUP 2026',
     '',
     'Ready.'
   ];
