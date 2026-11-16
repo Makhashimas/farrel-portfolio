@@ -48,7 +48,7 @@
     slug = new URLSearchParams(window.location.search).get('p') || '';
   } catch (e) {}
   /* the music app shipped as MKH Player first; keep old links alive */
-  var ALIASES = { 'mkh-player': 'pixelamp' };
+  var ALIASES = { 'mkh-player': 'pixelamp', 'ecometh-flobric': 'ecometh' };
   if (ALIASES[slug]) {
     slug = ALIASES[slug];
     try {
@@ -129,17 +129,49 @@
   var galleryHTML = '';
   if ((p.gallery || []).length) {
     galleryHTML =
-      '<section class="proj__gal' + (p.gallery.some(function (g) { return g.tall; }) ? ' proj__gal--tall' : '') + '" aria-label="Project photos">' +
-        '<h2 class="proj__h2">SCREENSHOTS</h2>' +
+      '<section class="proj__gal' +
+        (p.gallery.some(function (g) { return g.tall; }) ? ' proj__gal--tall' : '') +
+        (p.gallery.some(function (g) { return g.doc; }) ? ' proj__gal--doc' : '') +
+      '" aria-label="Project figures">' +
+        '<h2 class="proj__h2">' + esc(p.galTitle || 'SCREENSHOTS') + '</h2>' +
         '<div class="proj__galgrid">' +
           p.gallery.map(function (g) {
-            return '<figure class="proj__fig' + (g.tall ? ' proj__fig--tall' : '') + '">' +
+            return '<figure class="proj__fig' + (g.tall ? ' proj__fig--tall' : '') + (g.doc ? ' proj__fig--doc' : '') + '">' +
               '<div class="shot"><img src="' + esc(g.src) + '" alt="' + esc(g.cap) + '" loading="lazy"></div>' +
               '<figcaption>' + esc(g.cap) + '</figcaption>' +
             '</figure>';
           }).join('') +
         '</div>' +
       '</section>';
+  }
+
+  /* ---------- research paper switch (only on papers) ---------- */
+  var papersHTML = '';
+  var nextPaperHTML = '';
+  if ((p.papers || []).length) {
+    papersHTML =
+      '<nav class="proj__papers" aria-label="Research papers">' +
+        '<span class="proj__papers-lbl" aria-hidden="true">PAPER</span>' +
+        p.papers.map(function (q) {
+          var on = q.slug === p.slug;
+          return '<a class="proj__paper' + (on ? ' is-on' : '') + '" href="project.html?p=' + esc(q.slug) + '"' +
+            (on ? ' aria-current="page"' : '') + '>' +
+            '<b>' + String(q.n).padStart(2, '0') + '</b> ' + esc(q.label) +
+          '</a>';
+        }).join('') +
+      '</nav>';
+
+    var nx = null;
+    for (var pi = 0; pi < p.papers.length; pi++) {
+      if (p.papers[pi].slug === p.slug && p.papers[pi + 1]) { nx = p.papers[pi + 1]; break; }
+    }
+    if (nx) {
+      nextPaperHTML =
+        '<a class="proj__nextpaper" href="project.html?p=' + esc(nx.slug) + '">' +
+          '<span class="proj__nextpaper-k" aria-hidden="true">CONTINUE &rarr;</span>' +
+          '<span class="proj__nextpaper-t">PAPER ' + String(nx.n).padStart(2, '0') + ' · ' + esc(nx.label) + '</span>' +
+        '</a>';
+    }
   }
 
   root.innerHTML =
@@ -156,6 +188,8 @@
       '<p class="proj__sub">' + esc(p.sub) + '</p>' +
     '</header>' +
 
+    papersHTML +
+
     artHTML +
 
     '<div class="proj__grid">' +
@@ -171,6 +205,8 @@
     '</div>' +
 
     galleryHTML +
+
+    nextPaperHTML +
 
     '<nav class="proj__pager" aria-label="More projects">' +
       '<a class="proj__pg" href="project.html?p=' + esc(prev.slug) + '">' +

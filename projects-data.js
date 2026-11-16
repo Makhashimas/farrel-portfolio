@@ -46,7 +46,7 @@ window.PROJECTS = [
     ],
     specs: [
       ['Regulator', 'LM2575BT-ADJ, through-hole'],
-      ['Output', '1.23 – 9.43 V adjustable'],
+      ['Output', '1.23 to 9.43 V adjustable'],
       ['Feedback', 'R1 10k / R2 1.5k · Vref 1.23 V'],
       ['Traces', '0.8 mm minimum'],
       ['Layers', '2-layer, ground pour + via stitching'],
@@ -161,26 +161,73 @@ window.PROJECTS = [
     ]
   },
   {
-    slug: 'ecometh-flobric',
-    tag: 'RESEARCH',
-    name: 'EcoMeth & FLOBRIC Solar Still',
-    cmd: 'C:\\> open quests\\ecometh_flobric',
-    sub: 'Two full research projects from high school, both taken from problem to measured result.',
-    art: { type: 'pixel', cls: 'quest__art--leaf', html: '<div class="px-leaf"><span class="px-leaf__drop"></span><span class="px-leaf__vein"></span></div>' },
+    slug: 'ecometh',
+    tag: 'RESEARCH · PAPER 1/2',
+    name: 'EcoMeth Home Energy',
+    cmd: 'C:\\> open research\\ecometh',
+    sub: 'A home-scale anaerobic digester that turns kitchen waste into cooking gas and liquid fertiliser, designed around a survey of one Surabaya waste bank.',
+    art: { type: 'pixel', cls: 'quest__art--papers', html: '<div class="px-papers"><span class="px-papers__back"></span><span class="px-papers__front"><i></i><i></i><i></i><i></i></span></div>' },
+    paperN: 1,
+    papers: [
+      { slug: 'ecometh', n: 1, label: 'EcoMeth' },
+      { slug: 'flobric', n: 2, label: 'FLOBRIC' }
+    ],
     body: [
-      'EcoMeth (Toyota Eco Youth 13): an anaerobic home digester that turns organic household waste into methane biogas and liquid fertiliser, cutting methane emissions (a greenhouse gas 25x more potent than CO2). Started with field surveys at TPS 3R Gunung Anyar and interviews with residents, then compared four waste-handling options and built the one the community chose.',
-      'FLOBRIC Solar Still (National Scientific Writing Competition XVII, Ministry of Public Works and Housing): a solar water distiller using a floating black fabric wick on polystyrene foam. Five days of experiments showed TDS dropping from 448 to 127 PPM, well inside the 600 PPM safe-drinking threshold, at up to 11.3% efficiency. I measured temperature, mass, TDS and pH, then analysed it all in Excel.',
-      'Neither won. Both taught me how to research a real problem properly.'
+      'EcoMeth started from a number I could not get past: organic waste is around 60% of what Surabaya throws away. At the TPS 3R waste bank in Gunung Anyar, composting already takes 20 to 30% of that residue, and the rest is left to rot without air, which releases methane, a greenhouse gas roughly 25 times stronger than CO2 over a century.',
+      'I surveyed that site and interviewed the people living around it. The gap was not knowledge, it was equipment: households had no way to process their own kitchen waste, so it went out with everything else. I compared four ways of handling it and designed the one that fits a house rather than a plant.',
+      'The digester is a sealed drum charged with cow or horse manure to start the bacterial colony, which takes 4 to 15 days to establish. After that it is fed kitchen waste and left alone. The bacteria break the waste down, the gas collects and runs to a stove, and the liquid fraction drains out as fertiliser. Nothing is burned and nothing is buried.',
+      'This one is a proposal, not a finished build. It went to Eco Youth 13 for team FARRA at SMA Negeri 20 Surabaya, and it was not funded, so what you see here is the design drawing rather than test data. The full document stays private, which is why only the figure below is reproduced.',
+      'Neither of my two papers won anything. Both taught me how to take a real problem and actually research it.'
     ],
     specs: [
-      ['EcoMeth', 'Anaerobic home digester · organic waste to biogas + liquid fertiliser'],
-      ['EcoMeth context', 'Toyota Eco Youth 13 · field surveys at TPS 3R Gunung Anyar'],
-      ['EcoMeth impact', 'Cuts methane emissions, a greenhouse gas 25× more potent than CO2'],
-      ['FLOBRIC', 'Solar still · floating black fabric wick on polystyrene foam'],
-      ['FLOBRIC result', 'TDS 448 → 127 PPM over 5 days · up to 11.3% efficiency'],
-      ['FLOBRIC context', 'National Scientific Writing Competition XVII, Ministry of Public Works and Housing']
+      ['Programme', 'Eco Youth 13 (Toyota) · team FARRA, SMA Negeri 20 Surabaya'],
+      ['Type', 'Proposal: field survey, option comparison, digester design, budget'],
+      ['Site', 'TPS 3R Gunung Anyar, Surabaya'],
+      ['Feedstock', 'Household organic waste · cow or horse manure as starter'],
+      ['Startup', '4 to 15 days to establish the methane-producing colony'],
+      ['Outputs', 'Biogas for cooking · liquid fertiliser']
     ],
-    chips: ['Biogas', 'Water Treatment', 'Solar Energy', 'Field Research', 'Data Analysis'],
-    gallery: []
+    chips: ['Biogas', 'Anaerobic Digestion', 'Field Survey', 'Community Research'],
+    galTitle: 'FIGURE FROM THE PROPOSAL',
+    gallery: [
+      { src: 'assets/photos/ecometh-diagram.jpg', doc: true, wide: true, cap: 'Figure 1: the digester, the gas line to the stove and the fertiliser outlet.' }
+    ]
+  },
+  {
+    slug: 'flobric',
+    tag: 'RESEARCH · PAPER 2/2',
+    name: 'FLOBRIC Solar Still',
+    cmd: 'C:\\> open research\\flobric',
+    sub: 'A solar still built from plywood, foam and black cloth, run for five days: 794 g of clean water on the best day at 11.3% efficiency.',
+    art: { type: 'pixel', cls: 'quest__art--papers', html: '<div class="px-papers"><span class="px-papers__back"></span><span class="px-papers__front"><i></i><i></i><i></i><i></i></span></div>' },
+    paperN: 2,
+    papers: [
+      { slug: 'ecometh', n: 1, label: 'EcoMeth' },
+      { slug: 'flobric', n: 2, label: 'FLOBRIC' }
+    ],
+    body: [
+      'FLOBRIC came from the other end of the same problem. Plenty of places in Indonesia have water, it is just not water you can drink, and buying it is not an option for everyone. A solar still needs no fuel, no filter and no electricity: the sun evaporates the water, the cover condenses it, and what runs out is clean.',
+      'The build is deliberately boring. A plywood box with a blackened floor, a polystyrene foam float, black fabric that sits on the float and wicks water up across its whole surface, and a clear mica cover angled to catch the sun. The vapour condenses on the underside of the cover and runs down into a collection trough. Every part came from a hardware shop.',
+      'I tested it for five consecutive days on groundwater from Gunung Anyar, six hours a day from 09:00 to 15:00, measuring the temperature inside and outside the chamber, the mass of condensate on a digital scale, and the TDS of the output with a meter. Then I put all of it into Excel and worked out the efficiency day by day.',
+      'Day 4 was the best run: 794 g of water at 11.3% efficiency, with 42°C outside the box and 39.5°C inside it. Day 3 was the worst at 430 g, when cloud covered the first four hours and the box only reached 36°C. The water came out between 117 and 127 PPM against a 600 PPM drinking-water limit, down from 448 PPM going in, so the distillation worked even on the bad days.',
+      'The honest limit is the yield: 794 g is under a litre per day from a box the size of a table. This is a device for a household with no other option, not a city water supply, and that is what the recommendations in the paper say.'
+    ],
+    specs: [
+      ['Programme', 'Lomba Karya Ilmiah Sumber Daya Air 2024 · SMA Negeri 20 Surabaya'],
+      ['Build', 'Plywood box · polystyrene foam float · black fabric wick · mica cover'],
+      ['Test', '5 consecutive days, 09:00 to 15:00, groundwater from Gunung Anyar'],
+      ['Best day', '794 g condensate at 11.3% efficiency (day 4)'],
+      ['Water quality', '117 to 127 PPM TDS, against a 600 PPM limit'],
+      ['Feed water', '448 PPM before distillation']
+    ],
+    chips: ['Solar Distillation', 'Water Quality', 'TDS Testing', 'Prototyping'],
+    galTitle: 'FIGURES & PHOTOS',
+    gallery: [
+      { src: 'assets/photos/flobric-structure.jpg', doc: true, wide: true, cap: 'Figure 1: the cross-section. Black cloth wicks the water up, the foam keeps it floating, the cover condenses the vapour and the trough collects it.' },
+      { src: 'assets/photos/flobric-design.jpg', doc: true, wide: true, cap: 'Figure 2: the frame and cover drawn to scale, with the float and trough in place.' },
+      { src: 'assets/photos/flobric-yield.jpg', doc: true, wide: true, cap: 'Diagram 2: water collected and efficiency, day by day. Day 3 is the dip, day 4 the peak at 794 g.' },
+      { src: 'assets/photos/flobric-temp.jpg', doc: true, wide: true, cap: 'Diagram 1: average temperature outside and inside the chamber. The inside stayed 2.5 to 3.5°C cooler.' },
+      { src: 'assets/photos/flobric-roof.jpg', cap: 'The two stills on the school roof during the test week.' }
+    ]
   }
 ];

@@ -1173,7 +1173,18 @@ section[id] { scroll-margin-top: 84px; }
 .quest__art--agent  { background: linear-gradient(160deg, #1d2a52, #2a1d52); }
 .quest__art--chip   { background: linear-gradient(160deg, #16324a, #1d2a52); }
 .quest__art--eq     { background: linear-gradient(160deg, #2a1d52, #16324a); }
-.quest__art--leaf   { background: linear-gradient(160deg, #1b3a2c, #16324a); }
+.quest__art--papers { background: linear-gradient(160deg, #1b3a2c, #16324a); }
+/* same faint grid as the PixelAmp cover: the wide strip needs texture or the
+   single icon floats in an empty bar */
+.quest__art--papers::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(120, 200, 255, .07) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(0deg, rgba(120, 200, 255, .07) 0 1px, transparent 1px 40px);
+}
 .quest__icon {
   width: 118px; height: 118px;
   display: block;
@@ -1304,6 +1315,24 @@ html[data-theme="gnr"] .quest__art--photo::after {
 }
 .quest__open:hover { background: var(--cyan); }
 .quest__open:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.quest__open b { font-weight: 400; color: var(--ink); opacity: .55; }
+
+/* research card: paper 01 is the loud button, paper 02 the quiet one beside it */
+.quest__paperlinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+.quest__paperlinks .quest__open { margin-top: 0; }
+.quest__open--ghost {
+  background: var(--night-2);
+  color: var(--paper-dim);
+  box-shadow: 4px 4px 0 rgba(11, 15, 36, .6);
+}
+.quest__open--ghost b { color: var(--cyan); opacity: 1; }
+.quest__open--ghost:hover { background: var(--cyan); color: var(--ink); }
+.quest__open--ghost:hover b { color: var(--ink); }
 
 /* ---------- pixel art devices ---------- */
 .px-device {
@@ -1395,28 +1424,42 @@ html[data-theme="gnr"] .quest__art--photo::after {
   background: var(--cyan);
 }
 
-.px-leaf {
+/* two paper sheets: the research pair reads as documents at icon size,
+   where an abstract blob was ambiguous */
+.px-papers {
   position: relative;
-  width: 96px; height: 118px;
-  background: var(--cyan);
-  border: 5px solid var(--ink);
-  border-radius: 48px 48px 48px 48px / 62px 62px 40px 40px;
-  display: grid;
-  place-items: center;
+  z-index: 1;
+  width: 124px; height: 146px;
 }
-.px-leaf__drop {
-  width: 26px; height: 34px;
-  background: var(--teal);
-  border: 4px solid var(--ink);
-  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
-}
-.px-leaf__vein {
+.px-papers__back,
+.px-papers__front {
   position: absolute;
-  left: 50%; top: 12px;
-  transform: translateX(-50%);
-  width: 4px; height: 74px;
+  border: 4px solid var(--ink);
+}
+.px-papers__back {
+  inset: 0 16px 16px 0;
+  background: #9fb0cc;
+  transform: rotate(-7deg);
+}
+.px-papers__front {
+  inset: 16px 0 0 16px;
+  background: var(--paper);
+  transform: rotate(3deg);
+  display: grid;
+  align-content: center;
+  gap: 7px;
+  padding: 10px 9px;
+}
+.px-papers__front i {
+  display: block;
+  height: 4px;
   background: var(--ink);
-  opacity: .45;
+  opacity: .5;
+}
+.px-papers__front i:last-child {
+  width: 58%;
+  background: var(--teal);
+  opacity: 1;
 }
 
 /* buck converter: a tall 12V rail steps down through the IC to a 5V rail */
@@ -3008,6 +3051,9 @@ html[data-theme="sunset"] .shot::after {
   display: grid;
   place-items: center;
 }
+/* paper pages reuse the card art as a hero: scale it to the band instead of
+   leaving a 124px sticker in a 240px tall strip */
+.proj__hero--pixel .px-papers { width: 176px; height: 206px; }
 
 .proj__grid {
   display: grid;
@@ -3070,6 +3116,101 @@ html[data-theme="sunset"] .shot::after {
   color: var(--paper-dim);
   padding: 12px 2px 0;
   line-height: 1.45;
+}
+
+/* ---------- research paper switch ---------- */
+.proj__papers {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: -18px 0 36px;
+}
+.proj__papers-lbl {
+  font-family: var(--f-pixel);
+  font-size: 9px;
+  color: var(--paper-dim);
+  letter-spacing: .06em;
+  margin-right: 4px;
+}
+.proj__paper {
+  font-family: var(--f-pixel);
+  font-size: 10px;
+  line-height: 1.7;
+  letter-spacing: .03em;
+  color: var(--paper-dim);
+  text-decoration: none;
+  padding: 11px 15px;
+  background: var(--night-2);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 rgba(11, 15, 36, .55);
+  transition: transform .12s steps(2), box-shadow .12s, color .12s;
+}
+.proj__paper b { color: var(--cyan); font-weight: 400; }
+.proj__paper:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(11, 15, 36, .6);
+  color: var(--paper);
+}
+.proj__paper.is-on {
+  background: var(--cyan);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.proj__paper.is-on b { color: var(--ink); }
+
+@media (max-width: 640px) {
+  /* label on its own line, the two papers share the row evenly */
+  .proj__papers { gap: 8px; }
+  .proj__papers-lbl { flex: 0 0 100%; margin: 0 0 2px; }
+  .proj__paper {
+    flex: 1 1 0;
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 9px;
+  }
+}
+
+.proj__nextpaper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  padding: 22px 24px;
+  margin: 0 0 56px;
+  background: var(--night-2);
+  border: 4px solid var(--ink);
+  border-left: 9px solid var(--gold);
+  box-shadow: var(--shadow-soft);
+  transition: transform .14s steps(2), box-shadow .14s;
+}
+.proj__nextpaper:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 rgba(11, 15, 36, .65); }
+.proj__nextpaper-k {
+  font-family: var(--f-pixel);
+  font-size: 9px;
+  color: var(--gold);
+  letter-spacing: .05em;
+}
+.proj__nextpaper-t {
+  font-family: var(--f-pixel);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--paper);
+}
+
+/* paper figures: one per row, uncropped, scanlines softened so the labels stay readable */
+.proj__gal--doc .proj__galgrid {
+  grid-template-columns: 1fr;
+  gap: 38px;
+}
+.proj__fig--doc .shot { aspect-ratio: auto; }
+.proj__fig--doc .shot img {
+  height: auto;
+  object-fit: contain;
+  filter: saturate(.92) contrast(1.03) brightness(.99);
+}
+.proj__gal--doc .shot::after {
+  background: repeating-linear-gradient(0deg, rgba(11, 15, 36, .09) 0 1px, transparent 1px 3px);
 }
 
 .proj__pager {
