@@ -96,7 +96,7 @@
     '',
     'Profile loaded: Farrel Fayzul Haqqi',
     'Electrical Engineering, ITS Surabaya',
-    'Status: Applying to Anargya EV Team',
+    'Status: Decoration staff, MABA CUP 2026',
     '',
     'Ready.'
   ];
